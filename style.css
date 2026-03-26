@@ -123,3 +123,61 @@ input[type="radio"]:checked + .avatar-img {
         transform: translateY(-5vh);
     }
 }
+
+.turing {
+   background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('IMG_1666.JPG');
+    height: 100vh; 
+    width: 100%;   
+    background-size: cover; 
+    background-position: center;
+    position: relative;
+}
+
+/* Regole base per tutti gli oggetti cliccabili */
+.oggetto-cliccabile {
+    position: absolute;
+    cursor: pointer;
+    /*border: 2px solid rgb(202, 202, 213);*/
+    /*background-color: rgba(202, 202, 213, 0.3);*/
+    z-index: 10; 
+}
+
+/* Coordinate specifiche per ogni oggetto */
+.macchina-da-scrivere {
+    top: 60%;
+    left: 68.5%;  
+    width: 7%; 
+    height: 11%;
+}
+
+.mappa-mondo {
+    top: 3%;
+    left: 35%;  
+    width: 6%; 
+    height: 11%;
+}
+
+.schedario {
+    top: 47%;
+    left: 93%;  
+    width: 9%; 
+    height: 27%;
+}
+
+.scatoloni {
+    top: 67%;
+    left: 29%;
+    width: 9%; 
+    height: 27%;
+}
+
+.modal-enigma {
+    font-family: 'Playfair Display', 'Courier New', Courier, monospace;
+    letter-spacing: 2px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.playfair {
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 1.5px;
+}

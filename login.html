@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bootstrap.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,900&family=Special+Elite&display=swap" rel="stylesheet">
+    <title> Enigma-escape room </title>
+</head>
+<body>
+    <div id="user" class="userform fade-in">
+        <div class="d-flex flex-column align-items-center">
+            <div class="row g-3 align-items-center">
+                <div class="col-auto">
+                    <label for="inputname" class="col-form-label"> Agent name: </label>
+                </div>
+                <div class="col-auto">
+                    <input type="text" id="inputname" class="form-control">
+                </div>
+            </div>
+            <h3 class="mb-3"> Choose your scientific profile: </h3>
+            <div class="d-flex flex-wrap justify-content-center gap-3 gap-md-4 mb-4">
+                <label class="avatar-label">
+                <input type="radio" name="avatar" value="detective1" class="d-none" checked>
+                <img src="Alan Turing.png" alt="Avatar 1" class="avatar-img">
+                </label>
+                <label class="avatar-label">
+                <input type="radio" name="avatar" value="detective2" class="d-none">
+                <img src="Marie Curie.png" alt="Avatar 2" class="avatar-img">
+                </label>
+                <label class="avatar-label">
+                <input type="radio" name="avatar" value="detective3" class="d-none">
+                <img src="Albert Einstein.png" alt="Avatar 3" class="avatar-img">
+                </label>
+                <label class="avatar-label">
+                <input type="radio" name="avatar" value="detective4" class="d-none">
+                <img src="Ada Lovelace.png" alt="Avatar 4" class="avatar-img">
+                </label>
+            </div>
+            <button onclick="go()" type="button" class="btn btn-outline-light btn-lg mt-3"> GO! </button>
+        </div>
+    </div>
+</body>
+<script src="script.js"> </script>
+</html>
