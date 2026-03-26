@@ -35,6 +35,31 @@ html,body{
     margin-bottom: 35vh;
     letter-spacing: 2x;
 }
+
+.btn-home {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    background: transparent;
+    border: 2px solid #F8F8FF;
+    color:  #F8F8FF;
+    border-radius: 8px;
+    padding: 1px 10px;
+    font-size: 2.3rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.btn-home:hover {
+    background-color: rgba(248, 248, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.userform {
+    position: relative;
+}
+
 .d-none {
     display: none !important;
 }
@@ -121,6 +146,13 @@ input[type="radio"]:checked + .avatar-img {
 
     .userform > div {
         transform: translateY(-5vh);
+    }
+
+    .btn-home {
+        top: 10px;
+        left: 10px;
+        padding: 4px 10px;
+        font-size: 1.8rem;
     }
 }
 
