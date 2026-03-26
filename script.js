@@ -5,6 +5,12 @@ function start() {
         document.getElementById('user').classList.add('fade-in');
 }
 
+function backToHome() {
+    document.getElementById('user').classList.add('d-none');
+    document.getElementById('homepage').classList.remove('d-none');
+    document.getElementById('homepage').classList.add('fade-in');
+}
+
 function go() {
     const nome=document.getElementById('inputname').value;
     const avatar=document.querySelector('input[name="avatar"]:checked').value;
