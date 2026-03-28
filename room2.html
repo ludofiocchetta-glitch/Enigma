@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bootstrap.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,900&family=Special+Elite&display=swap" rel="stylesheet">
+    <title> Enigma-escape room</title>
+</head>
+<body>
+    <div id="room2" class="curie fade-in-slow">
+        <div class="avatar-imm">
+            <img id="avatarid" src="" alt="Avatar Giocatore">
+        </div>
+        <div class="oggetto-cliccabile bilancia" onclick="mostraLaboratorio()"></div>
+        <div class="oggetto-cliccabile schedario" onclick="mostraIndizio()"></div>
+        <div class="oggetto-cliccabile lavagna" onclick="risolviEquazioneFinale()"></div>
+    </div>
+    <div class="modal fade" id="enigmaModalCurie" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-enigma bg-dark text-light border-light">
+          <div class="modal-header border-light">
+            <h5 class="modal-title special-elite" id="modalTitle">Bilanciamento chimico</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p class="playfair">Agente, abbiamo decifrato parte del messaggio. Ci serve l'anno cruciale in cui Alan Turing ha cambiato il corso della guerra.</p>
+            <p class="warning">Inserisci il codice di 4 cifre:</p>
+            <input type="text" id="codiceSoluzione" class="form-control form-control-lg text-center special-elite" placeholder="????">
+          </div>
+          <div class="modal-footer border-light">
+            <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Annulla</button>
+            <button type="button" class="btn btn-light text-dark" onclick="controllaEnigma()">Conferma Codice</button>
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+</html>
