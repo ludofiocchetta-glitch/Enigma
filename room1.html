@@ -9,10 +9,13 @@
 </head>
 <body>
     <div id="room1" class="turing fade-in-slow">
-        <div class="oggetto-cliccabile macchina-da-scrivere" onclick="apriEnigmaFinale()"></div>
-        <div class="oggetto-cliccabile mappa-mondo" onclick="mostraAtmosfera()"></div>
-        <div class="oggetto-cliccabile schedario" onclick="mostraIndizio()"></div>
-        <div class="oggetto-cliccabile scatoloni" onclick="mostraScatoloni()"></div>
+      <div class="avatar-imm">
+        <img id="avatarid" src="" alt="Avatar Giocatore">
+      </div>
+      <div class="oggetto-cliccabile macchina-da-scrivere" onclick="apriEnigmaFinale()"></div>
+      <div class="oggetto-cliccabile mappa-mondo" onclick="mostraAtmosfera()"></div>
+      <div class="oggetto-cliccabile schedario" onclick="mostraIndizio()"></div>
+      <div class="oggetto-cliccabile scatoloni" onclick="mostraScatoloni()"></div>
     </div>
     <div class="modal fade" id="enigmaModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
@@ -23,12 +26,28 @@
           </div>
           <div class="modal-body">
             <p class="playfair">Agente, abbiamo decifrato parte del messaggio. Ci serve l'anno cruciale in cui Alan Turing ha cambiato il corso della guerra.</p>
-            <p class="special-elite text-warning fs-5">Inserisci il codice di 4 cifre:</p>
+            <p class="warning">Inserisci il codice di 4 cifre:</p>
             <input type="text" id="codiceSoluzione" class="form-control form-control-lg text-center special-elite" placeholder="????">
           </div>
           <div class="modal-footer border-light">
             <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Annulla</button>
             <button type="button" class="btn btn-light text-dark" onclick="controllaEnigma()">Conferma Codice</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-enigma border-light text-light">
+          <div class="modal-header border-light">
+            <h5 class="modal-title special-elite" id="infoTitolo">Indizio</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center">
+            <p class="playfair" id="infoTesto" style="color: #8c9eff; font-size: 1.3rem;">...</p>
+          </div>
+          <div class="modal-footer border-light justify-content-center">
+            <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Chiudi</button>
           </div>
         </div>
       </div>
