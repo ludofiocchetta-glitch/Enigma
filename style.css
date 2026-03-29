@@ -184,7 +184,7 @@ input[type="radio"]:checked + .avatar-img {
     position: relative;
 }
 
-    /* Coordinate specifiche per ogni oggetto */
+/* Coordinate specifiche per ogni oggetto */
 .macchina-da-scrivere {
     top: 60%;
     left: 68.5%;  
@@ -199,7 +199,7 @@ input[type="radio"]:checked + .avatar-img {
     height: 11%;
 }
 
-.schedario {
+#room1 .schedario {
     top: 47%;
     left: 93%;  
     width: 9%; 
@@ -240,7 +240,7 @@ input[type="radio"]:checked + .avatar-img {
 }
 
 .avatar-imm img {
-    width: 170px;
+    width: 160px;
     height: 200px;
     object-fit: cover;
     border-radius: 30%;
@@ -259,7 +259,7 @@ input[type="radio"]:checked + .avatar-img {
     position: relative;
 }
 
-    /* Coordinate specifiche per ogni oggetto */
+/* Coordinate specifiche per ogni oggetto */
 .bilancia {
     top: 45%;
     left: 76.5%;
@@ -267,7 +267,7 @@ input[type="radio"]:checked + .avatar-img {
     height: 22%;
 }
 
-.schedario {
+#room2 .schedario {
     top: 24%;
     left: 23%;
     width: 4%;

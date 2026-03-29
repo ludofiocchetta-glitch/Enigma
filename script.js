@@ -92,16 +92,7 @@ function mostraBottoneFinale() {
 
 function iniziaEscapeRoom() {
     const avatarname = localStorage.getItem('avatar');
-    
-    if (avatarname === "detective1") {
-        window.location.href = "room1.html";
-    } else if (avatarname === "detective2") {
-        window.location.href = "room2.html";
-    } else if (avatarname === "detective3") {
-        window.location.href = "room3.html";
-    } else if (avatarname === "detective4") {
-        window.location.href = "room4.html";
-    }
+    window.location.href="room1.html";
     
 }
 
@@ -138,15 +129,15 @@ function mostraMessaggio(titolo, testo) {
 }
 /*FUNZIONI STANZA TURING*/
 function mostraAtmosferaTuring() {
-    mostraMessaggio("Mappamondo", "Non c'è tempo per viaggiare, Agente. La minaccia è qui in Europa...");
+    mostraMessaggio("Mappamondo", "Non c'è tempo per viaggiare, Agente. La minaccia è qui in Europa... esplora bene questa stanza.");
 }
 
 function mostraIndizioTuring() {
-    mostraMessaggio("Schedario Chiuso", "Ho trovato un appunto nascosto: la data cruciale è nascosta dietro la parola CYPHER.");
+    mostraMessaggio("Schedario Chiuso", "Ci sei quasi, hai trovato un appunto segreto: la data cruciale è nascosta dietro la parola CYPHER.");
 }
 
 function mostraScatoloni() {
-    mostraMessaggio("Scatoloni Polverosi", "Scartoffie, vecchi cavi elettrici e... una tazza di tè mezza vuota. Niente di utile per decifrare Enigma.");
+    mostraMessaggio("Scatoloni Polverosi", "Scartoffie, vecchi cavi elettrici e... una tazza di tè mezza vuota. Niente di utile per decifrare Enigma, continua a cercare.");
 }
 
 function apriEnigmaFinale() {
@@ -180,7 +171,7 @@ function mostraIndizioCurie() {
 
 function risolviEquazioneFinale() {
     document.getElementById('equazioneSoluzione').value = "";
-    document.getElementById('equazioneSoluzione').placeholder = "????";
+    document.getElementById('equazioneSoluzione').placeholder = "?,?,?,?";
     var mioModal = new bootstrap.Modal(document.getElementById('equazioneModal'));
     mioModal.show();
 }
