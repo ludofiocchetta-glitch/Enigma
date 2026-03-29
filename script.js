@@ -189,3 +189,35 @@ function controllaEquazione() {
         document.getElementById('equazioneSoluzione').placeholder = "ERRATO. Riprova!";
     }
 }
+
+/* FUNZIONI EINSTEIN*/ 
+
+function mostraScaffali() {
+    mostraMessaggio("Scaffali", "Sugli scaffali vedi un mucchio di libri di fisica, ma nulla che ti sembra utile");
+}
+
+function mostraAtmosferaEinstein() {
+    mostraMessaggio("Sedia", "Questa è lo studio dove il leggendario Einstein ha concepito le teorie più rivoluzionarie del XX secolo");
+}
+
+function mostraIndizioEinstein() {
+    mostraMessaggio("Scartoffie", "Trovi una citazione di Einstein \"[inserisci cit]\"");
+}
+
+function apriEnigmaEinstein() {
+    document.getElementById('EinsteinSoluzione').value="";
+    document.getElementById('EinsteinSoluzione').placeholder="x=x"
+   var mioModal = new bootstrap.Modal(document.getElementById('EinsteinModal'));
+    mioModal.show();
+}
+
+function controllaEinstein() {
+    const solution = "[X]" 
+    const UserAnswer = document.getElementById('EinsteinSoluzione').value;
+
+    if (solution == UserAnswer) {
+        bootstrap.Modal.getInstance(document.getElementById('EinsteinModal')).hide();
+        mostraMessaggio("Equazione risolta!", "Ottimo lavoro, Agente! La porta si è sbloccata. Preparati a scappare...")
+        setTimeout(() => {window.location.href= "room4.html"},3000);
+    }
+}
