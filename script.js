@@ -136,12 +136,12 @@ function mostraMessaggio(titolo, testo) {
     var mioModalInfo = new bootstrap.Modal(document.getElementById('infoModal'));
     mioModalInfo.show();
 }
-
-function mostraAtmosfera() {
+/*FUNZIONI STANZA TURING*/
+function mostraAtmosferaTuring() {
     mostraMessaggio("Mappamondo", "Non c'è tempo per viaggiare, Agente. La minaccia è qui in Europa...");
 }
 
-function mostraIndizio() {
+function mostraIndizioTuring() {
     mostraMessaggio("Schedario Chiuso", "Ho trovato un appunto nascosto: la data cruciale è nascosta dietro la parola CYPHER.");
 }
 
@@ -169,4 +169,32 @@ function controllaEnigma() {
         document.getElementById('codiceSoluzione').placeholder = "ERRATO. Riprova!";
     }
 }
+/*FUNZIONI STANZA CURIE*/
+function mostraAtmosferaCurie() {
+    mostraMessaggio("Laboratorio Abbandonato", "Il laboratorio è in rovina, ma l'odore di sostanze chimiche è ancora forte. Qualcosa di importante deve essere nascosto qui...");
+}
 
+function mostraIndizioCurie() {
+    mostraMessaggio("Appunti appesi", "Qualcuno ha sottolineato tre volte di ricordarsi la legge di Lavoisier: 'Nulla si crea, nulla si distrugge, tutto si trasforma'. Deve essere importante!");
+}
+
+function risolviEquazioneFinale() {
+    document.getElementById('equazioneSoluzione').value = "";
+    document.getElementById('equazioneSoluzione').placeholder = "????";
+    var mioModal = new bootstrap.Modal(document.getElementById('equazioneModal'));
+    mioModal.show();
+}
+
+function controllaEquazione() {
+    const rispostaUtente = document.getElementById('equazioneSoluzione').value;
+    const soluzioneCorretta = "3,4,1,4";
+
+    if (rispostaUtente === soluzioneCorretta) {
+        bootstrap.Modal.getInstance(document.getElementById('equazioneModal')).hide();
+        mostraMessaggio("Equazione Bilanciata!", "Ottimo lavoro, Agente! La porta si è sbloccata. Preparati a scappare...");
+        setTimeout(() => { window.location.href = "room3.html"; }, 3000);
+    } else {
+        document.getElementById('equazioneSoluzione').value = "";
+        document.getElementById('equazioneSoluzione').placeholder = "ERRATO. Riprova!";
+    }
+}

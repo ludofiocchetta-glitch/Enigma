@@ -164,24 +164,6 @@ input[type="radio"]:checked + .avatar-img {
     0%, 100% { opacity: 1; }
     50% { opacity: 0; }
 }
-/*room1*/
-.turing {
-    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('room1.jpg');
-    height: 100vh;
-    width: 100%;
-    background-size: cover;
-    background-position: center;
-    position: relative;
-}
-
-.curie {
-    background-color: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('room2.png');
-    height: 100vh;
-    width: 100%;
-    background-size: cover;
-    background-position: center;
-    position: relative;
-}
 
 /* Regole base per tutti gli oggetti cliccabili */
 .oggetto-cliccabile {
@@ -192,7 +174,17 @@ input[type="radio"]:checked + .avatar-img {
     z-index: 10; 
 }
 
-/* Coordinate specifiche per ogni oggetto */
+/*room1*/
+.turing {
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('room1.jpg');
+    height: 100vh;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+    /* Coordinate specifiche per ogni oggetto */
 .macchina-da-scrivere {
     top: 60%;
     left: 68.5%;  
@@ -228,7 +220,7 @@ input[type="radio"]:checked + .avatar-img {
 }
 
 .modal-content {
-    background-color: #11022e !important; 
+    background-color: #11022e !important;
 }
 
 .warning {
@@ -236,15 +228,15 @@ input[type="radio"]:checked + .avatar-img {
     letter-spacing: 1.5px;
     font-size: 2vw;
     color: #8c9eff;
-    text-shadow: 1px 1px 2px #000000; 
+    text-shadow: 1px 1px 2px #000000;
 }
 
 .avatar-imm {
     position: absolute;
-    top: 20px;   
-    left: 20px; 
-    z-index: 100; 
-    pointer-events: none;  
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    pointer-events: none;
 }
 
 .avatar-imm img {
@@ -255,6 +247,45 @@ input[type="radio"]:checked + .avatar-img {
     border: 4px solid #8c9eff;
     box-shadow: 0 0 20px rgba(140, 158, 255, 0.5);
     background-color: rgba(17, 2, 46, 0.7); 
+}
+
+/*room2*/
+.curie {
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('room2.png');
+    height: 100vh;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+    /* Coordinate specifiche per ogni oggetto */
+.bilancia {
+    top: 45%;
+    left: 76.5%;
+    width: 15%;
+    height: 22%;
+}
+
+.schedario {
+    top: 24%;
+    left: 23%;
+    width: 4%;
+    height: 8%;
+}
+
+.lavagna {
+    top: 11%;
+    left: 56%;
+    width: 11%;
+    height: 27%
+}
+
+.equazione-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80px;
 }
 
 /* media query*/
