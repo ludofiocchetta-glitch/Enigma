@@ -170,7 +170,7 @@ input[type="radio"]:checked + .avatar-img {
     position: absolute;
     cursor: pointer;
     border: 2px solid rgb(202, 202, 213);
-    background-color: rgba(202, 202, 213, 0.3);
+    background-color: rgba(202, 202, 213, 0.3); 
     z-index: 10; 
 }
 
@@ -325,6 +325,49 @@ input[type="radio"]:checked + .avatar-img {
     width: 7.5%;
     height: 15%;
 }
+
+/* room4 */
+
+.lovelace{
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('room4.png');
+    height: 100vh;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.mappamondo2 {
+    top: 47%;
+    left: 67%;
+    width: 8%;
+    height: 15%; 
+}
+
+.camino {
+    top: 35%;
+    left: 85%;
+    width: 20%;
+    height: 50%;
+}
+
+.appunti {
+    top: 58%;
+    left: 50%;
+    width: 10%;
+    height: 6%; 
+}
+
+.libro {
+    top: 66%;
+    left: 37%;
+    width: 23%;
+    height: 22%;
+
+
+
+}
+
 
 
 /* media query*/

@@ -1,9 +1,60 @@
-<!DOCTYPE html> 
-<html>
-
+<html lang="it">
 <head>
- <body>
-    <p> YAAAAAAA</p>
-     </body>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bootstrap.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,900&family=Special+Elite&display=swap" rel="stylesheet">
+    <title> Enigma-escape room </title>
 </head>
+<body>
+    <div id="room4" class="lovelace fade-in-slow">
+      <div class="avatar-imm">
+        <img id="avatarid" src="" alt="Avatar Giocatore">
+      </div>
+      <div class="oggetto-cliccabile libro" onclick="apriEnigmaLovelace()"></div>
+      <div class="oggetto-cliccabile camino" onclick="mostraAtmosferaLovelace()"></div>
+      <div class="oggetto-cliccabile appunti" onclick="mostraIndizioLovelace()"></div>
+      <div class="oggetto-cliccabile mappamondo2" onclick="mostraMappamondo()"></div>
+    </div>
+    <div class="modal fade" id="LovelaceModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-enigma bg-dark text-light border-light">
+          <div class="modal-header border-light">
+            <h5 class="modal-title special-elite" id="modalTitle">Equazione della rivoluzione trovata!</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p class="playfair">Agente, hai trovato il libro di Ada Lovelace con il suo algoritmo Note G, ma una variabile sembra sbagliata. Correggila!: <br> V1 = 1,V2 = 2,V3 = n <br>
+              V4 = V2*V3 <br>V5 = V4-V1 <br>V6 = V4+V1 <br>V11 = V5/V4 <br>V11 = V11 /V2 
+            </p>
+            <p class="warning">Inserisci la variabile sbagalita e poi quella coretta nella forma "Vx,Vx":</p>
+            <input type="text" id="LovelaceSoluzione" class="form-control form-control-lg text-center special-elite" placeholder="????">
+          </div>
+          <div class="modal-footer border-light">
+            <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Annulla</button>
+            <button type="button" class="btn btn-light text-dark" onclick="controllaLovelace()">Conferma Soluzione</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-enigma border-light text-light">
+          <div class="modal-header border-light">
+            <h5 class="modal-title special-elite" id="infoTitolo">Indizio</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center">
+            <p class="playfair" id="infoTesto" style="color: #8c9eff; font-size: 1.3rem;">...</p>
+          </div>
+          <div class="modal-footer border-light justify-content-center">
+            <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Chiudi</button>
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+<script src="script.js"> </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </html>

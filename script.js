@@ -201,18 +201,18 @@ function mostraAtmosferaEinstein() {
 }
 
 function mostraIndizioEinstein() {
-    mostraMessaggio("Scartoffie", "Trovi una citazione di Einstein \"[inserisci cit]\"");
+    mostraMessaggio("Scartoffie", "Trovi una citazione di Einstein \"La massa ed l'energaia sono di fatto equivalenti\"");
 }
 
 function apriEnigmaEinstein() {
     document.getElementById('EinsteinSoluzione').value="";
-    document.getElementById('EinsteinSoluzione').placeholder="x=x"
+    document.getElementById('EinsteinSoluzione').placeholder="x"
    var mioModal = new bootstrap.Modal(document.getElementById('EinsteinModal'));
     mioModal.show();
 }
 
 function controllaEinstein() {
-    const solution = "[X]" 
+    const solution = "m";
     const UserAnswer = document.getElementById('EinsteinSoluzione').value;
 
     if (solution == UserAnswer) {
@@ -220,4 +220,47 @@ function controllaEinstein() {
         mostraMessaggio("Equazione risolta!", "Ottimo lavoro, Agente! La porta si è sbloccata. Preparati a scappare...")
         setTimeout(() => {window.location.href= "room4.html"},3000);
     }
+    else {
+        document.getElementById('EinsteinSoluzione').value = "";
+        document.getElementById('EinsteinSoluzione').placeholder = "ERRATO. Riprova!";
+    }
 }
+
+/* funzioni lovelace*/
+
+function mostraMappamondo() {
+    mostraMessaggio("Mappamondo", "Agente immagino ti manchi casa,ma hai una missione da portare a termine");
+}
+
+function mostraAtmosferaLovelace() {
+    mostraMessaggio("Camino", "Ti trovi nello studio di Ada Lovelace considerata la madre dell'informatica!");
+}
+
+function mostraIndizioLovelace() {
+    mostraMessaggio("Appunti", "Sembrano gli appunti di Ada:\n \"Ho scoperto come calcolare i numeri di Bernoulli sulla macchina di Babbage il risultato finale è: \n1/2*(2n-1/2n+1)\"");
+}
+
+function apriEnigmaLovelace() {
+    document.getElementById('LovelaceSoluzione').value="";
+    document.getElementById('LovelaceSoluzione').placeholder="x,x"
+   var mioModal = new bootstrap.Modal(document.getElementById('LovelaceModal'));
+    mioModal.show();
+}
+
+function controllaLovelace() {
+    const solution = "V4,V6" 
+    const UserAnswer = document.getElementById('LovelaceSoluzione').value;
+
+    if (solution == UserAnswer) {
+        bootstrap.Modal.getInstance(document.getElementById('LovelaceModal')).hide();
+        mostraMessaggio("Variabile troavata!", "Ottimo lavoro, Agente! La porta si è sbloccata. Preparati a scappare...")
+        setTimeout(() => {window.location.href= "room5.html"},3000);
+    }
+    else {
+        document.getElementById('LovelaceSoluzione').value = "";
+        document.getElementById('LovelaceSoluzione').placeholder = "ERRATO. Riprova!";
+    }
+
+
+}
+
