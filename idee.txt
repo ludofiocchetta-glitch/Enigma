@@ -1,0 +1,42 @@
+Mettere un'introduzione all'inizio di ogni stanza.
+
+Mettere i modal degli indizi e domande di un colore diverso per ogni stanza, mentre
+quelli dell'introduzione lasciarli dello stesso colore, così da avere un effetto di
+narrazione.
+
+Aggiungere più domande e indizi che ti fanno rispondere a queste, nelle domande
+in mezzo se il giocatore continua a sbagliare gli appaiono dei suggerimenti, all'
+enigma finale no. I suggerimenti farli apparire nel box in cui deve rispondere secondo me.
+Un'altra idea è farli apparire cliccando sull'icona dell'avatar però forse è poco
+intuitivo.
+
+Gli indizi e le domande appaiono tutte subito, ma l'enigma finale si deve sbloccare
+solo quando il giocatore ha visto tutti gli indizi e risposto a tutte le domande.
+
+Potremmo ordinare le stanze in modo da farle man mano più difficili (tipo domande
+più complesse e più domande) o vanno bene tutte e 4 più o meno uguali?
+
+Timer per rispondere alle domande
+
+Classifica finale con database che la gestisce e tiene conto sia del punteggio
+che del tempo
+
+Database per generare domande randomiche?
+
+Mettere delle istruzioni nella pagina iniziale o si capisce tutto?
+
+Traduzione in inglese?
+
+Idee quinta stanza? deve essere diversa dalle altre
+
+Multiplayer?
+
+Altre idee database e backend? Per esempio ho pensato che possiamo creare un database
+per fare uno shop per comprare dei poteri speciali che puoi avere o musica che puoi
+mettere nelle stanze
+
+Le risposte alle domande e il fatto di sbloccare l'enigma finale solo dopo aver 
+fatto tutto il resto possiamo mettere nel database quando lo faremo 
+
+Mappamondi che se li hai cliccati tutti ti portano in una stanza segreta?
+

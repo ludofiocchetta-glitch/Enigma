@@ -146,7 +146,7 @@ input[type="radio"]:checked + .avatar-img {
 }
 
 .avatar-mission {
-    width: 170px;
+    width: 160px;
     height: 200px;
     object-fit: cover;
     border-radius: 30%;
@@ -169,8 +169,8 @@ input[type="radio"]:checked + .avatar-img {
 .oggetto-cliccabile {
     position: absolute;
     cursor: pointer;
-    border: 2px solid rgb(202, 202, 213);
-    background-color: rgba(202, 202, 213, 0.3); 
+    /*border: 2px solid rgb(202, 202, 213);
+    background-color: rgba(202, 202, 213, 0.3);*/
     z-index: 10; 
 }
 
@@ -184,38 +184,68 @@ input[type="radio"]:checked + .avatar-img {
     position: relative;
 }
 
+.centraT {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000; /* Lo mantiene sopra a tutto il resto della stanza */
+}
+
 /* Coordinate specifiche per ogni oggetto */
 .macchina-da-scrivere {
     top: 60%;
-    left: 68.5%;  
-    width: 7%; 
-    height: 11%;
+    left: 67%;  
+    width: 11%; 
+    height: 13%;
 }
 
 .mappa-mondo {
-    top: 3%;
-    left: 35%;  
+    top: 6%;
+    left: 40%;  
     width: 6%; 
-    height: 11%;
+    height: 15%;
 }
 
 #room1 .schedario {
-    top: 47%;
+    top: 15%;
     left: 93%;  
     width: 9%; 
-    height: 27%;
+    height: 45%;
 }
 
 .scatoloni {
-    top: 67%;
-    left: 29%;
-    width: 9%; 
-    height: 27%;
+    top: 51%;
+    left: 33%;
+    width: 11%; 
+    height: 41%;
+}
+
+#room1 .lavagna {
+    top: 7%;
+    left: 17%;
+    width: 17%;
+    height: 40%;
+}
+
+.telefono {
+    top: 60%;
+    left: 56%;
+    width: 7%;
+    height: 7%;
+}
+
+.cappello {
+    top: 80%;
+    left: 5%;
+    width: 10%;
+    height: 10%;
 }
 
 .modal-enigma {
     font-family: 'Playfair Display', 'Courier New', Courier, monospace;
     letter-spacing: 2px;
+    font-size: 1.5vw;
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
 }
 
@@ -226,7 +256,7 @@ input[type="radio"]:checked + .avatar-img {
 .warning {
     font-family: 'Playfair Display', serif;
     letter-spacing: 1.5px;
-    font-size: 2vw;
+    font-size: 1.7vw;
     color: #8c9eff;
     text-shadow: 1px 1px 2px #000000;
 }
@@ -267,14 +297,14 @@ input[type="radio"]:checked + .avatar-img {
     height: 22%;
 }
 
-#room2 .schedario {
+.schedario2 {
     top: 24%;
     left: 23%;
     width: 4%;
     height: 8%;
 }
 
-.lavagna {
+.lavagna2 {
     top: 11%;
     left: 56%;
     width: 11%;
@@ -298,7 +328,7 @@ input[type="radio"]:checked + .avatar-img {
     position: relative;
 }
 
-.scaffali {
+.scaffali2 {
     top: 40%;
     left: 73%;
     width: 24.5%;
@@ -319,7 +349,7 @@ input[type="radio"]:checked + .avatar-img {
     height: 54%;
 }
 
-.scartoffie {
+.scartoffie2 {
      top: 84%;
     left: 41%;
     width: 7.5%;
@@ -329,7 +359,7 @@ input[type="radio"]:checked + .avatar-img {
 /* room4 */
 
 .lovelace{
-    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('room4.png');
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('room4.jpg');
     height: 100vh;
     width: 100%;
     background-size: cover;
@@ -338,36 +368,39 @@ input[type="radio"]:checked + .avatar-img {
 }
 
 .mappamondo2 {
-    top: 47%;
-    left: 67%;
+    top: 45%;
+    left: 52%;
     width: 8%;
     height: 15%; 
 }
 
 .camino {
-    top: 35%;
-    left: 85%;
-    width: 20%;
-    height: 50%;
+    top: 41%;
+    left: 61%;
+    width: 17%;
+    height: 30%;
 }
 
-.appunti {
-    top: 58%;
-    left: 50%;
-    width: 10%;
-    height: 6%; 
+.libreria {
+    top: 1%;
+    left: 85%;
+    width: 12%;
+    height: 58%; 
 }
 
 .libro {
-    top: 66%;
-    left: 37%;
-    width: 23%;
-    height: 22%;
-
-
-
+    top: 63%;
+    left: 27%;
+    width: 13%;
+    height: 20%;
 }
 
+.orologio {
+    top:2%;
+    left:37%;
+    width:5%;
+    height:17%;
+}
 
 
 /* media query*/

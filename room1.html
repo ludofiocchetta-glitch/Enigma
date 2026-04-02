@@ -5,33 +5,42 @@
     <link rel="stylesheet" href="bootstrap.css">
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,900&family=Special+Elite&display=swap" rel="stylesheet">
-    <title> Enigma-escape room </title>
+    <title> Room1 </title>
 </head>
 <body>
     <div id="room1" class="turing fade-in-slow">
-      <div class="avatar-imm">
+      <div id="avatarcontenitore" class="avatar-imm d-none">
         <img id="avatarid" src="" alt="Avatar Giocatore">
       </div>
-      <div class="oggetto-cliccabile macchina-da-scrivere" onclick="apriEnigmaFinale()"></div>
+      <div id="introT" class="dossier-box text-center p-5 shadow-lg centraT">
+        <p id="testoMacchina1" class="special-elite text-light fs-5 text-start"></p>
+        <button id="btnEntra" class="btn btn-outline-light btn-lg mt-4 d-none" onclick="iniziaEsplorazioneT()">
+          Explore
+        </button>
+      </div>
+      <div class="oggetto-cliccabile macchina-da-scrivere" onclick="mostraEnigmaFinale()"></div>
       <div class="oggetto-cliccabile mappa-mondo" onclick="mostraAtmosferaTuring()"></div>
       <div class="oggetto-cliccabile schedario" onclick="mostraIndizioTuring()"></div>
       <div class="oggetto-cliccabile scatoloni" onclick="mostraScatoloni()"></div>
+      <div class="oggetto-cliccabile cappello" onclick="mostraCappello()"></div>
+      <div class="oggetto-cliccabile lavagna" onclick="mostraLavagna()"></div>
+      <div class="oggetto-cliccabile telefono" onclick="mostraTelefono()"></div>
     </div>
     <div class="modal fade" id="enigmaModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content modal-enigma bg-dark text-light border-light">
           <div class="modal-header border-light">
-            <h5 class="modal-title special-elite" id="modalTitle">Macchina Enigma Intercettata</h5>
+            <h5 class="modal-title special-elite" id="modalTitle"></h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <p class="playfair">Agente, abbiamo decifrato parte del messaggio. Ci serve l'anno cruciale in cui Alan Turing ha cambiato il corso della guerra.</p>
-            <p class="warning">Inserisci il codice di 4 cifre:</p>
-            <input type="text" id="codiceSoluzione" class="form-control form-control-lg text-center special-elite" placeholder="????">
+            <p class="playfair" id="descrizione"></p>
+            <p class="warning" id="richiesta"></p>
+            <input type="text" id="codiceSoluzione" class="form-control form-control-lg text-center special-elite" placeholder="?????">
           </div>
           <div class="modal-footer border-light">
             <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Annulla</button>
-            <button type="button" class="btn btn-light text-dark" onclick="controllaEnigma()">Conferma Codice</button>
+            <button type="button" class="btn btn-light text-dark" id="btnConferma"></button>
           </div>
         </div>
       </div>
