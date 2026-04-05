@@ -9,45 +9,52 @@
 </head>
 <body>
     <div id="room4" class="lovelace fade-in-slow">
-      <div class="avatar-imm">
+      <div id="avatarcontenitore4" class="avatar-imm4 d-none">
         <img id="avatarid" src="" alt="Avatar Giocatore">
       </div>
-      <div class="oggetto-cliccabile libro" onclick="apriEnigmaLovelace()"></div>
+      <div id="introL" class="dossier-box text-center p-5 shadow-lg centraT">
+        <p id="testoMacchina4" class="special-elite text-light fs-5 text-start"></p>
+        <button id="btnEntra" class="btn btn-outline-light btn-lg mt-4 d-none" onclick="iniziaEsplorazioneL()">
+          Explore
+        </button>
+      </div>
+      <div class="oggetto-cliccabile appunti" onclick="apriEnigmaLovelace()"></div>
       <div class="oggetto-cliccabile camino" onclick="mostraAtmosferaLovelace()"></div>
-      <div class="oggetto-cliccabile libreria" onclick="mostraIndizioLovelace()"></div>
+      <div class="oggetto-cliccabile libreria" onclick="mostraLibreria()"></div>
       <div class="oggetto-cliccabile mappamondo2" onclick="mostraMappamondo()"></div>
       <div class="oggetto-cliccabile orologio" onclick="mostraOrologio()"></div>
+      <div class="oggetto-cliccabile lampada" onclick="mostraLampada()"></div>
+      <div class="oggetto-cliccabile quadro" onclick="mostraQuadro()"></div>
+      <div class="oggetto-cliccabile libri" onclick="mostraLibri()"></div>
     </div>
     <div class="modal fade" id="LovelaceModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content modal-enigma bg-dark text-light border-light">
+        <div class="modal-content modal-enigma4 bg-dark text-light border-light">
           <div class="modal-header border-light">
-            <h5 class="modal-title special-elite" id="modalTitle">Equazione della rivoluzione trovata!</h5>
+            <h5 class="modal-title special-elite" id="modalTitleL">Equazione della rivoluzione trovata!</h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <p class="playfair">Agente, hai trovato il libro di Ada Lovelace con il suo algoritmo Note G, ma una variabile sembra sbagliata. Correggila!: <br> V1 = 1,V2 = 2,V3 = n <br>
-              V4 = V2*V3 <br>V5 = V4-V1 <br>V6 = V4+V1 <br>V11 = V5/V4 <br>V11 = V11 /V2 
-            </p>
-            <p class="warning">Inserisci la variabile sbagalita e poi quella coretta nella forma "Vx,Vx":</p>
-            <input type="text" id="LovelaceSoluzione" class="form-control form-control-lg text-center special-elite" placeholder="????">
+            <p class="playfair4" id="descrizioneL"></p>
+            <p class="warning4" id="richiestaL"></p>
+            <input type="text" id="LovelaceSoluzione" class="form-control form-control-lg text-center special-elite" placeholder="Vx,Vy">
           </div>
           <div class="modal-footer border-light">
             <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Annulla</button>
-            <button type="button" class="btn btn-light text-dark" onclick="controllaLovelace()">Conferma Soluzione</button>
+            <button type="button" class="btn btn-light text-dark" id="btnConfermaL"></button>
           </div>
         </div>
       </div>
     </div>
     <div class="modal fade" id="infoModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content modal-enigma border-light text-light">
+        <div class="modal-content modal-enigma4 border-light text-light">
           <div class="modal-header border-light">
             <h5 class="modal-title special-elite" id="infoTitolo">Indizio</h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body text-center">
-            <p class="playfair" id="infoTesto" style="color: #8c9eff; font-size: 1.3rem;">...</p>
+            <p class="playfair" id="infoTesto" style="color: #e3e0e2; font-size: 1.3rem;">...</p>
           </div>
           <div class="modal-footer border-light justify-content-center">
             <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Chiudi</button>

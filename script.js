@@ -24,6 +24,10 @@ window.onload = function() {
         document.getElementById('testoMacchina1').classList.add('cursore'); 
         inizioStanzaT();
     }
+     if (document.getElementById('testoMacchina4')) {
+        document.getElementById('testoMacchina4').classList.add('cursore'); 
+        inizioStanzaL();
+    }
     if (document.getElementById('avatarid')) {
         caricaAvatarInAngolo();
     }
@@ -251,10 +255,11 @@ function apriModal(titolo, descrizione, richiesta, testoBottone, funzioneControl
 function mostraLavagna() {
     apriModal("Lavagna", "Se capisci la macchina, capisci tutto.\n GPKIOC",
         "Decifra gli appunti: ", "Controlla", controllaLavagna,false);
+    document.getElementById('codiceSoluzione').placeholder = "??????";
 }
 
 function controllaLavagna() {
-    const risposta=document.getElementById('codiceSoluzione').value.trim().toLowerCase()
+    const risposta=document.getElementById('codiceSoluzione').value.trim().toLowerCase();
     if (risposta=="enigma") {
         bootstrap.Modal.getInstance(document.getElementById('enigmaModal')).hide();
         mostraMessaggio("Accettato", "Geniale! hai decifrato il codice sulla lavagna. \n Puoi continuare a cercare.");
@@ -279,10 +284,11 @@ function controllaLavagna() {
 function mostraTelefono() {
     apriModal("Telefono", "Ogni numero ha una voce. Ascoltala.\n 20-21-18-9-14-7",
         "Decifra numero: ","Controlla", controllaTelefono,false);
+     document.getElementById('codiceSoluzione').placeholder = "??????";
 }
 
 function controllaTelefono() {
-    const risposta=document.getElementById('codiceSoluzione').value.trim().toLowerCase()
+    const risposta=document.getElementById('codiceSoluzione').value.trim().toLowerCase();
     if (risposta=="turing") {
         bootstrap.Modal.getInstance(document.getElementById('enigmaModal')).hide();
         mostraMessaggio("Accettato", "Fantastico! hai capito il significato nascosto del numero. \n Continua la tua esplorazione.");
@@ -311,7 +317,7 @@ function mostraEnigmaFinale() {
         "Inserisci il nome: ", "Decodifica la macchina", controllaEnigma,true);
     }
     else {
-        mostraMessaggio("Accesso Negato", "Agente, non sei ancora pronto per la decodifica finale. Ispeziona tutti gli oggetti nella stanza.");
+        mostraMessaggio("Accesso Negato", "Agente, non sei ancora pronto per la decodifica finale. Ispeziona e risolvi tutti gli oggetti nella stanza.");
         return;
     }
 }
@@ -322,7 +328,7 @@ function controllaEnigma() {
     
     if (rispostaUtente === soluzioneCorretta) {
         bootstrap.Modal.getInstance(document.getElementById('enigmaModal')).hide();
-        mostraMessaggio("Codice Accettato!", "Bravo Agente! La porta si è sbloccata. Preparati a scappare...");
+        mostraMessaggio("Codice accettato!", "Bravo Agente! La porta si è sbloccata. Preparati a scappare...");
         setTimeout(() => { window.location.href = "room2.html"; }, 3000);
     } else {
         document.getElementById('codiceSoluzione').value = "";
@@ -397,43 +403,205 @@ function controllaEinstein() {
 
 /* funzioni lovelace*/
 
+//funzioni per il testo all'entrata della stanza
+function inizioStanzaL() {
+    const avatarName= localStorage.getItem('avatar');
+    let nomeAvatar = "";
+    if (avatarName === "detective1") {
+        nomeAvatar = "Alan Turing";
+    } else if (avatarName === "detective2") {
+        nomeAvatar = "Marie Curie";
+    } else if (avatarName === "detective3") {
+        nomeAvatar = "Albert Einstein";
+    } else if (avatarName === "detective4") {
+        nomeAvatar = "Ada Lovelace";
+    }    
+    const messaggio = `${nomeAvatar} ce l'hai fatta, ti stai avvicinando sempre di più alla fine.\n Sei nella quarta stanza della tua missione, quando sei pronto puoi iniziare l'esplorazione.
+     Mi raccomando sempre con occhio attento, ma ormai sei un esperto!\n Buon divertimento :)`;
+    const boxtesto = document.getElementById('testoMacchina4');
+    boxtesto.style.cursor = "pointer";
+    boxtesto.onclick = function() {
+        skipIntro = true;
+    }
+    scriviTestoL(messaggio, 0);
+
+}
+
+function scriviTestoL(testo, indice) {
+    const elemento = document.getElementById('testoMacchina4');
+
+    if (skipIntro) {
+        elemento.innerHTML = testo.replace(/\n/g, "<br>");
+        mostraBottoneFinaleL();
+        return;
+    }
+
+    if (indice < testo.length) {
+        let carattere = testo.charAt(indice);
+        if (carattere === '\n') {
+            document.getElementById('testoMacchina4').innerHTML += "<br>";
+        } else {
+            document.getElementById('testoMacchina4').innerHTML += carattere;
+        }
+        setTimeout(() => scriviTestoL(testo, indice + 1), 20);
+    } else {
+        mostraBottoneFinaleL();
+    }
+}
+
+function mostraBottoneFinaleL() {
+    document.getElementById('testoMacchina4').classList.remove('cursore');
+    const bottone = document.getElementById('btnEntra');
+    bottone.classList.remove('d-none');
+    bottone.classList.add('fade-in');
+}
+
+function iniziaEsplorazioneL() {
+    document.getElementById('introL').classList.add('d-none');
+    const avatar=document.getElementById('avatarcontenitore4');
+    avatar.classList.remove('d-none');
+    avatar.classList.add('fade-in');
+}
+
+let countOrologio=0;
+let countLibri=0;
+
+let enigmiRisoltiL= {
+    orologio:false,
+    libri:false
+};
+
+let oggettiEsploratiL= {
+    mappamondo2:false,
+    libreria:false,
+    quadro:false,
+    lampada:false,
+    camino:false
+};
+
 function mostraMappamondo() {
-    mostraMessaggio("Mappamondo", "Agente immagino ti manchi casa,ma hai una missione da portare a termine");
+    mostraMessaggio("Mappamondo", "L'Italia e l'Inghilterra sono unite da un filo rosso. \n Accanto c'è un biglietto: \n gli appunti del matematico italiano Menabrea erano solo la teoria, il miracolo è tradurli in ingranaggi... fai molta attenzione alle operazioni di divisione.");
+    oggettiEsploratiL.mappamondo2=true;
 }
 
 function mostraAtmosferaLovelace() {
-    mostraMessaggio("Camino", "Ti trovi nello studio di Ada Lovelace considerata la madre dell'informatica!");
+    mostraMessaggio("Camino", "Sulla cassa di legno c'è inciso: perché il meccanismo funzioni, il denominatore finale deve nascere da una somma, non da una moltiplicazione.");
+    oggettiEsploratiL.camino=true;
 }
 
-function mostraOrologio() {
-    mostraMessaggio("Orologio", "Il tempo scorre veloce, corri ad esplorare!")
+function mostraLampada() {
+    mostraMessaggio("Lampada","La macchina può replicare i modelli perfetti della natura, come la spirale di una conchiglia o i petali di un fiore. \n Ogni nuovo passo si basa sulla somma del passato.")
+    oggettiEsploratiL.lampada=true;
 }
 
-function mostraIndizioLovelace() {
-    mostraMessaggio("Appunti", "Sembrano gli appunti di Ada:\n \"Ho scoperto come calcolare i numeri di Bernoulli sulla macchina di Babbage il risultato finale è: \n1/2*(2n-1/2n+1)\"");
+function mostraQuadro() {
+    mostraMessaggio("Quadro","Sotto il quadro, c'è una piccola targhetta: \n il futuro appartiene a chi sa trasformare i numeri in idee.");
+    oggettiEsploratiL.quadro=true;
 }
 
-function apriEnigmaLovelace() {
-    document.getElementById('LovelaceSoluzione').value="";
-    document.getElementById('LovelaceSoluzione').placeholder="x,x"
-   var mioModal = new bootstrap.Modal(document.getElementById('LovelaceModal'));
+function mostraLibreria() {
+    mostraMessaggio("Libreria", "Ci sono degli appunti:\n l'equazione per i numeri di Bernoulli è immensa, per iniziare la macchina deve prima calcolare il coefficiente base. \nBisogna prendere (2n-1) e dividerlo per (2n+1)."); 
+    oggettiEsploratiL.libreria=true;
+}
+
+function apriModalL(titolo, descrizione, richiesta, testoBottone, funzioneControllo, usaPlaceholder) {
+    document.getElementById('modalTitleL').innerText = titolo;
+    document.getElementById('descrizioneL').innerText = descrizione;
+    document.getElementById('richiestaL').innerText = richiesta;
+    
+    let inputField = document.getElementById('LovelaceSoluzione');
+    inputField.value = "";
+    inputField.placeholder = usaPlaceholder ? "Vx,Vy" : "";
+    let btnConferma = document.getElementById('btnConfermaL');
+    btnConferma.innerText = testoBottone;
+    btnConferma.onclick = funzioneControllo;
+
+    var mioModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('LovelaceModal'));
     mioModal.show();
 }
 
-function controllaLovelace() {
-    const solution = "V4,V6" 
-    const UserAnswer = document.getElementById('LovelaceSoluzione').value;
 
-    if (solution == UserAnswer) {
+function mostraOrologio() { 
+    apriModalL("Orologio", "Il pendolo oscilla seguendo un ritmo strano, inciso sul legno ci sono dei numeri: 1,1,2,3,5,8...\n Per far partire il primo programma, devi dimostrare di aver capito lo schema perfetto che la natura ha inserito.",
+        "Decifra i successivi tre numeri della sequenza: ","Controlla",controllaOrologio,false);
+        document.getElementById('LovelaceSoluzione').placeholder = "?,?,?";
+}
+
+function controllaOrologio() {
+    const risposta=document.getElementById('LovelaceSoluzione').value.trim();
+    if (risposta=="13,21,34") {
         bootstrap.Modal.getInstance(document.getElementById('LovelaceModal')).hide();
-        mostraMessaggio("Variabile troavata!", "Ottimo lavoro, Agente! La porta si è sbloccata. Preparati a scappare...")
-        setTimeout(() => {window.location.href= "room5.html"},3000);
+        mostraMessaggio("Accettato", "Geniale! hai decifrato la sequenza. \n Puoi continuare a cercare.");
+        enigmiRisoltiL.orologio=true;
+    } else {
+        countOrologio++;
+        if (countOrologio==2) {
+            document.getElementById('LovelaceSoluzione').value = "";
+            document.getElementById('LovelaceSoluzione').placeholder = "Indizio: Fibonacci";
+        }
+        else if (countOrologio>=3) {
+            document.getElementById('LovelaceSoluzione').value = "";
+            document.getElementById('LovelaceSoluzione').placeholder = "Indizio: somma gli ultimi due numeri";
+        }
+        else {
+            document.getElementById('LovelaceSoluzione').value = "";
+            document.getElementById('LovelaceSoluzione').placeholder = "Riprova";
+        }
+    }
+}
+
+function mostraLibri() { 
+    apriModalL("Libri", "Un titolo spicca: le istruzioni contano più dei numeri.\n Qualcuno ha sottolineato una frase: 'ordine delle operazioni.'",
+        "Come si chiama l'insieme di istruzioni che ti permette di risolvere problemi, tenendo conto dell'ordine: ","Controlla", controllaLibri,false);
+    document.getElementById('LovelaceSoluzione').placeholder = "?????????";
+}
+
+function controllaLibri() {
+    const risposta=document.getElementById('LovelaceSoluzione').value.trim().toLowerCase()
+    if (risposta=="algoritmo") {
+        bootstrap.Modal.getInstance(document.getElementById('LovelaceModal')).hide();
+        mostraMessaggio("Accettato", "Perfetto! hai capito il libro. \n Continua la tua esplorazione.");
+        enigmiRisoltiL.libri=true;
+    } else {
+        countLibri++;
+        if (countLibri==2) {
+            document.getElementById('LovelaceSoluzione').value = "";
+            document.getElementById('LovelaceSoluzione').placeholder = "Indizio: ricetta";
+        }
+        else if (countLibri>=3) {
+            document.getElementById('LovelaceSoluzione').value = "";
+            document.getElementById('LovelaceSoluzione').placeholder = "Indizio: lo è quello di Fibonacci";
+        }
+        else {
+            document.getElementById('LovelaceSoluzione').value = "";
+            document.getElementById('LovelaceSoluzione').placeholder = "Riprova";
+        }
+    }
+}
+
+function apriEnigmaLovelace() {
+    if (enigmiRisoltiL.orologio && enigmiRisoltiL.libri && oggettiEsploratiL.mappamondo2 
+    && oggettiEsploratiL.libreria && oggettiEsploratiL.quadro && oggettiEsploratiL.lampada && oggettiEsploratiL.camino) {
+        apriModalL("Algoritmo trovato","Agente, hai trovato il libro di Ada Lovelace con il suo algoritmo Note G, ma una variabile sembra sbagliata. Correggila! \n V1 = 1,V2 = 2,V3 = n,V4 = V2*V3,V5 = V4-V1,V6 = V4+V1,V11 = V5/V4",
+        "Inserisci la variabile sbagalita e poi quella coretta nella forma Vx,Vy:", "Risolvi l'algoritmo", controllaLovelace,true);
     }
     else {
-        document.getElementById('LovelaceSoluzione').value = "";
-        document.getElementById('LovelaceSoluzione').placeholder = "ERRATO. Riprova!";
+        mostraMessaggio("Accesso Negato", "Agente, non sei ancora pronto per la risoluzione finale. Ispeziona e risolvi tutti gli oggetti nella stanza.");
+        return;
     }
+}
 
-
+function controllaLovelace() {
+    const rispostaUtente = document.getElementById('LovelaceSoluzione').value.trim().toLowerCase();
+    const soluzioneCorretta = "v4,v6";
+    
+    if (rispostaUtente === soluzioneCorretta) {
+        bootstrap.Modal.getInstance(document.getElementById('LovelaceModal')).hide();
+        mostraMessaggio("Risoluzione accettata!", "Bravissimo Agente! sei pronto per la missione finale...");
+        setTimeout(() => { window.location.href = "room5.html"; }, 3000);
+    } else {
+        document.getElementById('LovelaceSoluzione').value = "";
+        document.getElementById('LovelaceSoluzione').placeholder = "Non sono le variabili che cerchiamo. Riprova!";
+    }
 }
 
