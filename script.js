@@ -144,6 +144,7 @@ function mostraMessaggio(titolo, testo) {
 function inizioStanzaT() {
     const avatarName= localStorage.getItem('avatar');
     let nomeAvatar = "";
+    let messaggio="";
     if (avatarName === "detective1") {
         nomeAvatar = "Alan Turing";
     } else if (avatarName === "detective2") {
@@ -153,7 +154,12 @@ function inizioStanzaT() {
     } else if (avatarName === "detective4") {
         nomeAvatar = "Ada Lovelace";
     }    
-    const messaggio = `${nomeAvatar} sei entrato nel primo luogo della tua missione, esploralo bene! \nVai alla ricerca di tutti gli oggetti interessanti, conterranno indizi utili e domande per capire in che posto ti trovi e, soprattutto, per decifrare l'enigma finale. \nSolo rispondendo correttamente a tutto la tua avventura potrà continuare.`;
+    if (nomeAvatar==="Alan Turing" || nomeAvatar==="Albert Einstein") {
+        messaggio = `${nomeAvatar} sei entrato nel primo luogo della tua missione, esploralo bene! \nVai alla ricerca di tutti gli oggetti interessanti, conterranno indizi utili e domande per capire in che posto ti trovi e, soprattutto, per decifrare l'enigma finale. \nSolo rispondendo correttamente a tutto la tua avventura potrà continuare.`;
+    }
+    else {
+        messaggio = `${nomeAvatar} sei entrata nel primo luogo della tua missione, esploralo bene! \nVai alla ricerca di tutti gli oggetti interessanti, conterranno indizi utili e domande per capire in che posto ti trovi e, soprattutto, per decifrare l'enigma finale. \nSolo rispondendo correttamente a tutto la tua avventura potrà continuare.`;
+    }
     // digitazione automatica
     const boxtesto = document.getElementById('testoMacchina1');
     boxtesto.style.cursor = "pointer";
@@ -407,6 +413,7 @@ function controllaEinstein() {
 function inizioStanzaL() {
     const avatarName= localStorage.getItem('avatar');
     let nomeAvatar = "";
+    let messaggio="";
     if (avatarName === "detective1") {
         nomeAvatar = "Alan Turing";
     } else if (avatarName === "detective2") {
@@ -416,8 +423,14 @@ function inizioStanzaL() {
     } else if (avatarName === "detective4") {
         nomeAvatar = "Ada Lovelace";
     }    
-    const messaggio = `${nomeAvatar} ce l'hai fatta, ti stai avvicinando sempre di più alla fine.\n Sei nella quarta stanza della tua missione, quando sei pronto puoi iniziare l'esplorazione.
-     Mi raccomando sempre con occhio attento, ma ormai sei un esperto!\n Buon divertimento :)`;
+    if (nomeAvatar=="Alan Turing" || nomeAvatar=="Albert Einstein") {
+        messaggio = `${nomeAvatar} ce l'hai fatta, ti stai avvicinando sempre di più alla fine.\n Sei nella quarta stanza della tua missione, quando sei pronto puoi iniziare l'esplorazione.
+        Mi raccomando sempre con occhio attento, ma ormai sei un esperto!\n Buon divertimento :)`;
+    }
+    else {
+        messaggio = `${nomeAvatar} ce l'hai fatta, ti stai avvicinando sempre di più alla fine.\n Sei nella quarta stanza della tua missione, quando sei pronto puoi iniziare l'esplorazione.
+        Mi raccomando sempre con occhio attento, ma ormai sei un'esperta!\n Buon divertimento :)`;
+    }
     const boxtesto = document.getElementById('testoMacchina4');
     boxtesto.style.cursor = "pointer";
     boxtesto.onclick = function() {
