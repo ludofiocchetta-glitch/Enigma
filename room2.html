@@ -10,12 +10,18 @@
 </head>
 <body>
     <div id="room2" class="curie fade-in-slow">
-        <div class="avatar-imm2">
-            <img id="avatarid" src="" alt="Avatar Giocatore">
-        </div>
-        <div class="oggetto-cliccabile bilancia" onclick="mostraAtmosferaCurie()"></div>
-        <div class="oggetto-cliccabile schedario2" onclick="mostraIndizioCurie()"></div>
-        <div class="oggetto-cliccabile lavagna2" onclick="risolviEquazioneFinale()"></div>
+      <div id="avatarcontenitore2" class="avatar-imm2 d-none">
+        <img id="avatarid" src="" alt="Avatar Giocatore">
+      </div>
+      <div id="introC" class="dossier-box text-center p-5 shadow-lg centraT">
+        <p id="testoMacchina2" class="special-elite text-light fs-5 text-start"></p>
+        <button id="btnEntra" class="btn btn-outline-light btn-lg mt-4 d-none" onclick="iniziaEsplorazioneC()">
+          Explore
+        </button>
+      </div>
+      <div class="oggetto-cliccabile bilancia" onclick="mostraAtmosferaCurie()"></div>
+      <div class="oggetto-cliccabile schedario2" onclick="mostraIndizioCurie()"></div>
+      <div class="oggetto-cliccabile lavagna2" onclick="risolviEquazioneFinale()"></div>
     </div>
     <div class="modal fade" id="equazioneModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">

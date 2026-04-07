@@ -24,7 +24,15 @@ window.onload = function() {
         document.getElementById('testoMacchina1').classList.add('cursore'); 
         inizioStanzaT();
     }
-     if (document.getElementById('testoMacchina4')) {
+    if (document.getElementById('testoMacchina2')) {
+        document.getElementById('testoMacchina2').classList.add('cursore'); 
+        inizioStanzaC();
+    }
+    if (document.getElementById('testoMacchina3')) {
+        document.getElementById('testoMacchina3').classList.add('cursore'); 
+        inizioStanzaE();
+    }
+    if (document.getElementById('testoMacchina4')) {
         document.getElementById('testoMacchina4').classList.add('cursore'); 
         inizioStanzaL();
     }
@@ -342,6 +350,68 @@ function controllaEnigma() {
     }
 }
 /*FUNZIONI STANZA CURIE*/
+//funzioni per il testo all'entrata della stanza
+function inizioStanzaC() {
+    const avatarName= localStorage.getItem('avatar');
+    let nomeAvatar = "";
+    let messaggio="";
+    if (avatarName === "detective1") {
+        nomeAvatar = "Alan Turing";
+    } else if (avatarName === "detective2") {
+        nomeAvatar = "Marie Curie";
+    } else if (avatarName === "detective3") {
+        nomeAvatar = "Albert Einstein";
+    } else if (avatarName === "detective4") {
+        nomeAvatar = "Ada Lovelace";
+    }    
+    messaggio=`${nomeAvatar} ottimo lavoro, hai superato la prima sfida! \n Ora ti trovi nella seconda stanza della tua missione, un luogo pieno di dettagli che potrebbero sfuggire a un occhio distratto. 
+    Esplora con attenzione, raccogli tutti gli indizi e mettiti alla prova con le nuove domande. Ogni risposta corretta ti porterà sempre più vicino al tuo obiettivo finale. \n Buona esplorazione!`
+    // digitazione automatica
+    const boxtesto = document.getElementById('testoMacchina2');
+    boxtesto.style.cursor = "pointer";
+    boxtesto.onclick = function() {
+        skipIntro = true;
+    }
+    scriviTestoC(messaggio, 0);
+
+}
+
+function scriviTestoC(testo, indice) {
+    const elemento = document.getElementById('testoMacchina2');
+
+    if (skipIntro) {
+        elemento.innerHTML = testo.replace(/\n/g, "<br>");
+        mostraBottoneFinaleC();
+        return;
+    }
+
+    if (indice < testo.length) {
+        let carattere = testo.charAt(indice);
+        if (carattere === '\n') {
+            document.getElementById('testoMacchina2').innerHTML += "<br>";
+        } else {
+            document.getElementById('testoMacchina2').innerHTML += carattere;
+        }
+        setTimeout(() => scriviTestoC(testo, indice + 1), 20);
+    } else {
+        mostraBottoneFinaleC();
+    }
+}
+
+function mostraBottoneFinaleC() {
+    document.getElementById('testoMacchina2').classList.remove('cursore');
+    const bottone = document.getElementById('btnEntra');
+    bottone.classList.remove('d-none');
+    bottone.classList.add('fade-in');
+}
+
+function iniziaEsplorazioneC() {
+    document.getElementById('introC').classList.add('d-none');
+    const avatar=document.getElementById('avatarcontenitore2');
+    avatar.classList.remove('d-none');
+    avatar.classList.add('fade-in');
+}
+
 function mostraAtmosferaCurie() {
     mostraMessaggio("Laboratorio Abbandonato", "Il laboratorio è in rovina, ma l'odore di sostanze chimiche è ancora forte. Qualcosa di importante deve essere nascosto qui...");
 }
@@ -372,6 +442,77 @@ function controllaEquazione() {
 }
 
 /* FUNZIONI EINSTEIN*/ 
+//funzioni per il testo all'entrata della stanza
+function inizioStanzaE() {
+    const avatarName= localStorage.getItem('avatar');
+    let nomeAvatar = "";
+    let messaggio="";
+    if (avatarName === "detective1") {
+        nomeAvatar = "Alan Turing";
+    } else if (avatarName === "detective2") {
+        nomeAvatar = "Marie Curie";
+    } else if (avatarName === "detective3") {
+        nomeAvatar = "Albert Einstein";
+    } else if (avatarName === "detective4") {
+        nomeAvatar = "Ada Lovelace";
+    }    
+    if (nomeAvatar==="Alan Turing" || nomeAvatar==="Albert Einstein") {
+        messaggio=`${nomeAvatar} stai facendo grandi progressi, ormai sei nel vivo della missione!
+        Questa è la terza stanza, un passaggio cruciale verso la conclusione. Osserva ogni dettaglio e ragiona con attenzione.
+        Non lasciarti sfuggire nulla, perché ogni elemento potrebbe essere la chiave per proseguire.
+        Sei sempre più vicino alla verità… continua così!`;
+    }
+    else {
+        messaggio=`${nomeAvatar} stai facendo grandi progressi, ormai sei nel vivo della missione!
+        Questa è la terza stanza, un passaggio cruciale verso la conclusione. Osserva ogni dettaglio e ragiona con attenzione.
+        Non lasciarti sfuggire nulla, perché ogni elemento potrebbe essere la chiave per proseguire.
+        Sei sempre più vicina alla verità… continua così!`;
+    }
+    // digitazione automatica
+    const boxtesto = document.getElementById('testoMacchina3');
+    boxtesto.style.cursor = "pointer";
+    boxtesto.onclick = function() {
+        skipIntro = true;
+    }
+    scriviTestoE(messaggio, 0);
+
+}
+
+function scriviTestoE(testo, indice) {
+    const elemento = document.getElementById('testoMacchina3');
+
+    if (skipIntro) {
+        elemento.innerHTML = testo.replace(/\n/g, "<br>");
+        mostraBottoneFinaleE();
+        return;
+    }
+
+    if (indice < testo.length) {
+        let carattere = testo.charAt(indice);
+        if (carattere === '\n') {
+            document.getElementById('testoMacchina3').innerHTML += "<br>";
+        } else {
+            document.getElementById('testoMacchina3').innerHTML += carattere;
+        }
+        setTimeout(() => scriviTestoE(testo, indice + 1), 20);
+    } else {
+        mostraBottoneFinaleE();
+    }
+}
+
+function mostraBottoneFinaleE() {
+    document.getElementById('testoMacchina3').classList.remove('cursore');
+    const bottone = document.getElementById('btnEntra');
+    bottone.classList.remove('d-none');
+    bottone.classList.add('fade-in');
+}
+
+function iniziaEsplorazioneE() {
+    document.getElementById('introE').classList.add('d-none');
+    const avatar=document.getElementById('avatarcontenitore3');
+    avatar.classList.remove('d-none');
+    avatar.classList.add('fade-in');
+}
 
 function mostraScaffali() {
     mostraMessaggio("Scaffali", "Sugli scaffali vedi un mucchio di libri di fisica, ma nulla che ti sembra utile");
@@ -424,12 +565,12 @@ function inizioStanzaL() {
         nomeAvatar = "Ada Lovelace";
     }    
     if (nomeAvatar=="Alan Turing" || nomeAvatar=="Albert Einstein") {
-        messaggio = `${nomeAvatar} ce l'hai fatta, ti stai avvicinando sempre di più alla fine.\n Sei nella quarta stanza della tua missione, quando sei pronto puoi iniziare l'esplorazione.
-        Mi raccomando sempre con occhio attento, ma ormai sei un esperto!\n Buon divertimento :)`;
+        messaggio = `${nomeAvatar} ce l'hai fatta, ti stai avvicinando sempre di più alla fine.\n Ora ti trovi nella quarta stanza della tua missione, quando sei pronto puoi iniziare l'esplorazione.
+        Osserva tutto con attenzione... anche il più piccolo dettaglio potrebbe fare la differenza. \n Fidati del tuo intuito,ormai sei un esperto!\n Buon divertimento :)`;
     }
     else {
-        messaggio = `${nomeAvatar} ce l'hai fatta, ti stai avvicinando sempre di più alla fine.\n Sei nella quarta stanza della tua missione, quando sei pronto puoi iniziare l'esplorazione.
-        Mi raccomando sempre con occhio attento, ma ormai sei un'esperta!\n Buon divertimento :)`;
+        messaggio = `${nomeAvatar} ce l'hai fatta, ti stai avvicinando sempre di più alla fine.\n Ora ti trovi nella quarta stanza della tua missione, quando sei pronta puoi iniziare l'esplorazione.
+        Osserva tutto con attenzione... anche il più piccolo dettaglio potrebbe fare la differenza. \n Fidati del tuo intuito,ormai sei un esperta!\n Buon divertimento :)`;
     }
     const boxtesto = document.getElementById('testoMacchina4');
     boxtesto.style.cursor = "pointer";
