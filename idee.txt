@@ -1,3 +1,5 @@
+Leggenda: V (fatto) X (scartato) A (in attesa) W (working) 
+
 Mettere un'introduzione all'inizio di ogni stanza.
 
 Mettere i modal degli indizi e domande di un colore diverso per ogni stanza, mentre
@@ -39,4 +41,8 @@ Le risposte alle domande e il fatto di sbloccare l'enigma finale solo dopo aver
 fatto tutto il resto possiamo mettere nel database quando lo faremo 
 
 Mappamondi che se li hai cliccati tutti ti portano in una stanza segreta?
+
+Inventario dove il giocatore ha degli oggetti/ la nota con la soluzione finale
+
+Menu opzioni con salva,restart; interrompi,esci, abbassare volume (lato backend)
 
