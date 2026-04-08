@@ -29,14 +29,20 @@ Traduzione in inglese?
 
 Idee quinta stanza? deve essere diversa dalle altre
 
-Multiplayer?
+Multiplayer? NO
 
 Altre idee database e backend? Per esempio ho pensato che possiamo creare un database
 per fare uno shop per comprare dei poteri speciali che puoi avere o musica che puoi
 mettere nelle stanze
 
-Le risposte alle domande e il fatto di sbloccare l'enigma finale solo dopo aver 
-fatto tutto il resto possiamo mettere nel database quando lo faremo 
+Le risposte alle domande e il fatto di sbloccare l'enigma finale solo dopo aver
+fatto tutto il resto possiamo mettere nel database quando lo faremo
 
 Mappamondi che se li hai cliccati tutti ti portano in una stanza segreta?
 
+Vanno sistemate le parti cliccabili (magari utilizzando le mappature più precise con un sito esterno) e
+si potrebbero aggiungere degli aloni attorno alle figure cliccabili quando si passa sopra col mouse e forse mantenerlo
+dopo che è stato cliccato più lieve
+
+Le domande intermedie una volta fatte o si rendono non più cliccabili oppure si fa apparire un messaggio di averla
+già completato sennò non ha senso rifarlo all'infinito

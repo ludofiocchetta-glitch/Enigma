@@ -209,6 +209,7 @@ function mostraBottoneFinaleT() {
 
 function iniziaEsplorazioneT() {
     document.getElementById('introT').classList.add('d-none');
+    document.getElementById('room1').classList.remove('blocco-interazione')
     const avatar=document.getElementById('avatarcontenitore');
     avatar.classList.remove('d-none');
     avatar.classList.add('fade-in');
@@ -407,6 +408,7 @@ function mostraBottoneFinaleC() {
 
 function iniziaEsplorazioneC() {
     document.getElementById('introC').classList.add('d-none');
+    document.getElementById('room2').classList.remove('blocco-interazione')
     const avatar=document.getElementById('avatarcontenitore2');
     avatar.classList.remove('d-none');
     avatar.classList.add('fade-in');
@@ -509,6 +511,7 @@ function mostraBottoneFinaleE() {
 
 function iniziaEsplorazioneE() {
     document.getElementById('introE').classList.add('d-none');
+    document.getElementById('room3').classList.remove('blocco-interazione')
     const avatar=document.getElementById('avatarcontenitore3');
     avatar.classList.remove('d-none');
     avatar.classList.add('fade-in');
@@ -612,6 +615,7 @@ function mostraBottoneFinaleL() {
 
 function iniziaEsplorazioneL() {
     document.getElementById('introL').classList.add('d-none');
+    document.getElementById('room4').classList.remove('blocco-interazione')
     const avatar=document.getElementById('avatarcontenitore4');
     avatar.classList.remove('d-none');
     avatar.classList.add('fade-in');
