@@ -482,6 +482,13 @@ input[type="radio"]:checked + .avatar-img {
     height:20%;
 }
 
+.luna{
+    top:18%;
+    left:67%;
+    width:7%;
+    height:20%;
+}
+
 .modal-enigma3 {
     font-family: 'Playfair Display', 'Courier New', Courier, monospace;
     letter-spacing: 2px;

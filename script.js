@@ -6,7 +6,7 @@ function go() {
 
     if (nome.trim() === "") {
         inputname.classList.add('is-invalid');
-        inputname.placeholder = "Required field!";
+        inputname.placeholder = "Campo obbligatorio!";
         return;
     }
     localStorage.setItem('username',nome);
@@ -275,7 +275,7 @@ function mostraLavagna() {
 
 function controllaLavagna() {
     const risposta=document.getElementById('codiceSoluzione').value.trim().toLowerCase();
-    if (risposta=="enigma") {
+    if (risposta==="enigma") {
         bootstrap.Modal.getInstance(document.getElementById('enigmaModal')).hide();
         mostraMessaggio("Accettato", "Geniale! hai decifrato il codice sulla lavagna. \n Puoi continuare a cercare.");
         enigmiRisolti.lavagna=true;
@@ -304,7 +304,7 @@ function mostraTelefono() {
 
 function controllaTelefono() {
     const risposta=document.getElementById('codiceSoluzione').value.trim().toLowerCase();
-    if (risposta=="turing") {
+    if (risposta==="turing") {
         bootstrap.Modal.getInstance(document.getElementById('enigmaModal')).hide();
         mostraMessaggio("Accettato", "Fantastico! hai capito il significato nascosto del numero. \n Continua la tua esplorazione.");
         enigmiRisolti.telefono=true;
@@ -468,7 +468,7 @@ function mostraBilancia() {
 
 function controllaBilancia() {
     const risposta=document.getElementById('CurieSoluzione').value.trim().toLowerCase();
-    if (risposta=="bilanciare") {
+    if (risposta==="bilanciare") {
         bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
         mostraMessaggio("Accettato", "Ottimo! hai capito le equazioni chimiche. \n Puoi continuare a cercare.");
         enigmiRisoltiC.bilancia=true;
@@ -490,14 +490,14 @@ function controllaBilancia() {
 }
 
 function mostraPozioni() { 
-    apriModalC("Pozioni", "Qual è il nome del principio afferma che la materia non si crea né si distrugge?",
-        "Inserisci il nome: ","Controlla",controllaPozioni,false);
+    apriModalC("Pozioni", "Qual è il nome della legge che afferma che la materia non si crea né si distrugge?",
+        "Inserisci il nome della legge: ","Controlla",controllaPozioni,false);
         document.getElementById('CurieSoluzione').placeholder = "?????????";
 }
 
 function controllaPozioni() {
     const risposta=document.getElementById('CurieSoluzione').value.trim().toLowerCase();
-    if (risposta=="lavoisier") {
+    if (risposta==="lavoisier" || risposta==="legge di lavoisier") {
         bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
         mostraMessaggio("Accettato", "Bravissimo! hai decifrato il principio. \n Continua la tua missione.");
         enigmiRisoltiC.pozioni=true;
@@ -619,12 +619,21 @@ function iniziaEsplorazioneE() {
 let oggettiEsploratiE= {
     ritratto:false,
     tavolo:false,
-    cassetti:false
+    cassetti:false,
+    luna:false
 
 };
 
+let enigmiRisoltiE= {
+    mappamondo:false,
+    mobile:false
+};
+
+let countMobile=0;
+let countMappamondo=0;
+
 function mostraTavolo() {
-    mostraMessaggio("Tavolo", "Sugli appunti leggi: “Massa ed energia sono la stessa cosa, in forme diverse.”");
+    mostraMessaggio("Tavolo", "Tra gli appunti c'è una frase: “Massa ed energia sono la stessa cosa, in forme diverse.”");
     oggettiEsploratiE.tavolo=true;
 }
 
@@ -638,25 +647,107 @@ function mostraIndizioEinstein() {
     oggettiEsploratiE.ritratto=true;
 }
 
-function apriEnigmaEinstein() {
-    document.getElementById('EinsteinSoluzione').value="";
-    document.getElementById('EinsteinSoluzione').placeholder="x"
-   var mioModal = new bootstrap.Modal(document.getElementById('EinsteinModal'));
+function mostraLuna() {
+    mostraMessaggio("Quadro","Ciò che sembra vero per uno, può non esserlo per un altro.");
+    oggettiEsploratiE.luna=true;
+}
+
+function apriModalE(titolo, descrizione, richiesta, testoBottone, funzioneControllo, usaPlaceholder) {
+    document.getElementById('modalTitleE').innerText = titolo;
+    document.getElementById('descrizioneE').innerText = descrizione;
+    document.getElementById('richiestaE').innerText = richiesta;
+    
+    let inputField = document.getElementById('EinsteinSoluzione');
+    inputField.value = "";
+    inputField.placeholder = usaPlaceholder ? "?=??" : "";
+    let btnConferma = document.getElementById('btnConfermaE');
+    btnConferma.innerText = testoBottone;
+    btnConferma.onclick = funzioneControllo;
+
+    var mioModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('EinsteinModal'));
     mioModal.show();
 }
 
-function controllaEinstein() {
-    const solution = "m";
-    const UserAnswer = document.getElementById('EinsteinSoluzione').value;
+function mostraMobile() { 
+    apriModalE("Mobile", "Quali due grandezze sono relative?",
+        "Inserisci le grandezze: ","Controlla",controllaMobile,false);
+        document.getElementById('EinsteinSoluzione').placeholder = "?????? e ?????";
+}
 
-    if (solution == UserAnswer) {
+function controllaMobile() {
+    const risposta=document.getElementById('EinsteinSoluzione').value.trim().toLowerCase();
+    if (risposta==="spazio e tempo" || risposta==="tempo e spazio") {
         bootstrap.Modal.getInstance(document.getElementById('EinsteinModal')).hide();
-        mostraMessaggio("Equazione risolta!", "Ottimo lavoro, Agente! La porta si è sbloccata. Preparati a scappare...")
-        setTimeout(() => {window.location.href= "room4.html"},2500);
+        mostraMessaggio("Accettato", "Fortissimo! hai capito quali sono le grandezze. \n Puoi continuare la tua ricerca.");
+        enigmiRisoltiE.mobile=true;
+    } else {
+        countMobile++;
+        if (countMobile==2) {
+            document.getElementById('EinsteinSoluzione').value = "";
+            document.getElementById('EinsteinSoluzione').placeholder = "Indizio: formano un unico concetto";
+        }
+        else if (countMobile>=3) {
+            document.getElementById('EinsteinSoluzione').value = "";
+            document.getElementById('EinsteinSoluzione').placeholder = "Indizio: sono legate alla velocità";
+        }
+        else {
+            document.getElementById('EinsteinSoluzione').value = "";
+            document.getElementById('EinsteinSoluzione').placeholder = "Riprova";
+        }
+    }
+}
+
+function mostraMappamondoE() {
+    apriModalE("Mobile", "Come si chiama il punto di vista da cui osservi un fenomeno?",
+    "Inserisci la risposta: ","Controlla",controllaMappamondoE,false);
+    document.getElementById('EinsteinSoluzione').placeholder = "???????????";
+}
+
+function controllaMappamondoE() {
+    const risposta=document.getElementById('EinsteinSoluzione').value.trim().toLowerCase();
+    if (risposta==="riferimento" || risposta==="sistema di riferimento") {
+        bootstrap.Modal.getInstance(document.getElementById('EinsteinModal')).hide();
+        mostraMessaggio("Accettato", "Perfetto, sai tutto sui sistemi di riferimento! \n Continua ad esplorare.");
+        enigmiRisoltiE.mappamondo=true;
+    } else {
+        countMappamondo++;
+        if (countMappamondo==2) {
+            document.getElementById('EinsteinSoluzione').value = "";
+            document.getElementById('EinsteinSoluzione').placeholder = "Indizio: usato in fisica";
+        }
+        else if (countMappamondo>=3) {
+            document.getElementById('EinsteinSoluzione').value = "";
+            document.getElementById('EinsteinSoluzione').placeholder = "Indizio: un esempio classico è il treno";
+        }
+        else {
+            document.getElementById('EinsteinSoluzione').value = "";
+            document.getElementById('EinsteinSoluzione').placeholder = "Riprova";
+        }
+    }
+}
+
+function apriEnigmaEinstein() {
+    if (enigmiRisoltiE.mappamondo && enigmiRisoltiE.mobile && oggettiEsploratiE.cassetti && oggettiEsploratiE.tavolo 
+        && oggettiEsploratiE.ritratto && oggettiEsploratiE.luna) {
+        apriModalE("Formula trovata","Agente, sulla lavagna un po' cancellata è scritta la formula scoperta da Einstein che ha rivoluzionato la fisica. \n Completala tu per aprire il passaggio. \n E=...",
+            "Inserisci la formula completa","Risolvi l'equazione",controllaEinstein,true);
     }
     else {
+        mostraMessaggio("Accesso Negato", "Agente, non sei ancora pronto per la risoluzione finale. Ispeziona e risolvi tutti gli oggetti nella stanza.");
+        return;
+    }
+}
+
+function controllaEinstein() {
+    const rispostaUtente = document.getElementById('EinsteinSoluzione').value.trim().toLowerCase();
+    const soluzioneCorretta = "e=mc^2";
+    if (rispostaUtente === soluzioneCorretta) {
+        bootstrap.Modal.getInstance(document.getElementById('EinsteinModal')).hide();
+        mostraMessaggio("Formula corretta!", "Bravissimo Agente! \n Il passaggio segreto si sta aprendo, puoi continuare la tua missione...");
+        setTimeout(() => { window.location.href = "room3.html"; }, 2500);
+    } else {
         document.getElementById('EinsteinSoluzione').value = "";
-        document.getElementById('EinsteinSoluzione').placeholder = "ERRATO. Riprova!";
+        document.getElementById('EinsteinSoluzione').placeholder = "Non è questa la formula che cerchiamo,riprova!";
     }
 }
 
@@ -796,7 +887,7 @@ function mostraOrologio() {
 
 function controllaOrologio() {
     const risposta=document.getElementById('LovelaceSoluzione').value.trim();
-    if (risposta=="13,21,34") {
+    if (risposta==="13,21,34") {
         bootstrap.Modal.getInstance(document.getElementById('LovelaceModal')).hide();
         mostraMessaggio("Accettato", "Geniale! hai decifrato la sequenza. \n Puoi continuare a cercare.");
         enigmiRisoltiL.orologio=true;
@@ -825,7 +916,7 @@ function mostraLibri() {
 
 function controllaLibri() {
     const risposta=document.getElementById('LovelaceSoluzione').value.trim().toLowerCase()
-    if (risposta=="algoritmo") {
+    if (risposta==="algoritmo") {
         bootstrap.Modal.getInstance(document.getElementById('LovelaceModal')).hide();
         mostraMessaggio("Accettato", "Perfetto! hai capito il libro. \n Continua la tua esplorazione.");
         enigmiRisoltiL.libri=true;

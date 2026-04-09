@@ -24,22 +24,23 @@
       <div class="oggetto-cliccabile tavolo2" onclick="mostraTavolo()"></div>
       <div class="oggetto-cliccabile mobile" onclick="mostraMobile()"></div>
       <div class="oggetto-cliccabile mappamondoE" onclick="mostraMappamondoE()"></div>
+      <div class="oggetto-cliccabile luna" onclick="mostraLuna()"></div>
     </div>
     <div class="modal fade" id="EinsteinModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content modal-enigma3 bg-dark text-light border-light">
           <div class="modal-header border-light">
-            <h5 class="modal-title special-elite" id="modalTitle">Equazione della rivoluzione trovata!</h5>
+            <h5 class="modal-title special-elite" id="modalTitleE">Formula trovata</h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <p class="playfair3">Agente, hai trovato la lavagna con l'equaziome per sbloccare la porta. Ci serve la variabile mancante che Einstein ha trovato per la sua rivoluzione. <br> E=[x]*c^2</p>
-            <p class="warning3">Inserisci la variabile:</p>
-            <input type="text" id="EinsteinSoluzione" class="form-control form-control-lg text-center special-elite" placeholder="????">
+            <p class="playfair3" id="descrizioneE"></p>
+            <p class="warning3" id="richiestaE"></p>
+            <input type="text" id="EinsteinSoluzione" class="form-control form-control-lg text-center special-elite">
           </div>
           <div class="modal-footer border-light">
             <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Annulla</button>
-            <button type="button" class="btn btn-light text-dark" onclick="controllaEinstein()">Conferma Soluzione</button>
+            <button type="button" class="btn btn-light text-dark" id="btnConfermaE"></button>
           </div>
         </div>
       </div>
