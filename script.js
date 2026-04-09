@@ -344,7 +344,7 @@ function controllaEnigma() {
     if (rispostaUtente === soluzioneCorretta) {
         bootstrap.Modal.getInstance(document.getElementById('enigmaModal')).hide();
         mostraMessaggio("Codice accettato!", "Bravo Agente! La porta si è sbloccata. Preparati a scappare...");
-        setTimeout(() => { window.location.href = "room2.html"; }, 3000);
+        setTimeout(() => { window.location.href = "room2.html"; }, 2500);
     } else {
         document.getElementById('codiceSoluzione').value = "";
         document.getElementById('codiceSoluzione').placeholder = "Non è il nome che stiamo cercando. Riprova!";
@@ -535,7 +535,7 @@ function controllaEquazione() {
     if (rispostaUtente === soluzioneCorretta) {
         bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
         mostraMessaggio("Equazione Bilanciata!", "Ottimo lavoro, Agente! La porta si sta aprendo. Sei pronto per la prossima missione...");
-        setTimeout(() => { window.location.href = "room3.html"; }, 3000);
+        setTimeout(() => { window.location.href = "room3.html"; }, 2500);
     } else {
         document.getElementById('CurieSoluzione').value = "";
         document.getElementById('CurieSoluzione').placeholder = "Non sono i coefficienti giusti,riprova!";
@@ -616,16 +616,26 @@ function iniziaEsplorazioneE() {
     avatar.classList.add('fade-in');
 }
 
-function mostraScaffali() {
-    mostraMessaggio("Scaffali", "Sugli scaffali vedi un mucchio di libri di fisica, ma nulla che ti sembra utile");
+let oggettiEsploratiE= {
+    ritratto:false,
+    tavolo:false,
+    cassetti:false
+
+};
+
+function mostraTavolo() {
+    mostraMessaggio("Tavolo", "Sugli appunti leggi: “Massa ed energia sono la stessa cosa, in forme diverse.”");
+    oggettiEsploratiE.tavolo=true;
 }
 
 function mostraAtmosferaEinstein() {
-    mostraMessaggio("Sedia", "Questa è lo studio dove il leggendario Einstein ha concepito le teorie più rivoluzionarie del XX secolo");
+    mostraMessaggio("Cassettiera", "Nei cassetti c'è un foglio con una formula:\n E = ? · c² \n Accanto qualcuno ha annotato:“Manca una sola lettera”");
+    oggettiEsploratiE.cassetti=true;
 }
 
 function mostraIndizioEinstein() {
-    mostraMessaggio("Scartoffie", "Trovi una citazione di Einstein \"La massa ed l'energaia sono di fatto equivalenti\"");
+    mostraMessaggio("Ritratto", "Un uomo dai capelli spettinati ti osserva dalla cornice.\n Sotto è inciso: \n“La fantasia è più importante della conoscenza.”");
+    oggettiEsploratiE.ritratto=true;
 }
 
 function apriEnigmaEinstein() {
@@ -642,7 +652,7 @@ function controllaEinstein() {
     if (solution == UserAnswer) {
         bootstrap.Modal.getInstance(document.getElementById('EinsteinModal')).hide();
         mostraMessaggio("Equazione risolta!", "Ottimo lavoro, Agente! La porta si è sbloccata. Preparati a scappare...")
-        setTimeout(() => {window.location.href= "room4.html"},3000);
+        setTimeout(() => {window.location.href= "room4.html"},2500);
     }
     else {
         document.getElementById('EinsteinSoluzione').value = "";
@@ -855,7 +865,7 @@ function controllaLovelace() {
     if (rispostaUtente === soluzioneCorretta) {
         bootstrap.Modal.getInstance(document.getElementById('LovelaceModal')).hide();
         mostraMessaggio("Risoluzione accettata!", "Bravissimo Agente! sei pronto per la missione finale...");
-        setTimeout(() => { window.location.href = "room5.html"; }, 3000);
+        setTimeout(() => { window.location.href = "room5.html"; }, 2500);
     } else {
         document.getElementById('LovelaceSoluzione').value = "";
         document.getElementById('LovelaceSoluzione').placeholder = "Non sono le variabili che cerchiamo. Riprova!";

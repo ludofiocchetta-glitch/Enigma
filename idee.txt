@@ -23,7 +23,7 @@ Timer per rispondere alle domande W
 Classifica finale con database che la gestisce e tiene conto sia del punteggio
 che del tempo W
 
-Database per generare domande randomiche? W
+Database per generare domande randomiche? X (sennò gli indizi non hanno più senso)
 
 Mettere delle istruzioni nella pagina iniziale o si capisce tutto? W
 
