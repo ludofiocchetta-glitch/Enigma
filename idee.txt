@@ -1,3 +1,5 @@
+Leggenda: V (fatto) X (scartato) A (in attesa) W (working)
+
 Mettere un'introduzione all'inizio di ogni stanza.
 
 Mettere i modal degli indizi e domande di un colore diverso per ogni stanza, mentre
@@ -46,3 +48,7 @@ dopo che è stato cliccato più lieve
 
 Le domande intermedie una volta fatte o si rendono non più cliccabili oppure si fa apparire un messaggio di averla
 già completato sennò non ha senso rifarlo all'infinito
+Inventario dove il giocatore ha degli oggetti/ la nota con la soluzione finale
+
+Menu opzioni con salva,restart; interrompi,esci, abbassare volume (lato backend)
+

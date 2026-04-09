@@ -340,24 +340,45 @@ input[type="radio"]:checked + .avatar-img {
 
 /* Coordinate specifiche per ogni oggetto */
 .bilancia {
-    top: 45%;
-    left: 76.5%;
-    width: 15%;
-    height: 22%;
+    top: 54%;
+    left: 85%;
+    width: 21%;
+    height: 35%;
 }
 
-.schedario2 {
-    top: 24%;
-    left: 23%;
-    width: 4%;
-    height: 8%;
+.foglio {
+    top: 36%;
+    left: 26%;
+    width: 5%;
+    height: 13%;
+}
+
+.pozioni {
+    top:40%;
+    left:37%;
+    width:13%;
+    height:25%;
+}
+
+.tavolo {
+    top:73%;
+    left:3%;
+    width:25%;
+    height:27%;
+}
+
+.scaffale {
+    top:33%;
+    left:60.5%;
+    width:5%;
+    height:20%;
 }
 
 .lavagna2 {
-    top: 11%;
-    left: 56%;
+    top: 30%;
+    left: 69%;
     width: 11%;
-    height: 27%
+    height: 25%
 }
 
 .equazione-box {

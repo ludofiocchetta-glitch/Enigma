@@ -414,32 +414,131 @@ function iniziaEsplorazioneC() {
     avatar.classList.add('fade-in');
 }
 
+let countBilancia=0;
+let countPozioni=0;
+
+let oggettiEsploratiC= {
+    scaffale:false,
+    foglio:false,
+    tavolo:false
+};
+
+let enigmiRisoltiC= {
+    bilancia:false,
+    pozioni:false
+};
+
 function mostraAtmosferaCurie() {
-    mostraMessaggio("Laboratorio Abbandonato", "Il laboratorio è in rovina, ma l'odore di sostanze chimiche è ancora forte. Qualcosa di importante deve essere nascosto qui...");
+    mostraMessaggio("Tavolo", "Gli atomi non scompaiono. Cambiano solo disposizione. \n Sotto, una freccia disegnata collega due lati di un’equazione chimica.");
+    oggettiEsploratiC.tavolo=true;
 }
 
 function mostraIndizioCurie() {
-    mostraMessaggio("Appunti appesi", "Qualcuno ha sottolineato tre volte di ricordarsi la legge di Lavoisier: 'Nulla si crea, nulla si distrugge, tutto si trasforma'. Deve essere importante!");
+    mostraMessaggio("Appunti appesi", "Un foglio ingiallito è fissato al muro. \n Alcune parole sono cerchiate più volte: \n “In ogni reazione… la massa totale rimane costante.”");
+    oggettiEsploratiC.foglio=true;
 }
 
-function risolviEquazioneFinale() {
-    document.getElementById('equazioneSoluzione').value = "";
-    document.getElementById('equazioneSoluzione').placeholder = "?,?,?,?";
-    var mioModal = new bootstrap.Modal(document.getElementById('equazioneModal'));
+function mostraScaffale() {
+    mostraMessaggio("Scaffale polveroso", "Ricerca sulla radioattività-esperimenti con uranio e polonio");
+    oggettiEsploratiC.scaffale=true;
+}
+
+function apriModalC(titolo, descrizione, richiesta, testoBottone, funzioneControllo, usaPlaceholder) {
+    document.getElementById('modalTitleC').innerText = titolo;
+    document.getElementById('descrizioneC').innerText = descrizione;
+    document.getElementById('richiestaC').innerText = richiesta;
+    
+    let inputField = document.getElementById('CurieSoluzione');
+    inputField.value = "";
+    inputField.placeholder = usaPlaceholder ? "a,b,c,d" : "";
+    let btnConferma = document.getElementById('btnConfermaC');
+    btnConferma.innerText = testoBottone;
+    btnConferma.onclick = funzioneControllo;
+
+    var mioModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('CurieModal'));
     mioModal.show();
 }
 
-function controllaEquazione() {
-    const rispostaUtente = document.getElementById('equazioneSoluzione').value;
-    const soluzioneCorretta = "3,4,1,4";
 
+function mostraBilancia() { 
+    apriModalC("Bilancia", "Se gli atomi non si creano né si distruggono, cosa bisogna fare per rendere corretta un’equazione chimica?",
+        "Inserisci la risposta: ","Controlla",controllaBilancia,false);
+        document.getElementById('CurieSoluzione').placeholder = "??????????";
+}
+
+function controllaBilancia() {
+    const risposta=document.getElementById('CurieSoluzione').value.trim().toLowerCase();
+    if (risposta=="bilanciare") {
+        bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
+        mostraMessaggio("Accettato", "Ottimo! hai capito le equazioni chimiche. \n Puoi continuare a cercare.");
+        enigmiRisoltiC.bilancia=true;
+    } else {
+        countBilancia++;
+        if (countBilancia>=3) {
+            document.getElementById('CurieSoluzione').value = "";
+            document.getElementById('CurieSoluzione').placeholder = "i due lati devono avere lo stesso numero di atomi";
+        }
+        else if (countBilancia==2) {
+            document.getElementById('CurieSoluzione').value = "";
+            document.getElementById('CurieSoluzione').placeholder = "Indizio: modificare i numeri davanti le formule";
+        }
+        else {
+            document.getElementById('CurieSoluzione').value = "";
+            document.getElementById('CurieSoluzione').placeholder = "Riprova";
+        }
+    }
+}
+
+function mostraPozioni() { 
+    apriModalC("Pozioni", "Qual è il nome del principio afferma che la materia non si crea né si distrugge?",
+        "Inserisci il nome: ","Controlla",controllaPozioni,false);
+        document.getElementById('CurieSoluzione').placeholder = "?????????";
+}
+
+function controllaPozioni() {
+    const risposta=document.getElementById('CurieSoluzione').value.trim().toLowerCase();
+    if (risposta=="lavoisier") {
+        bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
+        mostraMessaggio("Accettato", "Bravissimo! hai decifrato il principio. \n Continua la tua missione.");
+        enigmiRisoltiC.pozioni=true;
+    } else {
+        countPozioni++;
+        if (countPozioni==2) {
+            document.getElementById('CurieSoluzione').value = "";
+            document.getElementById('CurieSoluzione').placeholder = "Indizio: nome di uno scienziato francese";
+        }
+        else if (countPozioni>=3) {
+            document.getElementById('CurieSoluzione').value = "";
+            document.getElementById('CurieSoluzione').placeholder = "Indizio: Lavo...";
+        }
+        else {
+            document.getElementById('CurieSoluzione').value = "";
+            document.getElementById('CurieSoluzione').placeholder = "Riprova";
+        }
+    }
+}
+
+function risolviEquazioneFinale() {
+    if (enigmiRisoltiC.bilancia && enigmiRisoltiC.pozioni && oggettiEsploratiC.foglio && oggettiEsploratiC.scaffale && oggettiEsploratiC.tavolo) {
+        apriModalC("Equazione trovata","Agente, sul tavolo principale c'è un quaderno aperto di Marie. \nL’ultima pagina contiene un’equazione incompleta: \n aFe + bH₂O → cFe₃O₄ + dH₂ \n Sotto è scritto: “Solo chi rispetta la legge potrà aprire il passaggio.”",
+            "Inserisci i coefficienti corretti nella forma a,b,c,d","Risolvi l'equazione",controllaEquazione,true);
+    }
+    else {
+        mostraMessaggio("Accesso Negato", "Agente, non sei ancora pronto per la risoluzione finale. Ispeziona e risolvi tutti gli oggetti nella stanza.");
+        return;
+    }
+}
+
+function controllaEquazione() {
+    const rispostaUtente = document.getElementById('CurieSoluzione').value.trim();
+    const soluzioneCorretta = "3,4,1,4";
     if (rispostaUtente === soluzioneCorretta) {
-        bootstrap.Modal.getInstance(document.getElementById('equazioneModal')).hide();
-        mostraMessaggio("Equazione Bilanciata!", "Ottimo lavoro, Agente! La porta si è sbloccata. Preparati a scappare...");
+        bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
+        mostraMessaggio("Equazione Bilanciata!", "Ottimo lavoro, Agente! La porta si sta aprendo. Sei pronto per la prossima missione...");
         setTimeout(() => { window.location.href = "room3.html"; }, 3000);
     } else {
-        document.getElementById('equazioneSoluzione').value = "";
-        document.getElementById('equazioneSoluzione').placeholder = "ERRATO. Riprova!";
+        document.getElementById('CurieSoluzione').value = "";
+        document.getElementById('CurieSoluzione').placeholder = "Non sono i coefficienti giusti,riprova!";
     }
 }
 
