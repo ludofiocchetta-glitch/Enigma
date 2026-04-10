@@ -10,7 +10,7 @@
 <body>
     <div id="room1" class="turing fade-in-slow blocco-interazione">
       <div id="avatarcontenitore" class="avatar-imm d-none">
-        <img id="avatarid" src="" alt="Avatar Giocatore">
+        <img id="avatarid" src="" alt="Avatar Giocatore" onclick="apriTaccuino()" style="cursor: pointer;">
       </div>
       <div id="introT" class="dossier-box text-center p-5 shadow-lg centraT">
         <p id="testoMacchina1" class="special-elite text-light fs-5 text-start"></p>
@@ -18,13 +18,13 @@
           Esplora
         </button>
       </div>
-      <div class="oggetto-cliccabile macchina-da-scrivere" onclick="mostraEnigmaFinale()"></div>
+      <div class="oggetto-cliccabile macchina-da-scrivere" id="macchinaT" onclick="mostraEnigmaFinale()"></div>
       <div class="oggetto-cliccabile mappa-mondo" onclick="mostraAtmosferaTuring()"></div>
       <div class="oggetto-cliccabile schedario" onclick="mostraIndizioTuring()"></div>
       <div class="oggetto-cliccabile scatoloni" onclick="mostraScatoloni()"></div>
       <div class="oggetto-cliccabile cappello" onclick="mostraCappello()"></div>
-      <div class="oggetto-cliccabile lavagna" onclick="mostraLavagna()"></div>
-      <div class="oggetto-cliccabile telefono" onclick="mostraTelefono()"></div>
+      <div class="oggetto-cliccabile lavagna" id="lavagnaT" onclick="mostraLavagna()"></div>
+      <div class="oggetto-cliccabile telefono" id="telefonoT" onclick="mostraTelefono()"></div>
     </div>
     <div class="modal fade" id="enigmaModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">

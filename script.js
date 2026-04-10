@@ -142,10 +142,30 @@ function caricaAvatarInAngolo() {
 function mostraMessaggio(titolo, testo) {
     document.getElementById('infoTitolo').innerText = titolo;
     document.getElementById('infoTesto').innerText = testo;
-    var mioModalInfo = new bootstrap.Modal(document.getElementById('infoModal'));
+    var mioModalInfo = bootstrap.Modal.getOrCreateInstance(document.getElementById('infoModal'));
     mioModalInfo.show();
 }
 
+//funzione per il taccuino
+function aggiungiAlTaccuino(stanza,oggetto,contenuto) {
+    let taccuino=JSON.parse(localStorage.getItem('taccuinoAgente')) || [];
+    taccuino.push({stanza: stanza,oggetto: oggetto,contenuto: contenuto});
+    localStorage.setItem('taccuinoAgente',JSON.stringify(taccuino));
+}
+
+function apriTaccuino() {
+    let taccuino=JSON.parse(localStorage.getItem('taccuinoAgente')) || [];
+    let testo="";
+    if (taccuino.length==0) {
+        testo="Agente questo è il tuo taccuino personale, risolvi gli enigmi per raccogliere indizi";
+    }
+    else {
+        taccuino.forEach(nota => {
+            testo+=`Stanza: ${nota.stanza}\nOggetto: ${nota.oggetto}\nContenuto: ${nota.contenuto}\n\n`;
+        });
+    }
+    mostraMessaggio("Taccuino agente",testo);
+}
 
 /*FUNZIONI STANZA TURING*/
 //funzioni per il testo all'entrata della stanza
@@ -279,6 +299,12 @@ function controllaLavagna() {
         bootstrap.Modal.getInstance(document.getElementById('enigmaModal')).hide();
         mostraMessaggio("Accettato", "Geniale! hai decifrato il codice sulla lavagna. \n Puoi continuare a cercare.");
         enigmiRisolti.lavagna=true;
+        const modalEnigma=document.getElementById('lavagnaT');
+        if (modalEnigma) {
+            modalEnigma.style.pointerEvents="none";
+            modalEnigma.style.opacity=0.5;
+        }
+        aggiungiAlTaccuino("room1","lavagna","GPKIOC corrisponde a enigma");
     } else {
         countLavagna++;
         if (countLavagna==2) {
@@ -308,6 +334,12 @@ function controllaTelefono() {
         bootstrap.Modal.getInstance(document.getElementById('enigmaModal')).hide();
         mostraMessaggio("Accettato", "Fantastico! hai capito il significato nascosto del numero. \n Continua la tua esplorazione.");
         enigmiRisolti.telefono=true;
+        const modalEnigma=document.getElementById('telefonoT');
+        if (modalEnigma) {
+            modalEnigma.style.pointerEvents="none";
+            modalEnigma.style.opacity=0.5;
+        }
+        aggiungiAlTaccuino("room1","telefono","20-21-18-9-14-7 corrisponde a Turing");
     } else {
         countTelefono++;
         if (countTelefono==2) {
@@ -344,6 +376,12 @@ function controllaEnigma() {
     if (rispostaUtente === soluzioneCorretta) {
         bootstrap.Modal.getInstance(document.getElementById('enigmaModal')).hide();
         mostraMessaggio("Codice accettato!", "Bravo Agente! La porta si è sbloccata. Preparati a scappare...");
+        const modalEnigma=document.getElementById('macchinaT');
+        if (modalEnigma) {
+            modalEnigma.style.pointerEvents="none";
+            modalEnigma.style.opacity=0.5;
+        }
+        aggiungiAlTaccuino("room1","macchina","Bombe è la macchina che ha decifrato i messaggi nemici");
         setTimeout(() => { window.location.href = "room2.html"; }, 2500);
     } else {
         document.getElementById('codiceSoluzione').value = "";
@@ -472,6 +510,12 @@ function controllaBilancia() {
         bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
         mostraMessaggio("Accettato", "Ottimo! hai capito le equazioni chimiche. \n Puoi continuare a cercare.");
         enigmiRisoltiC.bilancia=true;
+        const modalEnigma=document.getElementById('bilanciaC');
+        if (modalEnigma) {
+            modalEnigma.style.pointerEvents="none";
+            modalEnigma.style.opacity=0.5;
+        }
+        aggiungiAlTaccuino("room2","bilancia","Un'equazione chimica va bilanciata");
     } else {
         countBilancia++;
         if (countBilancia>=3) {
@@ -501,6 +545,12 @@ function controllaPozioni() {
         bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
         mostraMessaggio("Accettato", "Bravissimo! hai decifrato il principio. \n Continua la tua missione.");
         enigmiRisoltiC.pozioni=true;
+          const modalEnigma=document.getElementById('pozioniC');
+        if (modalEnigma) {
+            modalEnigma.style.pointerEvents="none";
+            modalEnigma.style.opacity=0.5;
+        }
+        aggiungiAlTaccuino("room2","pozioni","La legge di Lavoisier afferma che la materia non si crea nè si distrugge");
     } else {
         countPozioni++;
         if (countPozioni==2) {
@@ -535,6 +585,12 @@ function controllaEquazione() {
     if (rispostaUtente === soluzioneCorretta) {
         bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
         mostraMessaggio("Equazione Bilanciata!", "Ottimo lavoro, Agente! La porta si sta aprendo. Sei pronto per la prossima missione...");
+        const modalEnigma=document.getElementById('lavagnaC');
+        if (modalEnigma) {
+            modalEnigma.style.pointerEvents="none";
+            modalEnigma.style.opacity=0.5;
+        }
+        aggiungiAlTaccuino("room2","lavagna","I coefficienti giusti sono 3,4,1,4");
         setTimeout(() => { window.location.href = "room3.html"; }, 2500);
     } else {
         document.getElementById('CurieSoluzione').value = "";
@@ -744,7 +800,7 @@ function controllaEinstein() {
     if (rispostaUtente === soluzioneCorretta) {
         bootstrap.Modal.getInstance(document.getElementById('EinsteinModal')).hide();
         mostraMessaggio("Formula corretta!", "Bravissimo Agente! \n Il passaggio segreto si sta aprendo, puoi continuare la tua missione...");
-        setTimeout(() => { window.location.href = "room3.html"; }, 2500);
+        setTimeout(() => { window.location.href = "room4.html"; }, 2500);
     } else {
         document.getElementById('EinsteinSoluzione').value = "";
         document.getElementById('EinsteinSoluzione').placeholder = "Non è questa la formula che cerchiamo,riprova!";
@@ -957,6 +1013,7 @@ function controllaLovelace() {
         bootstrap.Modal.getInstance(document.getElementById('LovelaceModal')).hide();
         mostraMessaggio("Risoluzione accettata!", "Bravissimo Agente! sei pronto per la missione finale...");
         setTimeout(() => { window.location.href = "room5.html"; }, 2500);
+        localStorage.clear();
     } else {
         document.getElementById('LovelaceSoluzione').value = "";
         document.getElementById('LovelaceSoluzione').placeholder = "Non sono le variabili che cerchiamo. Riprova!";
