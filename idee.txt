@@ -1,52 +1,26 @@
 Leggenda: V (fatto) X (scartato) A (in attesa) W (working)
 
-Mettere un'introduzione all'inizio di ogni stanza. V
-
-Mettere i modal degli indizi e domande di un colore diverso per ogni stanza, mentre
-quelli dell'introduzione lasciarli dello stesso colore, così da avere un effetto di
-narrazione. W
-
-Aggiungere più domande e indizi che ti fanno rispondere a queste, nelle domande
-in mezzo se il giocatore continua a sbagliare gli appaiono dei suggerimenti, all'
-enigma finale no. I suggerimenti farli apparire nel box in cui deve rispondere secondo me.
-Un'altra idea è farli apparire cliccando sull'icona dell'avatar però forse è poco
-intuitivo. W
-
-Gli indizi e le domande appaiono tutte subito, ma l'enigma finale si deve sbloccare
-solo quando il giocatore ha visto tutti gli indizi e risposto a tutte le domande. V
-
-Potremmo ordinare le stanze in modo da farle man mano più difficili (tipo domande
-più complesse e più domande) o vanno bene tutte e 4 più o meno uguali? A
-
 Timer per rispondere alle domande W
 
 Classifica finale con database che la gestisce e tiene conto sia del punteggio
 che del tempo W
 
-Database per generare domande randomiche? X (sennò gli indizi non hanno più senso)
+Database per generare domande randomiche? A (Se abbiamo tempo riorganiziamo indizi e enigmi)
 
-Mettere delle istruzioni nella pagina iniziale o si capisce tutto? W
-
-Traduzione in inglese? X
-
-Idee quinta stanza? deve essere diversa dalle altre W
-
-Altre idee database e backend? Per esempio ho pensato che possiamo creare un database
-per fare uno shop per comprare dei poteri speciali che puoi avere o musica che puoi
-mettere nelle stanze A
+Aggiornare le istruzioni nella pagina iniziale con ultima stanza e taccuino W (Per Andrea)
 
 Le risposte alle domande e il fatto di sbloccare l'enigma finale solo dopo aver
-fatto tutto il resto possiamo mettere nel database quando lo faremo NON HO CAPITO
+fatto tutto il resto possiamo mettere nel database quando lo faremo W
 
 Mappamondi che se li hai cliccati tutti ti portano in una stanza segreta? A
 
 Vanno sistemate le parti cliccabili (magari utilizzando le mappature più precise con un sito esterno) e
 si potrebbero aggiungere degli aloni attorno alle figure cliccabili quando si passa sopra col mouse e forse mantenerlo
-dopo che è stato cliccato più lieve W
+dopo che è stato cliccato più lieve W (Per Andrea)
 
 Le domande intermedie una volta fatte o si rendono non più cliccabili oppure si fa apparire un messaggio di averla
-già completato sennò non ha senso rifarlo all'infinito W
+già completato sennò non ha senso rifarlo all'infinito W (Per ludo con taccuino)
 
-Inventario dove il giocatore ha degli oggetti/ la nota con la soluzione finale W
+Menu opzioni con salva, restart, home, abbassare volume (lato backend) W
 
-Menu opzioni con salva, restart; interrompi, esci, abbassare volume (lato backend) W
+Aggiustare responsivness alla fine

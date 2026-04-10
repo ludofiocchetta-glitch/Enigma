@@ -205,6 +205,40 @@ input[type="radio"]:checked + .avatar-img {
     50% { opacity: 0; }
 }
 
+/* Tasto Musica */
+.btn-music-game {
+    position: absolute;
+    top: 20px;
+    right: 90px; /* Distanziato dal tasto Info */
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid #F8F8FF;
+    color: #F8F8FF;
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    display: block;
+    padding: 0;
+    line-height: 1;
+}
+
+.btn-music-game span {
+    position: absolute;
+    font-size: 30px; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centrato perfettamente */
+    line-height: 1;
+}
+
+.btn-music-game:hover {
+    background: rgba(248, 248, 255, 0.3);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(248, 248, 255, 0.5);
+}
+
 /* Regole base per tutti gli oggetti cliccabili */
 .oggetto-cliccabile {
     position: absolute;
@@ -669,6 +703,7 @@ input[type="radio"]:checked + .avatar-img {
         font-size: 1.8rem;
     }
 }
+
 @media (max-width: 576px) {
     .avatar-minimappa {
         top: 10px;

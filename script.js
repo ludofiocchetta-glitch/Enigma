@@ -1020,3 +1020,53 @@ function controllaLovelace() {
     }
 }
 
+// Gestione Audio e Volume
+document.addEventListener('DOMContentLoaded', function() {
+    const bgMusic = document.getElementById('bgMusic');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const musicBtn = document.querySelector('.btn-music-game');
+
+    // Se gli elementi esistono nella pagina corrente
+    if (bgMusic && volumeSlider && musicBtn) {
+        
+        // Imposta il volume iniziale in base allo slider (es. 0.3)
+        bgMusic.volume = volumeSlider.value;
+
+        // Quando l'utente muove lo slider, cambia il volume in tempo reale
+        volumeSlider.addEventListener('input', function() {
+            bgMusic.volume = this.value;
+        });
+
+        // La musica parte quando l'utente clicca il tasto musicale per aprire il modal
+        // (Questo bypassa il blocco autoplay dei browser)
+        /*musicBtn.addEventListener('click', function() {
+            if (bgMusic.paused) {
+                bgMusic.play().catch(error => {
+                    console.log("Riproduzione audio bloccata dal browser:", error);
+                });
+            }
+        });*/
+
+        const startMusic = () => {
+            if (bgMusic.paused) {
+                bgMusic.play().then(() => {
+                    console.log("Musica avviata con successo!");
+                    // Una volta partita la musica, rimuoviamo i "listener" 
+                    // per evitare che il comando play() venga richiamato ad ogni singolo click futuro
+                    document.removeEventListener('click', startMusic);
+                    document.removeEventListener('keydown', startMusic);
+                }).catch(error => {
+                    console.log("Autoplay bloccato, in attesa di interazione:", error);
+                });
+            }
+        };
+
+        // 1. Il browser ci lascia fare l'autoplay? Proviamoci subito!
+        // (A volte funziona se l'utente ha già interagito molto col tuo sito in passato)
+        startMusic();
+
+        // 2. Se l'autoplay fallisce, la musica partirà al primissimo click o tasto premuto ovunque nella pagina
+        document.addEventListener('click', startMusic);
+        document.addEventListener('keydown', startMusic);
+    }
+});
