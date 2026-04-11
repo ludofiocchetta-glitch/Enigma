@@ -56,7 +56,7 @@ html,body{
     background-color: rgba(248, 248, 255, 0.2);
     transform: scale(1.1);
 }
-
+/* tasto info*/
 .btn-info-game {
     position: absolute;
     top: 20px;
@@ -92,8 +92,89 @@ html,body{
 }
 
 #rulesModal .modal-content {
-    background-color: #0b132b !important;
+    background-color: rgb(17, 2, 46) !important;
     border: 1px solid #8c9eff !important;
+    box-shadow: 0 0 20px rgba(106, 167, 241, 0.3);
+    font-size: 20px;
+}
+
+/* Tasto Musica */
+.btn-music-game {
+    position: absolute;
+    top: 90px;
+    right: 20px; 
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid #F8F8FF;
+    color: #F8F8FF;
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    display: block;
+    padding: 0;
+    line-height: 1;
+}
+
+.btn-music-game span {
+    position: absolute;
+    font-size: 30px; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    line-height: 1;
+}
+
+.btn-music-game:hover {
+    background: rgba(248, 248, 255, 0.3);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(248, 248, 255, 0.5);
+}
+#volumeModal .modal-content {
+    background-color: rgb(17, 2, 46) !important;
+    border: 1px solid  #8c9eff  !important; 
+    box-shadow: 0 0 20px rgba(106, 167, 241, 0.3); /* Un leggero alone azzurro per dare atmosfera */
+}
+
+/* Tasto Classifica */
+.btn-leaderboard-game {
+    position: absolute;
+    top: 160px; 
+    right: 20px; 
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid #F8F8FF;
+    color: #F8F8FF;
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    display: block;
+    padding: 0;
+    line-height: 1;
+}
+
+.btn-leaderboard-game span {
+    position: absolute;
+    font-size: 28px; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    line-height: 1;
+}
+
+.btn-leaderboard-game:hover {
+    background: rgba(248, 248, 255, 0.3);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(248, 248, 255, 0.5);
+}
+
+#leaderboardModal .modal-content {
+    background-color: rgb(17, 2, 46) !important;
+    border: 1px solid #8c9eff !important;
+    box-shadow: 0 0 20px rgba(106, 167, 241, 0.3);
 }
 /*login*/
 .d-none {
@@ -183,6 +264,7 @@ input[type="radio"]:checked + .avatar-img {
     max-width: 880px;
     width: 90%;
     pointer-events: auto !important;
+    box-shadow: 0 0 20px rgba(106, 167, 241, 0.3) !important;
 }
 
 .avatar-mission {
@@ -205,40 +287,6 @@ input[type="radio"]:checked + .avatar-img {
     50% { opacity: 0; }
 }
 
-/* Tasto Musica */
-.btn-music-game {
-    position: absolute;
-    top: 20px;
-    right: 90px; /* Distanziato dal tasto Info */
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
-    border: 2px solid #F8F8FF;
-    color: #F8F8FF;
-    cursor: pointer;
-    z-index: 1000;
-    transition: all 0.3s ease;
-    display: block;
-    padding: 0;
-    line-height: 1;
-}
-
-.btn-music-game span {
-    position: absolute;
-    font-size: 30px; 
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* Centrato perfettamente */
-    line-height: 1;
-}
-
-.btn-music-game:hover {
-    background: rgba(248, 248, 255, 0.3);
-    transform: scale(1.1);
-    box-shadow: 0 0 15px rgba(248, 248, 255, 0.5);
-}
-
 /* Regole base per tutti gli oggetti cliccabili */
 .oggetto-cliccabile {
     position: absolute;
@@ -252,7 +300,75 @@ input[type="radio"]:checked + .avatar-img {
     pointer-events: none;
 }
 
+/* Personalizzazione scrollbar per taccuino */
+
+.modal-enigma, .modal-enigma2, .modal-enigma3, .modal-enigma4 {
+    max-height: 80vh; 
+    overflow-y: auto;
+}
+
+.modal-enigma::-webkit-scrollbar, 
+.modal-enigma2::-webkit-scrollbar, 
+.modal-enigma3::-webkit-scrollbar, 
+.modal-enigma4::-webkit-scrollbar {
+    width: 8px; 
+}
+
+.modal-enigma::-webkit-scrollbar-track, 
+.modal-enigma2::-webkit-scrollbar-track, 
+.modal-enigma3::-webkit-scrollbar-track, 
+.modal-enigma4::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.modal-enigma::-webkit-scrollbar-thumb, 
+.modal-enigma2::-webkit-scrollbar-thumb, 
+.modal-enigma3::-webkit-scrollbar-thumb, 
+.modal-enigma4::-webkit-scrollbar-thumb {
+    background: #c6cdcadc; 
+    border-radius: 10px; 
+}
+
+.modal-enigma::-webkit-scrollbar-thumb:hover, 
+.modal-enigma2::-webkit-scrollbar-thumb:hover, 
+.modal-enigma3::-webkit-scrollbar-thumb:hover, 
+.modal-enigma4::-webkit-scrollbar-thumb:hover {
+    background: rgba(176, 178, 177, 0.604); 
+}
+
 /*room1*/
+ .btn-music-gameT {
+    position: absolute;
+    top: 10px !important;
+    right: 20px; 
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid #F8F8FF;
+    color: #F8F8FF;
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    display: block;
+    padding: 0;
+    line-height: 1;
+}
+.btn-music-gameT span {
+    position: absolute;
+    font-size: 30px; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    line-height: 1;
+}
+
+.btn-music-gameT:hover {
+    background: rgba(248, 248, 255, 0.3);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(248, 248, 255, 0.5);
+}
+
 .turing {
     background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('room1.jpg');
     height: 100vh;
@@ -324,7 +440,7 @@ input[type="radio"]:checked + .avatar-img {
     font-family: 'Playfair Display', 'Courier New', Courier, monospace;
     letter-spacing: 2px;
     font-size: 1.5vw;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.692);
+    box-shadow: 0 0 20px rgba(22, 208, 143, 0.364);
 }
 
 .modal-content {
@@ -426,7 +542,7 @@ input[type="radio"]:checked + .avatar-img {
     font-family: 'Playfair Display', 'Courier New', Courier, monospace;
     letter-spacing: 2px;
     font-size: 1.5vw;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 20px rgba(200, 113, 222, 0.45);
 
 }
 
@@ -451,7 +567,7 @@ input[type="radio"]:checked + .avatar-img {
     top: 20px;
     left: 20px;
     z-index: 100;
-    pointer-events: none;
+    pointer-events: auto;
 }
 
 .avatar-imm2 img {
@@ -527,7 +643,7 @@ input[type="radio"]:checked + .avatar-img {
     font-family: 'Playfair Display', 'Courier New', Courier, monospace;
     letter-spacing: 2px;
     font-size: 1.5vw;
-    box-shadow: 0 0 20px rgba(1, 0, 5, 0.2);
+    box-shadow: 0 0 20px #6ec2cd85;
 }
 
 .modal-content.modal-enigma3 {
@@ -551,7 +667,7 @@ input[type="radio"]:checked + .avatar-img {
     top: 20px;
     left: 20px;
     z-index: 100;
-    pointer-events: none;
+    pointer-events: auto;
 }
 
 .avatar-imm3 img {
@@ -637,7 +753,7 @@ input[type="radio"]:checked + .avatar-img {
     font-family: 'Playfair Display', 'Courier New', Courier, monospace;
     letter-spacing: 2px;
     font-size: 1.5vw;
-    box-shadow: 0 0 20px rgba(1, 0, 5, 0.2);
+    box-shadow: 0 0 20px #f28ec86d;
 }
 
 .modal-content.modal-enigma4 {
@@ -661,7 +777,7 @@ input[type="radio"]:checked + .avatar-img {
     top: 20px;
     left: 20px;
     z-index: 100;
-    pointer-events: none;
+    pointer-events: auto;
 }
 
 .avatar-imm4 img {
@@ -715,3 +831,5 @@ input[type="radio"]:checked + .avatar-img {
         height: 40px;
     }
 }
+
+

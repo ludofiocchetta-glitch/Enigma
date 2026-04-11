@@ -109,7 +109,6 @@ function mostraBottoneFinale() {
 function iniziaEscapeRoom() {
     const avatarname = localStorage.getItem('avatar');
     window.location.href="room1.html";
-    
 }
 
 const userName = document.getElementById('inputname');
@@ -736,6 +735,12 @@ function controllaMobile() {
         bootstrap.Modal.getInstance(document.getElementById('EinsteinModal')).hide();
         mostraMessaggio("Accettato", "Fortissimo! hai capito quali sono le grandezze. \n Puoi continuare la tua ricerca.");
         enigmiRisoltiE.mobile=true;
+        const modalEnigma=document.getElementById('mobileE');
+        if (modalEnigma) {
+            modalEnigma.style.pointerEvents="none";
+            modalEnigma.style.opacity=0.5;
+        }
+        aggiungiAlTaccuino("room3","mobile","Lo spazio e il tempo sono relativi");
     } else {
         countMobile++;
         if (countMobile==2) {
@@ -765,6 +770,12 @@ function controllaMappamondoE() {
         bootstrap.Modal.getInstance(document.getElementById('EinsteinModal')).hide();
         mostraMessaggio("Accettato", "Perfetto, sai tutto sui sistemi di riferimento! \n Continua ad esplorare.");
         enigmiRisoltiE.mappamondo=true;
+        const modalEnigma=document.getElementById('mappamondoE');
+        if (modalEnigma) {
+            modalEnigma.style.pointerEvents="none";
+            modalEnigma.style.opacity=0.5;
+        }
+        aggiungiAlTaccuino("room3","mappamondo","Il punto da cui osservi in fisica è il punto di riferimento");
     } else {
         countMappamondo++;
         if (countMappamondo==2) {
@@ -800,6 +811,12 @@ function controllaEinstein() {
     if (rispostaUtente === soluzioneCorretta) {
         bootstrap.Modal.getInstance(document.getElementById('EinsteinModal')).hide();
         mostraMessaggio("Formula corretta!", "Bravissimo Agente! \n Il passaggio segreto si sta aprendo, puoi continuare la tua missione...");
+        const modalEnigma=document.getElementById('lavagnaE');
+        if (modalEnigma) {
+            modalEnigma.style.pointerEvents="none";
+            modalEnigma.style.opacity=0.5;
+        }
+        aggiungiAlTaccuino("room3","lavagna","L'equazione è E=mc^2");
         setTimeout(() => { window.location.href = "room4.html"; }, 2500);
     } else {
         document.getElementById('EinsteinSoluzione').value = "";
@@ -947,6 +964,12 @@ function controllaOrologio() {
         bootstrap.Modal.getInstance(document.getElementById('LovelaceModal')).hide();
         mostraMessaggio("Accettato", "Geniale! hai decifrato la sequenza. \n Puoi continuare a cercare.");
         enigmiRisoltiL.orologio=true;
+        const modalEnigma=document.getElementById('orologioL');
+        if (modalEnigma) {
+            modalEnigma.style.pointerEvents="none";
+            modalEnigma.style.opacity=0.5;
+        }
+        aggiungiAlTaccuino("room4","orologio","La sequenza di Fibonacci continua con 13,21,34");
     } else {
         countOrologio++;
         if (countOrologio==2) {
@@ -976,6 +999,12 @@ function controllaLibri() {
         bootstrap.Modal.getInstance(document.getElementById('LovelaceModal')).hide();
         mostraMessaggio("Accettato", "Perfetto! hai capito il libro. \n Continua la tua esplorazione.");
         enigmiRisoltiL.libri=true;
+        const modalEnigma=document.getElementById('libriL');
+        if (modalEnigma) {
+            modalEnigma.style.pointerEvents="none";
+            modalEnigma.style.opacity=0.5;
+        }
+        aggiungiAlTaccuino("room4","libri","L'algoritmo è una sequenza di istruzioni ordinate");
     } else {
         countLibri++;
         if (countLibri==2) {
@@ -1012,6 +1041,12 @@ function controllaLovelace() {
     if (rispostaUtente === soluzioneCorretta) {
         bootstrap.Modal.getInstance(document.getElementById('LovelaceModal')).hide();
         mostraMessaggio("Risoluzione accettata!", "Bravissimo Agente! sei pronto per la missione finale...");
+        const modalEnigma=document.getElementById('appuntiL');
+        if (modalEnigma) {
+            modalEnigma.style.pointerEvents="none";
+            modalEnigma.style.opacity=0.5;
+        }
+        aggiungiAlTaccuino("room4","appunti","La variabile sbagliata di Note G è V4, quella giusta V6");
         setTimeout(() => { window.location.href = "room5.html"; }, 2500);
         localStorage.clear();
     } else {
@@ -1025,34 +1060,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const bgMusic = document.getElementById('bgMusic');
     const volumeSlider = document.getElementById('volumeSlider');
     const musicBtn = document.querySelector('.btn-music-game');
-
-    // Se gli elementi esistono nella pagina corrente
     if (bgMusic && volumeSlider && musicBtn) {
-        
-        // Imposta il volume iniziale in base allo slider (es. 0.3)
         bgMusic.volume = volumeSlider.value;
-
-        // Quando l'utente muove lo slider, cambia il volume in tempo reale
         volumeSlider.addEventListener('input', function() {
             bgMusic.volume = this.value;
         });
-
-        // La musica parte quando l'utente clicca il tasto musicale per aprire il modal
-        // (Questo bypassa il blocco autoplay dei browser)
-        /*musicBtn.addEventListener('click', function() {
-            if (bgMusic.paused) {
-                bgMusic.play().catch(error => {
-                    console.log("Riproduzione audio bloccata dal browser:", error);
-                });
-            }
-        });*/
-
         const startMusic = () => {
             if (bgMusic.paused) {
                 bgMusic.play().then(() => {
                     console.log("Musica avviata con successo!");
-                    // Una volta partita la musica, rimuoviamo i "listener" 
-                    // per evitare che il comando play() venga richiamato ad ogni singolo click futuro
                     document.removeEventListener('click', startMusic);
                     document.removeEventListener('keydown', startMusic);
                 }).catch(error => {
@@ -1060,13 +1076,35 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
         };
-
-        // 1. Il browser ci lascia fare l'autoplay? Proviamoci subito!
-        // (A volte funziona se l'utente ha già interagito molto col tuo sito in passato)
         startMusic();
+        // Se l'autoplay fallisce, la musica partirà al primissimo click del tasto musica
+        musicBtn.addEventListener('click', startMusic);
+    }
+});
 
-        // 2. Se l'autoplay fallisce, la musica partirà al primissimo click o tasto premuto ovunque nella pagina
+document.addEventListener('DOMContentLoaded', function() {
+    const bgMusic = document.getElementById('bgMusic');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const musicBtn = document.querySelector('.btn-music-gameT');
+    if (bgMusic && volumeSlider && musicBtn) {
+        bgMusic.volume = volumeSlider.value;
+        volumeSlider.addEventListener('input', function() {
+            bgMusic.volume = this.value;
+        });
+        const startMusic = () => {
+            if (bgMusic.paused) {
+                bgMusic.play().then(() => {
+                    console.log("Musica avviata con successo!");
+                    document.removeEventListener('click', startMusic);
+                    document.removeEventListener('keydown', startMusic);
+                }).catch(error => {
+                    console.log("Autoplay bloccato, in attesa di interazione:", error);
+                });
+            }
+        };
+        startMusic();
+        // Se l'autoplay fallisce, la musica partirà al primissimo click del tasto musica
         document.addEventListener('click', startMusic);
-        document.addEventListener('keydown', startMusic);
+        document.addEventListener('keydown',startMusic);
     }
 });

@@ -1,26 +1,53 @@
-Leggenda: V (fatto) X (scartato) A (in attesa) W (working)
+Leggenda: V (fatto) X (scartato) A (in attesa se abbiamo tempo alla fine) W (working)
 
-Timer per rispondere alle domande W
+Classifica finale front-end W
 
-Classifica finale con database che la gestisce e tiene conto sia del punteggio
-che del tempo W
+Database con utente, stanza e domande con i vari attributi e relazioni (come foto prof) W
 
-Database per generare domande randomiche? A (Se abbiamo tempo riorganiziamo indizi e enigmi)
+query per fare la classifica effettiva. Importante salvere le risposte che un giocatore
+sbaglia così che diminuisce il suo punteggio W
 
 Aggiornare le istruzioni nella pagina iniziale con ultima stanza e taccuino W (Per Andrea)
 
-Le risposte alle domande e il fatto di sbloccare l'enigma finale solo dopo aver
-fatto tutto il resto possiamo mettere nel database quando lo faremo W
+Le domande intermedie una volta fatte o si rendono non più cliccabili oppure si fa apparire un messaggio di averla
+già completato sennò non ha senso rifarlo all'infinito W (Per ludo con taccuino)
+
+Menu opzioni con salva, restart, home, abbassare volume (lato backend), nella pagina
+di login e il tasto salva in ogni stanza? oppure salva in automatico? W
+
+password W
+
+musica una per ogni stanza W
+
+Aggiustare responsivness alla fine W
+
+
+
+Timer per rispondere alle domande A
 
 Mappamondi che se li hai cliccati tutti ti portano in una stanza segreta? A
 
 Vanno sistemate le parti cliccabili (magari utilizzando le mappature più precise con un sito esterno) e
 si potrebbero aggiungere degli aloni attorno alle figure cliccabili quando si passa sopra col mouse e forse mantenerlo
-dopo che è stato cliccato più lieve W (Per Andrea)
+dopo che è stato cliccato più lieve A
 
-Le domande intermedie una volta fatte o si rendono non più cliccabili oppure si fa apparire un messaggio di averla
-già completato sennò non ha senso rifarlo all'infinito W (Per ludo con taccuino)
+Priorità
 
-Menu opzioni con salva, restart, home, abbassare volume (lato backend) W
+Quelle con A vanno fatte alla fine solo se abbiamo tempo, iniziare da quelle con W 
 
-Aggiustare responsivness alla fine
+
+
+backend: fare il database e il server capire come si collegano le cose. Il server è il database?
+fare il menù opzioni (salvataggio,restart,esci)
+il tasto pausa serve per il timer quindi dobbiamo vedere se alla fine abbiamo tempo
+classifica
+
+frontend:
+aggiungere password al login
+room5
+room schermata finale con classifica
+menù opzioni
+musica
+stanza Mappamondi (opzionale)
+aggiungere un avatar che puoi usare solo se finisci il gioco una volta (opzionale)
+

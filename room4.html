@@ -9,7 +9,7 @@
 </head>
 <body>
     <div id="room4" class="lovelace fade-in-slow blocco-interazione">
-      <div id="avatarcontenitore4" class="avatar-imm4 d-none">
+      <div id="avatarcontenitore4" class="avatar-imm4 d-none" onclick="apriTaccuino()" style="cursor: pointer;">
         <img id="avatarid" src="" alt="Avatar Giocatore">
       </div>
       <div id="introL" class="dossier-box text-center p-5 shadow-lg centraT">
@@ -18,14 +18,14 @@
           Esplora
         </button>
       </div>
-      <div class="oggetto-cliccabile appunti" onclick="apriEnigmaLovelace()"></div>
+      <div class="oggetto-cliccabile appunti" id="appuntiL" onclick="apriEnigmaLovelace()"></div>
       <div class="oggetto-cliccabile camino" onclick="mostraAtmosferaLovelace()"></div>
       <div class="oggetto-cliccabile libreria" onclick="mostraLibreria()"></div>
       <div class="oggetto-cliccabile mappamondo2" onclick="mostraMappamondo()"></div>
-      <div class="oggetto-cliccabile orologio" onclick="mostraOrologio()"></div>
+      <div class="oggetto-cliccabile orologio" id="orologioL" onclick="mostraOrologio()"></div>
       <div class="oggetto-cliccabile lampada" onclick="mostraLampada()"></div>
       <div class="oggetto-cliccabile quadro" onclick="mostraQuadro()"></div>
-      <div class="oggetto-cliccabile libri" onclick="mostraLibri()"></div>
+      <div class="oggetto-cliccabile libri" id="libriL" onclick="mostraLibri()"></div>
     </div>
     <div class="modal fade" id="LovelaceModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
@@ -61,6 +61,36 @@
           </div>
         </div>
       </div>
+    </div>
+    <!-- Pulsante musica -->
+    <audio id="bgMusic" loop>
+        <source src="Lovelace.mp3" type="audio/mpeg">
+    </audio>
+    
+    <button type="button" class="btn-music-gameT" data-bs-toggle="modal" data-bs-target="#volumeModal">
+        <span style="color: #f8fafb;">♫</span>
+    </button>
+
+    <div class="modal fade" id="volumeModal" tabindex="-1" aria-labelledby="volumeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content modal-enigma bg-dark text-light border-light">
+                <div class="modal-header border-light">
+                  <h5 class="modal-title special-elite" id="volumeModalLabel">Volume</h5>
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center playfair">
+                <label for="volumeSlider" class="form-label mb-3 fs-5">Regola audio</label>
+
+                <div class="d-flex align-items-center justify-content-center gap-3">
+        
+                <i class="bi bi-volume-up" style="font-size: 1.8rem; color: #F8F8FF;"></i>
+        
+                <input type="range" class="form-range" id="volumeSlider" min="0" max="1" step="0.01" value="0.3" style="width: 70%;">
+        
+                </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 <script src="script.js"> </script>
