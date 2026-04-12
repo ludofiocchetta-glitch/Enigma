@@ -26,7 +26,7 @@ html,body{
     font-size: clamp(3rem, 9vw, 8rem); 
     font-weight: 300;
     font-style: italic;
-    letter-spacing: 11px; /*15*/
+    letter-spacing: 11px;
     text-shadow: 3px 3px 7px rgba(0,0,0,0.9);
     text-align: center;
     width: 90%;

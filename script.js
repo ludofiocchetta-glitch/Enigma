@@ -114,7 +114,7 @@ function iniziaEscapeRoom() {
 const userName = document.getElementById('inputname');
 
 if (userName !== null) {
-    campoNome.addEventListener('input', function() {
+    userName.addEventListener('input', function() {
         this.classList.remove('is-invalid');
         this.placeholder = ""; 
     });
@@ -780,11 +780,11 @@ function controllaMappamondoE() {
         countMappamondo++;
         if (countMappamondo==2) {
             document.getElementById('EinsteinSoluzione').value = "";
-            document.getElementById('EinsteinSoluzione').placeholder = "Indizio: usato in fisica";
+            document.getElementById('EinsteinSoluzione').placeholder = "Indizio: un esempio classico è il treno";
         }
         else if (countMappamondo>=3) {
             document.getElementById('EinsteinSoluzione').value = "";
-            document.getElementById('EinsteinSoluzione').placeholder = "Indizio: un esempio classico è il treno";
+            document.getElementById('EinsteinSoluzione').placeholder = "Indizio: sistema di...";
         }
         else {
             document.getElementById('EinsteinSoluzione').value = "";
@@ -1025,8 +1025,8 @@ function controllaLibri() {
 function apriEnigmaLovelace() {
     if (enigmiRisoltiL.orologio && enigmiRisoltiL.libri && oggettiEsploratiL.mappamondo2 
     && oggettiEsploratiL.libreria && oggettiEsploratiL.quadro && oggettiEsploratiL.lampada && oggettiEsploratiL.camino) {
-        apriModalL("Algoritmo trovato","Agente, hai trovato il libro di Ada Lovelace con il suo algoritmo Note G, ma una variabile sembra sbagliata. Correggila! \n V1 = 1,V2 = 2,V3 = n,V4 = V2*V3,V5 = V4-V1,V6 = V4+V1,V11 = V5/V4",
-        "Inserisci la variabile sbagalita e poi quella coretta nella forma Vx,Vy:", "Risolvi l'algoritmo", controllaLovelace,true);
+        apriModalL("Algoritmo trovato","Agente, hai trovato il libro di Ada Lovelace con il suo algoritmo Note G, ma una variabile sembra sbagliata. Correggila! \n V1 = 1,V2 = 2,V3 = n,V4 = V2*V3,V5 = V4-V1,V6 = V4+V1,V7 = V5/V4",
+        "Inserisci la variabile sbagliata e poi quella coretta nella forma Vx,Vy:", "Risolvi l'algoritmo", controllaLovelace,true);
     }
     else {
         mostraMessaggio("Accesso Negato", "Agente, non sei ancora pronto per la risoluzione finale. Ispeziona e risolvi tutti gli oggetti nella stanza.");
@@ -1077,8 +1077,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         };
         startMusic();
-        // Se l'autoplay fallisce, la musica partirà al primissimo click del tasto musica
-        musicBtn.addEventListener('click', startMusic);
+        document.addEventListener('click', startMusic);
+        document.addEventListener('keydown',startMusic);
     }
 });
 
@@ -1103,7 +1103,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         };
         startMusic();
-        // Se l'autoplay fallisce, la musica partirà al primissimo click del tasto musica
         document.addEventListener('click', startMusic);
         document.addEventListener('keydown',startMusic);
     }
