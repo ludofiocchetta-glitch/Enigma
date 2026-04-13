@@ -11,7 +11,7 @@ html,body{
     width: 100%;
     height: 100vh;
     background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('IMG_1604.JPG');
-    background-size: cover; 
+    background-size: cover;
     background-position: center;
     display: flex;
     flex-direction: column;
@@ -23,13 +23,14 @@ html,body{
 
 .sfondo h1 {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(3rem, 9vw, 8rem); 
+    font-size: clamp(3rem, 9vw, 8rem);
     font-weight: 300;
     font-style: italic;
     letter-spacing: 11px;
     text-shadow: 3px 3px 7px rgba(0,0,0,0.9);
     text-align: center;
     width: 90%;
+    margin-top: 15vh;
 }
 
 .btn-dark {
@@ -99,7 +100,7 @@ html,body{
 }
 
 /* Tasto Musica */
-.btn-music-game {
+.btn-music-game, .btn-music-gameT {
     position: absolute;
     top: 90px;
     right: 20px; 
@@ -117,7 +118,7 @@ html,body{
     line-height: 1;
 }
 
-.btn-music-game span {
+.btn-music-game span, .btn-music-gameT span {
     position: absolute;
     font-size: 30px; 
     top: 50%;
@@ -799,17 +800,88 @@ input[type="radio"]:checked + .avatar-img {
 }
 
 @media (max-width: 576px) {
-    .avatar-img {
-        width: 110px; 
-        height: 150px;
-    }
-    
-    .sfondo h1 {
-        letter-spacing: 5px;
+    /*pagina home*/
+    .sfondo {
+        padding: 30px 0;
     }
 
-    .userform > div {
-        transform: translateY(-5vh);
+    .sfondo h1 {
+        font-size: 4.5rem;
+        letter-spacing: 5px;
+        margin-top: 30vh;
+    }
+
+    /*pulsanti pagina home*/
+    .btn-dark {
+        margin-bottom: 30vh;
+        font-size: 1.2rem;
+        padding: 10px 25px;
+    }
+
+    .btn-info-game {
+        top: 15px;
+        right: 15px;
+        width: 55px;
+        height: 55px;
+    }
+
+    .btn-info-game span {
+        font-size: 200%;
+    }
+
+    .btn-music-game {
+        top: 15px;
+        right: 15px;
+        width: 55px;
+        height: 55px;
+    }
+
+    .btn-music-game span, .btn-music-gameT span {
+        font-size: 200%;
+    }
+
+    .btn-leaderboard-game {
+        top: 15px;
+        right: 125px;
+        width: 55px;
+        height: 55px;
+    }
+
+    .btn-leaderboard-game span {
+        font-size: 200%;
+    }
+
+    /*pagina login*/
+    .userform {
+        font-size: 1.1rem;
+        padding: 15px;
+    }
+
+    .userform h3 {
+        font-size: 1.3rem;
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .avatar-img {
+        width: 110px;
+        height: 150px;
+    }
+
+    .avatar-grid-mobile {
+        max-width: 250px;
+        margin: 0 auto;
+    }
+
+    .userform > div.col-auto {
+        margin-top: 5vh;
+    }
+
+    .btn-music-gameT {
+        top: 15px;
+        right: 15px;
+        width: 55px;
+        height: 55px;
     }
 
     .btn-home {
@@ -818,9 +890,7 @@ input[type="radio"]:checked + .avatar-img {
         padding: 4px 10px;
         font-size: 1.8rem;
     }
-}
 
-@media (max-width: 576px) {
     .avatar-minimappa {
         top: 10px;
         left: 10px;

@@ -1,14 +1,34 @@
 function go() {
     const inputname=document.getElementById('inputname');
+    const inputpassword=document.getElementById('inputpassword');
+
     const nome=inputname.value;
+    const password=inputpassword.value;
     const avatar=document.querySelector('input[name="avatar"]:checked').value;
+
     inputname.classList.remove('is-invalid');
+    inputpassword.classList.remove('is-invalid');
 
     if (nome.trim() === "") {
         inputname.classList.add('is-invalid');
         inputname.placeholder = "Campo obbligatorio!";
         return;
     }
+
+    const specialCharRegex = /[!@#$%&*.?_]/;
+    
+    if (password.length < 8) {
+        inputpassword.classList.add('is-invalid');
+        inputpassword.value = "Minimo 8 caratteri";
+        return
+    }
+
+    if (!specialCharRegex.test(password)) {
+        inputpassword.classList.add('is-invalid');
+        inputpassword.value = "Minimo 1 carattere speciale !@#$%&*.?_";
+        return
+    }
+
     localStorage.setItem('username',nome);
     localStorage.setItem('avatar',avatar);
     console.log("Data saved"+nome+avatar+"\n");
@@ -111,14 +131,14 @@ function iniziaEscapeRoom() {
     window.location.href="room1.html";
 }
 
-const userName = document.getElementById('inputname');
+/*const userName = document.getElementById('inputname');
 
 if (userName !== null) {
     userName.addEventListener('input', function() {
         this.classList.remove('is-invalid');
         this.placeholder = ""; 
     });
-}
+}*/
 
 function caricaAvatarInAngolo() {
     const avatarname = localStorage.getItem('avatar');
