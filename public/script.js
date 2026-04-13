@@ -16,22 +16,32 @@ function go() {
     }
 
     const specialCharRegex = /[!@#$%&*.?_]/;
-    
-    if (password.length < 8) {
+
+    if (password.trim()==="") {
         inputpassword.classList.add('is-invalid');
-        inputpassword.value = "Minimo 8 caratteri";
-        return
+        inputpassword.value="";
+        inputpassword.placeholder = "Campo obbligatorio!";
+        return;
+    }
+    
+    else if (password.length < 8) {
+        inputpassword.classList.add('is-invalid');
+        inputpassword.value="";
+        inputpassword.placeholder = "Minimo 8 caratteri";
+        return;
     }
 
-    if (!specialCharRegex.test(password)) {
+    else if (!specialCharRegex.test(password)) {
         inputpassword.classList.add('is-invalid');
-        inputpassword.value = "Minimo 1 carattere speciale !@#$%&*.?_";
-        return
+        inputpassword.value="";
+        inputpassword.placeholder = "Minimo 1 carattere speciale !@#$%&*.?_";
+        return;
     }
 
     localStorage.setItem('username',nome);
     localStorage.setItem('avatar',avatar);
-    console.log("Data saved"+nome+avatar+"\n");
+    localStorage.setItem('password',password);
+    console.log("Data saved"+nome+avatar+password+"\n");
     window.location.href = "mission.html";
 }
 

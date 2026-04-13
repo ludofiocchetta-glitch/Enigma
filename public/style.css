@@ -30,7 +30,6 @@ html,body{
     text-shadow: 3px 3px 7px rgba(0,0,0,0.9);
     text-align: center;
     width: 90%;
-    margin-top: 15vh;
 }
 
 .btn-dark {
@@ -292,8 +291,8 @@ input[type="radio"]:checked + .avatar-img {
 .oggetto-cliccabile {
     position: absolute;
     cursor: pointer;
-    border: 2px solid rgb(202, 202, 213);
-    background-color: rgba(202, 202, 213, 0.3);
+    /*border: 2px solid rgb(202, 202, 213);
+    background-color: rgba(202, 202, 213, 0.3);*/
     z-index: 10;
 }
 
