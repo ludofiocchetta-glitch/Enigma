@@ -900,5 +900,38 @@ input[type="radio"]:checked + .avatar-img {
         height: 40px;
     }
 }
+/* rotazione orizzontale per schermi piccoli */
 
+/* di base, il messaggio di rotazione è invisibile */
+#rotate-message {
+    display: none; 
+    position: fixed;
+    top: 0; 
+    left: 0; 
+    width: 100vw; 
+    height: 100vh;
+    background-color: #0b132b; 
+    color: #F8F8FF;
+    z-index: 99999; 
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+}
 
+@media screen and (orientation: portrait) and (max-width: 992px) {
+    #rotate-message {
+        display: flex;
+    }
+    
+    body > *:not(#rotate-message) {
+        display: none !important;
+    }
+
+    body {
+        background-color: #0b132b !important;
+        background-image: none !important;
+        overflow: hidden !important;
+    }
+}
