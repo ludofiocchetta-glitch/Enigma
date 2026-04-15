@@ -274,7 +274,7 @@ let enigmiRisolti= {
 
 let oggettiEsplorati= {
     mappamondo:false,
-    schedario:false,
+    serranda:false,
     cappello:false,
     scatoloni:false
 };
@@ -285,8 +285,8 @@ function mostraAtmosferaTuring() {
 }
 
 function mostraIndizioTuring() {
-    mostraMessaggio("Schedario Chiuso", "Ci sei quasi, hai trovato un appunto segreto: Le parole più importanti non sono scritte per intero.\n B_MBE");
-    oggettiEsplorati.schedario=true;
+    mostraMessaggio("Serranda", "Ci sei quasi, hai trovato un appunto segreto appeso qui: Le parole più importanti non sono scritte per intero.\n B_MBE");
+    oggettiEsplorati.serranda=true;
 }
 
 function mostraScatoloni() {
@@ -388,7 +388,7 @@ function controllaTelefono() {
 
 function mostraEnigmaFinale() {
     if (enigmiRisolti.telefono && enigmiRisolti.lavagna && oggettiEsplorati.mappamondo 
-    && oggettiEsplorati.cappello && oggettiEsplorati.scatoloni && oggettiEsplorati.schedario) {
+    && oggettiEsplorati.cappello && oggettiEsplorati.scatoloni && oggettiEsplorati.serranda) {
         apriModal("Macchina Enigma Intercettata","Agente, abbiamo decifrato parte del messaggio. Serve il nome della macchina che ha permesso di decifrare i messaggi nemici.",
         "Inserisci il nome: ", "Decodifica la macchina", controllaEnigma,true);
     }
