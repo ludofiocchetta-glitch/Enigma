@@ -10,7 +10,7 @@ html,body{
 .sfondo{
     width: 100%;
     height: 100vh;
-    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('IMG_1604.JPG');
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('index.jpg');
     background-size: cover;
     background-position: center;
     display: flex;
@@ -214,7 +214,7 @@ html,body{
     left: -20px;
     right: -20px;
     bottom: -20px;
-    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('IMG_1604.JPG');
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('index.jpg');
     background-size: cover;
     background-position: center;
     filter: blur(13px);
@@ -302,7 +302,7 @@ input[type="radio"]:checked + .avatar-img {
 
 /* Personalizzazione scrollbar per taccuino */
 
-.modal-enigma, .modal-enigma2, .modal-enigma3, .modal-enigma4 {
+.modal-enigma, .modal-enigma2, .modal-enigma3, .modal-enigma4, .modal-enigma5 {
     max-height: 80vh; 
     overflow-y: auto;
 }
@@ -310,21 +310,24 @@ input[type="radio"]:checked + .avatar-img {
 .modal-enigma::-webkit-scrollbar, 
 .modal-enigma2::-webkit-scrollbar, 
 .modal-enigma3::-webkit-scrollbar, 
-.modal-enigma4::-webkit-scrollbar {
+.modal-enigma4::-webkit-scrollbar,
+.modal-enigma5::-webkit-scrollbar {
     width: 8px; 
 }
 
 .modal-enigma::-webkit-scrollbar-track, 
 .modal-enigma2::-webkit-scrollbar-track, 
 .modal-enigma3::-webkit-scrollbar-track, 
-.modal-enigma4::-webkit-scrollbar-track {
+.modal-enigma4::-webkit-scrollbar-track,
+.modal-enigma5::-webkit-scrollbar-track {
     background: transparent;
 }
 
 .modal-enigma::-webkit-scrollbar-thumb, 
 .modal-enigma2::-webkit-scrollbar-thumb, 
 .modal-enigma3::-webkit-scrollbar-thumb, 
-.modal-enigma4::-webkit-scrollbar-thumb {
+.modal-enigma4::-webkit-scrollbar-thumb,
+.modal-enigma5::-webkit-scrollbar-thumb {
     background: #c6cdcadc; 
     border-radius: 10px; 
 }
@@ -332,7 +335,8 @@ input[type="radio"]:checked + .avatar-img {
 .modal-enigma::-webkit-scrollbar-thumb:hover, 
 .modal-enigma2::-webkit-scrollbar-thumb:hover, 
 .modal-enigma3::-webkit-scrollbar-thumb:hover, 
-.modal-enigma4::-webkit-scrollbar-thumb:hover {
+.modal-enigma4::-webkit-scrollbar-thumb:hover,
+.modal-enigma5::-webkit-scrollbar-thumb:hover {
     background: rgba(176, 178, 177, 0.604); 
 }
 
@@ -785,9 +789,74 @@ input[type="radio"]:checked + .avatar-img {
     height: 200px;
     object-fit: cover;
     border-radius: 30%;
-    border: 4px solid #390d27;
-    box-shadow: 0 0 20px #2a0f1b;
+    border: 4px solid #4c1234fb;
+    box-shadow: 0 0 20px #f098cb6d;
     background-color: rgba(17, 2, 46, 0.7); 
+}
+/* room5 */
+.final {
+    background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('room5.jpg');
+    height: 100vh;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.uomo {
+    top:60%;
+    left:48%;
+    width:10%;
+    height:20%;
+}
+
+.muro {
+    top:20%;
+    left:5%;
+    width:28%;
+    height:40%;
+}
+
+.modal-enigma5 {
+    font-family: 'Playfair Display', 'Courier New', Courier, monospace;
+    letter-spacing: 2px;
+    font-size: 1.5vw;
+    box-shadow: 0 0 20px #701111;
+
+}
+
+.modal-content.modal-enigma5 {
+    background-color: #3e0211ce !important;
+}
+
+.warning5 {
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 1.5px;
+    font-size: 1.7vw;
+    color: #d23535;
+    text-shadow: 1px 1px 2px #000000;
+}
+
+.playfair5 {
+    color: #e3e0e2;
+}
+
+.avatar-imm5 {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    pointer-events: auto;
+}
+
+.avatar-imm5 img {
+    width: 160px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 30%;
+    border: 4px solid  #3e0211ce;
+    box-shadow: 0 0 20px #701111;
+    background-color: rgba(17, 2, 46, 0.7);
 }
 
 /* media query*/
@@ -968,7 +1037,7 @@ input[type="radio"]:checked + .avatar-img {
         font-size: 1rem;
         margin-top: 10px !important;
     }
-
+    
     /* room1 */
     
     .avatar-imm {
@@ -1000,6 +1069,12 @@ input[type="radio"]:checked + .avatar-img {
         font-size: 1rem !important;
         margin-top: 5px !important;
     }
+    
+    #descrizione, #richiesta {
+        font-size: 1.2rem !important; 
+        line-height: 1.4 !important;
+        margin-bottom: 10px !important;
+    }
 
     /* room2 */
     .avatar-imm2 {
@@ -1012,7 +1087,13 @@ input[type="radio"]:checked + .avatar-img {
         height: 115px !important;
         border-width: 3px !important; 
     }
-    /* room3 */
+
+    #descrizioneC, #richiestaC {
+        font-size: 1.2rem !important; 
+        line-height: 1.4 !important;
+        margin-bottom: 10px !important;
+    }
+    
     .avatar-imm3 {
         top: 10px !important;
         left: 10px !important;
@@ -1022,6 +1103,12 @@ input[type="radio"]:checked + .avatar-img {
         width: 95px !important; 
         height: 115px !important;
         border-width: 3px !important; 
+    }
+
+    #descrizioneE, #richiestaE {
+        font-size: 1.2rem !important; 
+        line-height: 1.4 !important;
+        margin-bottom: 10px !important;
     }
     /* room4*/
     .avatar-imm4 {
@@ -1033,6 +1120,29 @@ input[type="radio"]:checked + .avatar-img {
         width: 95px !important; 
         height: 115px !important;
         border-width: 3px !important; 
+    }
+
+    #descrizioneL, #richiestaL {
+        font-size: 1.2rem !important; 
+        line-height: 1.4 !important;
+        margin-bottom: 10px !important;
+    }
+    /* room5 */
+    .avatar-imm5 {
+        top: 10px !important;
+        left: 10px !important;
+    }
+
+    .avatar-imm5 img {
+        width: 95px !important; 
+        height: 115px !important;
+        border-width: 3px !important; 
+    }
+
+    #descrizioneF, #richiestaF {
+        font-size: 1.2rem !important; 
+        line-height: 1.4 !important;
+        margin-bottom: 10px !important;
     }
 }
 

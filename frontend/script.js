@@ -66,6 +66,10 @@ window.onload = function() {
         document.getElementById('testoMacchina4').classList.add('cursore'); 
         inizioStanzaL();
     }
+    if (document.getElementById('testoMacchina5')) {
+        document.getElementById('testoMacchina5').classList.add('cursore'); 
+        inizioStanzaF();
+    }
     if (document.getElementById('avatarid')) {
         caricaAvatarInAngolo();
     }
@@ -176,26 +180,36 @@ function mostraMessaggio(titolo, testo) {
 }
 
 //funzione per il taccuino
-function aggiungiAlTaccuino(stanza,oggetto,contenuto) {
+function aggiungiAlTaccuino(stanza,oggetto,contenuto,tipo="temporaneo") {
     let taccuino=JSON.parse(localStorage.getItem('taccuinoAgente')) || [];
-    taccuino.push({stanza: stanza,oggetto: oggetto,contenuto: contenuto});
+    taccuino.push({stanza: stanza,oggetto: oggetto,contenuto: contenuto,tipo: tipo});
     localStorage.setItem('taccuinoAgente',JSON.stringify(taccuino));
 }
 
-function apriTaccuino() {
-    let taccuino=JSON.parse(localStorage.getItem('taccuinoAgente')) || [];
-    let testo="";
-    if (taccuino.length==0) {
-        testo="Agente questo è il tuo taccuino personale, risolvi gli enigmi per raccogliere indizi";
-    }
-    else {
-        taccuino.forEach(nota => {
-            testo+=`Stanza: ${nota.stanza}\nOggetto: ${nota.oggetto}\nContenuto: ${nota.contenuto}\n\n`;
-        });
-    }
-    mostraMessaggio("Taccuino agente",testo);
+function pulisciTaccuino() {
+    let taccuino = JSON.parse(localStorage.getItem('taccuinoAgente')) || [];
+    // Filtra e mantieni solo gli elementi che hanno tipo "finale"
+    taccuino = taccuino.filter(nota => nota.tipo === "finale");
+    localStorage.setItem('taccuinoAgente', JSON.stringify(taccuino));
 }
 
+function apriTaccuino() {
+    let taccuino = JSON.parse(localStorage.getItem('taccuinoAgente')) || [];
+    let testo = "";
+    
+    if (taccuino.length == 0) {
+        testo = "Agente, questo è il tuo taccuino personale. Risolvi gli enigmi per raccogliere indizi.";
+    } else {
+        taccuino.forEach(nota => {
+            if (nota.tipo === "finale") {
+                testo += `${nota.stanza}: ${nota.contenuto}\n\n`;
+            } else {
+                testo += `${nota.stanza}-${nota.oggetto}: ${nota.contenuto}\n\n`;
+            }
+        });
+    }
+    mostraMessaggio("Taccuino agente", testo);
+}
 /*FUNZIONI STANZA TURING*/
 //funzioni per il testo all'entrata della stanza
 function inizioStanzaT() {
@@ -410,7 +424,8 @@ function controllaEnigma() {
             modalEnigma.style.pointerEvents="none";
             modalEnigma.style.opacity=0.5;
         }
-        aggiungiAlTaccuino("room1","macchina","Bombe è la macchina che ha decifrato i messaggi nemici");
+        pulisciTaccuino();
+        aggiungiAlTaccuino("room1","Hai ottenuto questo numero: 20", "finale");
         setTimeout(() => { window.location.href = "room2.html"; }, 2500);
     } else {
         document.getElementById('codiceSoluzione').value = "";
@@ -619,7 +634,8 @@ function controllaEquazione() {
             modalEnigma.style.pointerEvents="none";
             modalEnigma.style.opacity=0.5;
         }
-        aggiungiAlTaccuino("room2","lavagna","I coefficienti giusti sono 3,4,1,4");
+        pulisciTaccuino();
+        aggiungiAlTaccuino("room2","Hai ottenuto questo numero: 3414", "finale");
         setTimeout(() => { window.location.href = "room3.html"; }, 2500);
     } else {
         document.getElementById('CurieSoluzione').value = "";
@@ -846,7 +862,8 @@ function controllaEinstein() {
             modalEnigma.style.pointerEvents="none";
             modalEnigma.style.opacity=0.5;
         }
-        aggiungiAlTaccuino("room3","lavagna","L'equazione è E=mc^2");
+        pulisciTaccuino();
+        aggiungiAlTaccuino("room3","Hai ottenuto questo numero: 2", "finale");
         setTimeout(() => { window.location.href = "room4.html"; }, 2500);
     } else {
         document.getElementById('EinsteinSoluzione').value = "";
@@ -1076,12 +1093,148 @@ function controllaLovelace() {
             modalEnigma.style.pointerEvents="none";
             modalEnigma.style.opacity=0.5;
         }
-        aggiungiAlTaccuino("room4","appunti","La variabile sbagliata di Note G è V4, quella giusta V6");
+        pulisciTaccuino();
+        aggiungiAlTaccuino("room4","Hai ottenuto questo numero: 46", "finale");
         setTimeout(() => { window.location.href = "room5.html"; }, 2500);
-        localStorage.clear();
     } else {
         document.getElementById('LovelaceSoluzione').value = "";
         document.getElementById('LovelaceSoluzione').placeholder = "Non sono le variabili che cerchiamo. Riprova!";
+    }
+}
+
+//room5 
+function inizioStanzaF() {
+    const avatarName= localStorage.getItem('avatar');
+    let nomeAvatar = "";
+    let messaggio="";
+    if (avatarName === "detective1") {
+        nomeAvatar = "Alan Turing";
+    } else if (avatarName === "detective2") {
+        nomeAvatar = "Marie Curie";
+    } else if (avatarName === "detective3") {
+        nomeAvatar = "Albert Einstein";
+    } else if (avatarName === "detective4") {
+        nomeAvatar = "Ada Lovelace";
+    }   
+    if (nomeAvatar==="Alan Turing" || nomeAvatar==="Albert Einstein") {
+        messaggio=`${nomeAvatar} Sei arrivato all’ultima fase. \nLe quattro stanze non erano casuali, ogni ambiente era un test. Ogni mente -Alan Turing, Marie Curie, Albert Einstein, Ada Lovelace — ti ha fornito gli strumenti necessari. 
+        Non troverai nuove informazioni qui, solo connessioni. I dati che ti servono li hai già raccolti, ora devi dimostrare di saperli usare.
+        Analizza ciò che hai visto, ricostruisci il percorso e individua il codice.
+        La missione si conclude qui. La via d’uscita è già nelle tue mani...`
+    } 
+    else {
+        messaggio=`${nomeAvatar} Sei arrivata all’ultima fase. \nLe quattro stanze non erano casuali, ogni ambiente era un test. Ogni mente -Alan Turing, Marie Curie, Albert Einstein, Ada Lovelace — ti ha fornito gli strumenti necessari. 
+        Non troverai nuove informazioni qui, solo connessioni. I dati che ti servono li hai già raccolti, ora devi dimostrare di saperli usare.
+        Analizza ciò che hai visto, ricostruisci il percorso e individua il codice.
+        La missione si conclude qui. \nLa via d’uscita è già nelle tue mani...`
+    }
+    // digitazione automatica
+    const boxtesto = document.getElementById('testoMacchina5');
+    boxtesto.style.cursor = "pointer";
+    boxtesto.onclick = function() {
+        skipIntro = true;
+    }
+    scriviTestoF(messaggio, 0);
+
+}
+
+function scriviTestoF(testo, indice) {
+    const elemento = document.getElementById('testoMacchina5');
+
+    if (skipIntro) {
+        elemento.innerHTML = testo.replace(/\n/g, "<br>");
+        mostraBottoneFinaleF();
+        return;
+    }
+
+    if (indice < testo.length) {
+        let carattere = testo.charAt(indice);
+        if (carattere === '\n') {
+            document.getElementById('testoMacchina5').innerHTML += "<br>";
+        } else {
+            document.getElementById('testoMacchina5').innerHTML += carattere;
+        }
+        setTimeout(() => scriviTestoF(testo, indice + 1), 20);
+    } else {
+        mostraBottoneFinaleF();
+    }
+}
+
+function mostraBottoneFinaleF() {
+    document.getElementById('testoMacchina5').classList.remove('cursore');
+    const bottone = document.getElementById('btnEntra');
+    bottone.classList.remove('d-none');
+    bottone.classList.add('fade-in');
+}
+
+function iniziaEsplorazioneF() {
+    document.getElementById('introF').classList.add('d-none');
+    document.getElementById('room5').classList.remove('blocco-interazione')
+    const avatar=document.getElementById('avatarcontenitore5');
+    avatar.classList.remove('d-none');
+    avatar.classList.add('fade-in');
+}
+
+let oggettiEsploratiF= {
+    uomo:false
+};
+
+let enigmiRisoltiF= {
+    muro:false
+};
+
+let countMuro=0;
+
+function mostraIndizioUomo() {
+    mostraMessaggio("Mandante", "Finalmente, sapevo che saresti arrivato fin qui!\n Hai attraversato grandi menti… ma non hai ancora finito, la conoscenza non serve a nulla se non sai collegarla.\n Hai dimostrato di saper osservare, analizzare, dedurre, ora non ti resta che un ultimo passo. \nIl codice che cerci non è nascosto qui, è dentro ciò che hai già fatto.\nSolo chi comprende l’insieme può andare oltre.",);
+    oggettiEsploratiF.uomo=true;
+}
+
+function apriModalF(titolo, descrizione, richiesta, testoBottone, funzioneControllo, usaPlaceholder) {
+    document.getElementById('modalTitleF').innerText = titolo;
+    document.getElementById('descrizioneF').innerText = descrizione;
+    document.getElementById('richiestaF').innerText = richiesta;
+    
+    let inputField = document.getElementById('FinalSoluzione');
+    inputField.value = "";
+    inputField.placeholder = usaPlaceholder ? "??????" : "";
+    let btnConferma = document.getElementById('btnConfermaF');
+    btnConferma.innerText = testoBottone;
+    btnConferma.onclick = funzioneControllo;
+
+    var mioModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('FinalModal'));
+    mioModal.show();
+}
+
+function mostraMuro() {
+    apriModalF("Intrecci", "Agente, il mandante vuole sapere qual è il linguaggio che avevano in comune tutte le stanze.","Inserisci la soluzione","Controlla", controllaMuro, true);
+}
+
+function controllaMuro() {
+    const risposta=document.getElementById('FinalSoluzione').value.trim().toLowerCase()
+    if (risposta==="logica") {
+        bootstrap.Modal.getInstance(document.getElementById('FinalModal')).hide();
+        mostraMessaggio("Accettato", "Agente bravissimo, hai capito il modo di ragionare.");
+        enigmiRisoltiF.muro=true;
+        const modalEnigma=document.getElementById('muroF');
+        if (modalEnigma) {
+            modalEnigma.style.pointerEvents="none";
+            modalEnigma.style.opacity=0.5;
+        }
+    } else {
+        countMuro++;
+        if (countMuro==2) {
+            document.getElementById('FinalSoluzione').value = "";
+            document.getElementById('FinalSoluzione').placeholder = "fondamentale per l'AI";
+        }
+        else if (countMuro>=3) {
+            document.getElementById('FinalSoluzione').value = "";
+            document.getElementById('FinalSoluzione').placeholder = "lo è quella del primo ordine";
+        }
+        else {
+            document.getElementById('FinalSoluzione').value = "";
+            document.getElementById('FinalSoluzione').placeholder = "Pensaci bene, è un linguaggio formale";
+        }
     }
 }
 

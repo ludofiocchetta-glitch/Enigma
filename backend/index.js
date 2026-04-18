@@ -6,7 +6,7 @@ const host = '0.0.0.0'
 
 //Rotte
 const path = require("path") //gestione directory vari OS in modo univoco
-const root = path.join(__dirname,'..','public')
+const root = path.join(__dirname,'..','frontend')
 app.use(express.static(root))
 
 
