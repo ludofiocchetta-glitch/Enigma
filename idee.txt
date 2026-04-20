@@ -7,47 +7,38 @@ Database con utente, stanza e domande con i vari attributi e relazioni (come fot
 query per fare la classifica effettiva. Importante salvere le risposte che un giocatore
 sbaglia così che diminuisce il suo punteggio W
 
-Aggiornare le istruzioni nella pagina iniziale con ultima stanza e taccuino W (Per Andrea)
+Aggiornare le istruzioni nella pagina iniziale con ultima stanza e taccuino V
 
 Le domande intermedie una volta fatte o si rendono non più cliccabili oppure si fa apparire un messaggio di averla
-già completato sennò non ha senso rifarlo all'infinito W (Per ludo con taccuino)
-
+già completato sennò non ha senso rifarlo all'infinito V
 Menu opzioni con salva, restart, home, abbassare volume (lato backend), nella pagina
 di login e il tasto salva in ogni stanza? oppure salva in automatico? W
 
-password W
+password V
 
-musica una per ogni stanza W
+musica una per ogni stanza V
 
-Aggiustare responsivness alla fine W
+Aggiustare responsivness alla fine V
 
 
 
 Timer per rispondere alle domande A
-
-Mappamondi che se li hai cliccati tutti ti portano in una stanza segreta? A
-
-Vanno sistemate le parti cliccabili (magari utilizzando le mappature più precise con un sito esterno) e
-si potrebbero aggiungere degli aloni attorno alle figure cliccabili quando si passa sopra col mouse e forse mantenerlo
-dopo che è stato cliccato più lieve A
-
-Priorità
-
-Quelle con A vanno fatte alla fine solo se abbiamo tempo, iniziare da quelle con W 
-
 
 
 backend: fare il database e il server capire come si collegano le cose. Il server è il database?
 fare il menù opzioni (salvataggio,restart,esci)
 il tasto pausa serve per il timer quindi dobbiamo vedere se alla fine abbiamo tempo
 classifica
+il backend deve avere un database con tutti gli utenti e per ogni utente il nome, la password
+e le risposte che dà. Non cambiare la logica, le risposte controlla se sono corrette il front
+end e si può lasciare anche il localstorage però in più manda le risposte al server.
+Il server le conserva e poi ha una funzione che calcola la classifica e la manda al client 
+che la fa vedere.
+Il salvataggio è automatico perchè c'è il database però se lo stesso utente rientra nel gioco
+gli va chiesto se vuole continuare la partita o iniziarne una nuova. Problema se due utenti
+diversi con lo stesso nome mettono la stessa password?
 
-frontend:
-aggiungere password al login
-room5
-room schermata finale con classifica
-menù opzioni
-musica
-stanza Mappamondi (opzionale)
+Bisogna mettere il tasto per chiudere il gioco? e collegare il tasto invia del pc con conferma?
+
 aggiungere un avatar che puoi usare solo se finisci il gioco una volta (opzionale)
 

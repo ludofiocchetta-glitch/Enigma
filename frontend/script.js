@@ -145,15 +145,6 @@ function iniziaEscapeRoom() {
     window.location.href="room1.html";
 }
 
-/*const userName = document.getElementById('inputname');
-
-if (userName !== null) {
-    userName.addEventListener('input', function() {
-        this.classList.remove('is-invalid');
-        this.placeholder = ""; 
-    });
-}*/
-
 function caricaAvatarInAngolo() {
     const avatarname = localStorage.getItem('avatar');
     let imgAvatar = "";
@@ -179,8 +170,8 @@ function mostraMessaggio(titolo, testo) {
     mioModalInfo.show();
 }
 
-//funzione per il taccuino
-function aggiungiAlTaccuino(stanza,oggetto,contenuto,tipo="temporaneo") {
+//funzioni per il taccuino
+function aggiungiAlTaccuino(stanza,oggetto,contenuto,tipo) {
     let taccuino=JSON.parse(localStorage.getItem('taccuinoAgente')) || [];
     taccuino.push({stanza: stanza,oggetto: oggetto,contenuto: contenuto,tipo: tipo});
     localStorage.setItem('taccuinoAgente',JSON.stringify(taccuino));
@@ -202,7 +193,7 @@ function apriTaccuino() {
     } else {
         taccuino.forEach(nota => {
             if (nota.tipo === "finale") {
-                testo += `${nota.stanza}: ${nota.contenuto}\n\n`;
+                testo += `${nota.stanza} - ${nota.contenuto}\n\n`;
             } else {
                 testo += `${nota.stanza}-${nota.oggetto}: ${nota.contenuto}\n\n`;
             }
@@ -347,7 +338,13 @@ function controllaLavagna() {
             modalEnigma.style.pointerEvents="none";
             modalEnigma.style.opacity=0.5;
         }
-        aggiungiAlTaccuino("room1","lavagna","GPKIOC corrisponde a enigma");
+        aggiungiAlTaccuino("room1","lavagna","GPKIOC corrisponde a enigma","provvisorio");// Aggiungi la classe per far partire l'animazione
+        /* animazione taccuino */
+        const avatar = document.getElementById('avatarid');
+        avatar.classList.add('taccuino-aggiornato');
+        setTimeout(() => {
+            avatar.classList.remove('taccuino-aggiornato');
+        }, 1200);
     } else {
         countLavagna++;
         if (countLavagna==2) {
@@ -382,7 +379,12 @@ function controllaTelefono() {
             modalEnigma.style.pointerEvents="none";
             modalEnigma.style.opacity=0.5;
         }
-        aggiungiAlTaccuino("room1","telefono","20-21-18-9-14-7 corrisponde a Turing");
+        aggiungiAlTaccuino("room1","telefono","20-21-18-9-14-7 corrisponde a Turing","provvisorio");
+          const avatar = document.getElementById('avatarid');
+        avatar.classList.add('taccuino-aggiornato');
+        setTimeout(() => {
+            avatar.classList.remove('taccuino-aggiornato');
+        }, 1200);
     } else {
         countTelefono++;
         if (countTelefono==2) {
@@ -425,7 +427,12 @@ function controllaEnigma() {
             modalEnigma.style.opacity=0.5;
         }
         pulisciTaccuino();
-        aggiungiAlTaccuino("room1","Hai ottenuto questo numero: 20", "finale");
+        aggiungiAlTaccuino("room1","codice","Hai ottenuto questo numero: 20", "finale");
+        const avatar = document.getElementById('avatarid');
+        avatar.classList.add('taccuino-aggiornato');
+        setTimeout(() => {
+            avatar.classList.remove('taccuino-aggiornato');
+        }, 1200);
         setTimeout(() => { window.location.href = "room2.html"; }, 2500);
     } else {
         document.getElementById('codiceSoluzione').value = "";
@@ -559,7 +566,12 @@ function controllaBilancia() {
             modalEnigma.style.pointerEvents="none";
             modalEnigma.style.opacity=0.5;
         }
-        aggiungiAlTaccuino("room2","bilancia","Un'equazione chimica va bilanciata");
+        const avatar = document.getElementById('avatarid');
+        avatar.classList.add('taccuino-aggiornato');
+        setTimeout(() => {
+            avatar.classList.remove('taccuino-aggiornato');
+        }, 1200);
+        aggiungiAlTaccuino("room2","bilancia","Un'equazione chimica va bilanciata","provvisorio");
     } else {
         countBilancia++;
         if (countBilancia>=3) {
@@ -589,12 +601,17 @@ function controllaPozioni() {
         bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
         mostraMessaggio("Accettato", "Bravissimo! hai decifrato il principio. \n Continua la tua missione.");
         enigmiRisoltiC.pozioni=true;
-          const modalEnigma=document.getElementById('pozioniC');
+        const modalEnigma=document.getElementById('pozioniC');
         if (modalEnigma) {
             modalEnigma.style.pointerEvents="none";
             modalEnigma.style.opacity=0.5;
         }
-        aggiungiAlTaccuino("room2","pozioni","La legge di Lavoisier afferma che la materia non si crea nè si distrugge");
+        const avatar = document.getElementById('avatarid');
+        avatar.classList.add('taccuino-aggiornato');
+        setTimeout(() => {
+            avatar.classList.remove('taccuino-aggiornato');
+        }, 1200);
+        aggiungiAlTaccuino("room2","pozioni","La legge di Lavoisier afferma che la materia non si crea nè si distrugge","provvisorio");
     } else {
         countPozioni++;
         if (countPozioni==2) {
@@ -635,7 +652,12 @@ function controllaEquazione() {
             modalEnigma.style.opacity=0.5;
         }
         pulisciTaccuino();
-        aggiungiAlTaccuino("room2","Hai ottenuto questo numero: 3414", "finale");
+        aggiungiAlTaccuino("room2","codice","Hai ottenuto questo numero: 3414", "finale");
+        const avatar = document.getElementById('avatarid');
+        avatar.classList.add('taccuino-aggiornato');
+        setTimeout(() => {
+            avatar.classList.remove('taccuino-aggiornato');
+        }, 1200);
         setTimeout(() => { window.location.href = "room3.html"; }, 2500);
     } else {
         document.getElementById('CurieSoluzione').value = "";
@@ -786,7 +808,12 @@ function controllaMobile() {
             modalEnigma.style.pointerEvents="none";
             modalEnigma.style.opacity=0.5;
         }
-        aggiungiAlTaccuino("room3","mobile","Lo spazio e il tempo sono relativi");
+        aggiungiAlTaccuino("room3","mobile","Lo spazio e il tempo sono relativi","provvisorio");
+        const avatar = document.getElementById('avatarid');
+        avatar.classList.add('taccuino-aggiornato');
+        setTimeout(() => {
+            avatar.classList.remove('taccuino-aggiornato');
+        }, 1200);
     } else {
         countMobile++;
         if (countMobile==2) {
@@ -821,7 +848,12 @@ function controllaMappamondoE() {
             modalEnigma.style.pointerEvents="none";
             modalEnigma.style.opacity=0.5;
         }
-        aggiungiAlTaccuino("room3","mappamondo","Il punto da cui osservi in fisica è il punto di riferimento");
+        aggiungiAlTaccuino("room3","mappamondo","Il punto da cui osservi in fisica è il punto di riferimento","provvisorio");
+        const avatar = document.getElementById('avatarid');
+        avatar.classList.add('taccuino-aggiornato');
+        setTimeout(() => {
+            avatar.classList.remove('taccuino-aggiornato');
+        }, 1200);
     } else {
         countMappamondo++;
         if (countMappamondo==2) {
@@ -863,7 +895,12 @@ function controllaEinstein() {
             modalEnigma.style.opacity=0.5;
         }
         pulisciTaccuino();
-        aggiungiAlTaccuino("room3","Hai ottenuto questo numero: 2", "finale");
+        aggiungiAlTaccuino("room3","codice","Hai ottenuto questo numero: 2", "finale");
+        const avatar = document.getElementById('avatarid');
+        avatar.classList.add('taccuino-aggiornato');
+        setTimeout(() => {
+            avatar.classList.remove('taccuino-aggiornato');
+        }, 1200);
         setTimeout(() => { window.location.href = "room4.html"; }, 2500);
     } else {
         document.getElementById('EinsteinSoluzione').value = "";
@@ -1016,7 +1053,12 @@ function controllaOrologio() {
             modalEnigma.style.pointerEvents="none";
             modalEnigma.style.opacity=0.5;
         }
-        aggiungiAlTaccuino("room4","orologio","La sequenza di Fibonacci continua con 13,21,34");
+        aggiungiAlTaccuino("room4","orologio","La sequenza di Fibonacci continua con 13,21,34","provvisorio");
+        const avatar = document.getElementById('avatarid');
+        avatar.classList.add('taccuino-aggiornato');
+        setTimeout(() => {
+            avatar.classList.remove('taccuino-aggiornato');
+        }, 1200);
     } else {
         countOrologio++;
         if (countOrologio==2) {
@@ -1051,7 +1093,12 @@ function controllaLibri() {
             modalEnigma.style.pointerEvents="none";
             modalEnigma.style.opacity=0.5;
         }
-        aggiungiAlTaccuino("room4","libri","L'algoritmo è una sequenza di istruzioni ordinate");
+        aggiungiAlTaccuino("room4","libri","L'algoritmo è una sequenza di istruzioni ordinate","provvisorio");
+        const avatar = document.getElementById('avatarid');
+        avatar.classList.add('taccuino-aggiornato');
+        setTimeout(() => {
+            avatar.classList.remove('taccuino-aggiornato');
+        }, 1200);
     } else {
         countLibri++;
         if (countLibri==2) {
@@ -1094,7 +1141,12 @@ function controllaLovelace() {
             modalEnigma.style.opacity=0.5;
         }
         pulisciTaccuino();
-        aggiungiAlTaccuino("room4","Hai ottenuto questo numero: 46", "finale");
+        aggiungiAlTaccuino("room4","codice","Hai ottenuto questo numero: 46", "finale");
+        const avatar = document.getElementById('avatarid');
+        avatar.classList.add('taccuino-aggiornato');
+        setTimeout(() => {
+            avatar.classList.remove('taccuino-aggiornato');
+        }, 1200);
         setTimeout(() => { window.location.href = "room5.html"; }, 2500);
     } else {
         document.getElementById('LovelaceSoluzione').value = "";
@@ -1119,13 +1171,13 @@ function inizioStanzaF() {
     if (nomeAvatar==="Alan Turing" || nomeAvatar==="Albert Einstein") {
         messaggio=`${nomeAvatar} Sei arrivato all’ultima fase. \nLe quattro stanze non erano casuali, ogni ambiente era un test. Ogni mente -Alan Turing, Marie Curie, Albert Einstein, Ada Lovelace — ti ha fornito gli strumenti necessari. 
         Non troverai nuove informazioni qui, solo connessioni. I dati che ti servono li hai già raccolti, ora devi dimostrare di saperli usare.
-        Analizza ciò che hai visto, ricostruisci il percorso e individua il codice.
-        La missione si conclude qui. La via d’uscita è già nelle tue mani...`
+        Analizza ciò che hai visto, controlla i tuoi appunti, ricostruisci il percorso e individua il codice.
+        La missione si conclude qui. \nLa via d’uscita è già nelle tue mani...`
     } 
     else {
         messaggio=`${nomeAvatar} Sei arrivata all’ultima fase. \nLe quattro stanze non erano casuali, ogni ambiente era un test. Ogni mente -Alan Turing, Marie Curie, Albert Einstein, Ada Lovelace — ti ha fornito gli strumenti necessari. 
         Non troverai nuove informazioni qui, solo connessioni. I dati che ti servono li hai già raccolti, ora devi dimostrare di saperli usare.
-        Analizza ciò che hai visto, ricostruisci il percorso e individua il codice.
+        Analizza ciò che hai visto, controlla i tuoi appunti, ricostruisci il percorso e individua il codice.
         La missione si conclude qui. \nLa via d’uscita è già nelle tue mani...`
     }
     // digitazione automatica
@@ -1186,7 +1238,7 @@ let enigmiRisoltiF= {
 let countMuro=0;
 
 function mostraIndizioUomo() {
-    mostraMessaggio("Mandante", "Finalmente, sapevo che saresti arrivato fin qui!\n Hai attraversato grandi menti… ma non hai ancora finito, la conoscenza non serve a nulla se non sai collegarla.\n Hai dimostrato di saper osservare, analizzare, dedurre, ora non ti resta che un ultimo passo. \nIl codice che cerci non è nascosto qui, è dentro ciò che hai già fatto.\nSolo chi comprende l’insieme può andare oltre.",);
+    mostraMessaggio("Mandante", "Finalmente, sapevo che saresti arrivato fin qui!\n Hai attraversato grandi menti… ma non hai ancora finito, la conoscenza non serve a nulla se non sai collegarla.\n Hai dimostrato di saper osservare, analizzare, dedurre, ora non ti resta che un ultimo passo. \nIl codice che cerci non è nascosto qui, è dentro ciò che hai già fatto.\nSolo chi comprende l’insieme può andare oltre.");
     oggettiEsploratiF.uomo=true;
 }
 
@@ -1221,6 +1273,12 @@ function controllaMuro() {
             modalEnigma.style.pointerEvents="none";
             modalEnigma.style.opacity=0.5;
         }
+        const avatar = document.getElementById('avatarid');
+        avatar.classList.add('taccuino-aggiornato');
+        setTimeout(() => {
+            avatar.classList.remove('taccuino-aggiornato');
+        }, 1200);
+        localStorage.clear()
     } else {
         countMuro++;
         if (countMuro==2) {

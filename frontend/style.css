@@ -389,7 +389,15 @@ input[type="radio"]:checked + .avatar-img {
     transform: translate(-50%, -50%);
     z-index: 1000; /* Lo mantiene sopra a tutto il resto della stanza */
 }
+@keyframes notifica-taccuino {
+  0% { transform: scale(1); box-shadow: 0 0 0px rgba(255, 255, 255, 0); }
+  50% { transform: scale(1.15); box-shadow: 0 0 15px rgba(255, 255, 255, 0.8); }
+  100% { transform: scale(1); box-shadow: 0 0 0px rgba(255, 255, 255, 0); }
+}
 
+.taccuino-aggiornato {
+  animation: notifica-taccuino 1.5s ease-in-out 1; 
+}
 /* Coordinate specifiche per ogni oggetto */
 .macchina-da-scrivere {
     top: 60%;
@@ -1051,20 +1059,20 @@ input[type="radio"]:checked + .avatar-img {
         border-width: 3px !important; 
     }
 
-    #introT, #introC, #introE, #introL {
+    #introT, #introC, #introE, #introL, #introF{
         padding: 15px !important; 
         max-height: 85vh !important; 
         max-width: 85% !important; 
         overflow-y: auto; 
     }
 
-    #introT p, #introC p, #introE p, #introL p {
+    #introT p, #introC p, #introE p, #introL p, #introF p {
         font-size: 1rem !important;
         line-height: 1.3 !important;
         margin-bottom: 10px !important;
     }
 
-    #introT .btn-lg, #introC .btn-lg, #introE .btn-lg, #introL .btn-lg {
+    #introT .btn-lg, #introC .btn-lg, #introE .btn-lg, #introL .btn-lg, #introF .btn-lg {
         padding: 5px 25px !important;
         font-size: 1rem !important;
         margin-top: 5px !important;
