@@ -7,20 +7,8 @@ Database con utente, stanza e domande con i vari attributi e relazioni (come fot
 query per fare la classifica effettiva. Importante salvere le risposte che un giocatore
 sbaglia così che diminuisce il suo punteggio W
 
-Aggiornare le istruzioni nella pagina iniziale con ultima stanza e taccuino V
-
-Le domande intermedie una volta fatte o si rendono non più cliccabili oppure si fa apparire un messaggio di averla
-già completato sennò non ha senso rifarlo all'infinito V
 Menu opzioni con salva, restart, home, abbassare volume (lato backend), nella pagina
 di login e il tasto salva in ogni stanza? oppure salva in automatico? W
-
-password V
-
-musica una per ogni stanza V
-
-Aggiustare responsivness alla fine V
-
-
 
 Timer per rispondere alle domande A
 
@@ -32,7 +20,7 @@ classifica
 il backend deve avere un database con tutti gli utenti e per ogni utente il nome, la password
 e le risposte che dà. Non cambiare la logica, le risposte controlla se sono corrette il front
 end e si può lasciare anche il localstorage però in più manda le risposte al server.
-Il server le conserva e poi ha una funzione che calcola la classifica e la manda al client 
+Il server le conserva e poi ha una funzione che calcola la classifica e la manda al client
 che la fa vedere.
 Il salvataggio è automatico perchè c'è il database però se lo stesso utente rientra nel gioco
 gli va chiesto se vuole continuare la partita o iniziarne una nuova. Problema se due utenti

@@ -380,7 +380,7 @@ function controllaTelefono() {
             modalEnigma.style.opacity=0.5;
         }
         aggiungiAlTaccuino("room1","telefono","20-21-18-9-14-7 corrisponde a Turing","provvisorio");
-          const avatar = document.getElementById('avatarid');
+        const avatar = document.getElementById('avatarid');
         avatar.classList.add('taccuino-aggiornato');
         setTimeout(() => {
             avatar.classList.remove('taccuino-aggiornato');
@@ -549,7 +549,7 @@ function apriModalC(titolo, descrizione, richiesta, testoBottone, funzioneContro
 }
 
 
-function mostraBilancia() { 
+function mostraBilancia() {
     apriModalC("Bilancia", "Se gli atomi non si creano né si distruggono, cosa bisogna fare per rendere corretta un’equazione chimica?",
         "Inserisci la risposta: ","Controlla",controllaBilancia,false);
         document.getElementById('CurieSoluzione').placeholder = "??????????";
@@ -589,7 +589,7 @@ function controllaBilancia() {
     }
 }
 
-function mostraPozioni() { 
+function mostraPozioni() {
     apriModalC("Pozioni", "Qual è il nome della legge che afferma che la materia non si crea né si distrugge?",
         "Inserisci il nome della legge: ","Controlla",controllaPozioni,false);
         document.getElementById('CurieSoluzione').placeholder = "?????????";
@@ -665,7 +665,7 @@ function controllaEquazione() {
     }
 }
 
-/* FUNZIONI EINSTEIN*/ 
+/* FUNZIONI EINSTEIN*/
 //funzioni per il testo all'entrata della stanza
 function inizioStanzaE() {
     const avatarName= localStorage.getItem('avatar');
@@ -791,7 +791,7 @@ function apriModalE(titolo, descrizione, richiesta, testoBottone, funzioneContro
     mioModal.show();
 }
 
-function mostraMobile() { 
+function mostraMobile() {
     apriModalE("Mobile", "Quali due grandezze sono relative?",
         "Inserisci le grandezze: ","Controlla",controllaMobile,false);
         document.getElementById('EinsteinSoluzione').placeholder = "?????? e ?????";
@@ -1076,7 +1076,7 @@ function controllaOrologio() {
     }
 }
 
-function mostraLibri() { 
+function mostraLibri() {
     apriModalL("Libri", "Un titolo spicca: le istruzioni contano più dei numeri.\n Qualcuno ha sottolineato una frase: 'ordine delle operazioni.'",
         "Come si chiama l'insieme di istruzioni che ti permette di risolvere problemi, tenendo conto dell'ordine: ","Controlla", controllaLibri,false);
     document.getElementById('LovelaceSoluzione').placeholder = "?????????";
@@ -1154,7 +1154,7 @@ function controllaLovelace() {
     }
 }
 
-//room5 
+//room5
 function inizioStanzaF() {
     const avatarName= localStorage.getItem('avatar');
     let nomeAvatar = "";
@@ -1167,13 +1167,13 @@ function inizioStanzaF() {
         nomeAvatar = "Albert Einstein";
     } else if (avatarName === "detective4") {
         nomeAvatar = "Ada Lovelace";
-    }   
+    }
     if (nomeAvatar==="Alan Turing" || nomeAvatar==="Albert Einstein") {
         messaggio=`${nomeAvatar} Sei arrivato all’ultima fase. \nLe quattro stanze non erano casuali, ogni ambiente era un test. Ogni mente -Alan Turing, Marie Curie, Albert Einstein, Ada Lovelace — ti ha fornito gli strumenti necessari. 
         Non troverai nuove informazioni qui, solo connessioni. I dati che ti servono li hai già raccolti, ora devi dimostrare di saperli usare.
         Analizza ciò che hai visto, controlla i tuoi appunti, ricostruisci il percorso e individua il codice.
         La missione si conclude qui. \nLa via d’uscita è già nelle tue mani...`
-    } 
+    }
     else {
         messaggio=`${nomeAvatar} Sei arrivata all’ultima fase. \nLe quattro stanze non erano casuali, ogni ambiente era un test. Ogni mente -Alan Turing, Marie Curie, Albert Einstein, Ada Lovelace — ti ha fornito gli strumenti necessari. 
         Non troverai nuove informazioni qui, solo connessioni. I dati che ti servono li hai già raccolti, ora devi dimostrare di saperli usare.
@@ -1346,5 +1346,24 @@ document.addEventListener('DOMContentLoaded', function() {
         startMusic();
         document.addEventListener('click', startMusic);
         document.addEventListener('keydown',startMusic);
+    }
+});
+
+//tasto invio
+document.addEventListener('keydown', function(event) {
+    if(event.key == 'Enter'){
+        const openModal = document.querySelector('.modal.show')
+        if(openModal){
+            event.preventDefault();
+
+            const confirmButton = openModal.querySelector('[id^="btnConferma"]')
+            const closeButton = openModal.querySelector('.modal-footer [data-bs-dismiss="modal"]')
+
+            if(confirmButton){
+                confirmButton.click();
+            }else if(closeButton){
+                closeButton.click();
+            }
+        }
     }
 });
