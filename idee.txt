@@ -7,7 +7,7 @@ Database con utente, stanza e domande con i vari attributi e relazioni (come fot
 query per fare la classifica effettiva. Importante salvere le risposte che un giocatore
 sbaglia così che diminuisce il suo punteggio W
 
-Menu opzioni con salva, restart, home, abbassare volume (lato backend), nella pagina
+Menu opzioni con salva, restart, home (lato backend), nella pagina
 di login e il tasto salva in ogni stanza? oppure salva in automatico? W
 
 Timer per rispondere alle domande A
@@ -26,7 +26,7 @@ Il salvataggio è automatico perchè c'è il database però se lo stesso utente 
 gli va chiesto se vuole continuare la partita o iniziarne una nuova. Problema se due utenti
 diversi con lo stesso nome mettono la stessa password?
 
-Bisogna mettere il tasto per chiudere il gioco? e collegare il tasto invia del pc con conferma?
+Bisogna mettere il tasto per chiudere il gioco?
 
-aggiungere un avatar che puoi usare solo se finisci il gioco una volta (opzionale)
+aggiungere un avatar che puoi usare solo se finisci il gioco una volta A
 

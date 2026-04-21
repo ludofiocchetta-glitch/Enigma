@@ -52,22 +52,27 @@ window.onload = function() {
     }
     if (document.getElementById('testoMacchina1')) {
         document.getElementById('testoMacchina1').classList.add('cursore'); 
+        ripristinaStatoTuring();
         inizioStanzaT();
     }
     if (document.getElementById('testoMacchina2')) {
         document.getElementById('testoMacchina2').classList.add('cursore'); 
+        ripristinaStatoCurie();
         inizioStanzaC();
     }
     if (document.getElementById('testoMacchina3')) {
-        document.getElementById('testoMacchina3').classList.add('cursore'); 
+        document.getElementById('testoMacchina3').classList.add('cursore');
+        ripristinaStatoEinsetin();
         inizioStanzaE();
     }
     if (document.getElementById('testoMacchina4')) {
         document.getElementById('testoMacchina4').classList.add('cursore'); 
+        ripristinaStatoLovelace();
         inizioStanzaL();
     }
     if (document.getElementById('testoMacchina5')) {
         document.getElementById('testoMacchina5').classList.add('cursore'); 
+        ripristinaStatoFinal();
         inizioStanzaF();
     }
     if (document.getElementById('avatarid')) {
@@ -267,6 +272,12 @@ function iniziaEsplorazioneT() {
     const avatar=document.getElementById('avatarcontenitore');
     avatar.classList.remove('d-none');
     avatar.classList.add('fade-in');
+     /* animazione taccuino */
+    const avatar2 = document.getElementById('avatarid');
+    avatar2.classList.add('taccuino-aggiornato');
+    setTimeout(() => {
+        avatar2.classList.remove('taccuino-aggiornato');
+    }, 1200);
 }
 
 let countLavagna=0;
@@ -287,21 +298,25 @@ let oggettiEsplorati= {
 function mostraAtmosferaTuring() {
     mostraMessaggio("Mappamondo", "I messaggi attraversano il continente… ma vengono compresi solo in un luogo. \n Non cercare lontano Agente.");
     oggettiEsplorati.mappamondo=true;
+    localStorage.setItem("turing_mappamondo_risolto", "true");
 }
 
 function mostraIndizioTuring() {
     mostraMessaggio("Serranda", "Ci sei quasi, hai trovato un appunto segreto appeso qui: Le parole più importanti non sono scritte per intero.\n B_MBE");
     oggettiEsplorati.serranda=true;
+    localStorage.setItem("turing_serranda_risolto", "true");
 }
 
 function mostraScatoloni() {
     mostraMessaggio("Scatoloni polverosi", "Scartoffie, appunti tecnici  e... una tazza di tè ormai fredda. \n Qualcuno ha lavorato qui a lungo.");
     oggettiEsplorati.scatoloni=true;
+    localStorage.setItem("turing_scatoloni_risolto", "true");
 }
 
 function mostraCappello() {
     mostraMessaggio("Cappello", "Un uomo che ha trasformato lettere in armi");
     oggettiEsplorati.cappello=true;
+    localStorage.setItem("turing_cappello_risolto", "true");
 }
 
 /*FUNZIONE PER IL MODALE DINAMICO*/
@@ -333,6 +348,7 @@ function controllaLavagna() {
         bootstrap.Modal.getInstance(document.getElementById('enigmaModal')).hide();
         mostraMessaggio("Accettato", "Geniale! hai decifrato il codice sulla lavagna. \n Puoi continuare a cercare.");
         enigmiRisolti.lavagna=true;
+        localStorage.setItem("turing_lavagna_risolta", "true");
         const modalEnigma=document.getElementById('lavagnaT');
         if (modalEnigma) {
             modalEnigma.style.pointerEvents="none";
@@ -374,6 +390,7 @@ function controllaTelefono() {
         bootstrap.Modal.getInstance(document.getElementById('enigmaModal')).hide();
         mostraMessaggio("Accettato", "Fantastico! hai capito il significato nascosto del numero. \n Continua la tua esplorazione.");
         enigmiRisolti.telefono=true;
+        localStorage.setItem("turing_telefono_risolto", "true");
         const modalEnigma=document.getElementById('telefonoT');
         if (modalEnigma) {
             modalEnigma.style.pointerEvents="none";
@@ -428,15 +445,30 @@ function controllaEnigma() {
         }
         pulisciTaccuino();
         aggiungiAlTaccuino("room1","codice","Hai ottenuto questo numero: 20", "finale");
-        const avatar = document.getElementById('avatarid');
-        avatar.classList.add('taccuino-aggiornato');
-        setTimeout(() => {
-            avatar.classList.remove('taccuino-aggiornato');
-        }, 1200);
         setTimeout(() => { window.location.href = "room2.html"; }, 2500);
     } else {
         document.getElementById('codiceSoluzione').value = "";
         document.getElementById('codiceSoluzione').placeholder = "Non è il nome che stiamo cercando. Riprova!";
+    }
+}
+
+function ripristinaStatoTuring() {
+
+    if (localStorage.getItem("turing_lavagna_risolta") === "true") {
+        enigmiRisolti.lavagna = true; 
+        const modalEnigma = document.getElementById('lavagnaT');
+        if (modalEnigma) {
+            modalEnigma.style.pointerEvents = "none";
+            modalEnigma.style.opacity = 0.5;
+        }
+    }
+    if (localStorage.getItem("turing_telefono_risolto") === "true") {
+        enigmiRisolti.telefono = true;
+        const modalEnigma = document.getElementById('telefonoT');
+        if (modalEnigma) {
+            modalEnigma.style.pointerEvents = "none";
+            modalEnigma.style.opacity = 0.5;
+        }
     }
 }
 /*FUNZIONI STANZA CURIE*/
@@ -501,6 +533,12 @@ function iniziaEsplorazioneC() {
     const avatar=document.getElementById('avatarcontenitore2');
     avatar.classList.remove('d-none');
     avatar.classList.add('fade-in');
+    /* animazione taccuino */
+    const avatar2 = document.getElementById('avatarid');
+    avatar2.classList.add('taccuino-aggiornato');
+    setTimeout(() => {
+        avatar2.classList.remove('taccuino-aggiornato');
+    }, 1200);
 }
 
 let countBilancia=0;
@@ -561,17 +599,18 @@ function controllaBilancia() {
         bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
         mostraMessaggio("Accettato", "Ottimo! hai capito le equazioni chimiche. \n Puoi continuare a cercare.");
         enigmiRisoltiC.bilancia=true;
+        localStorage.setItem("curie_bilancia_risolta", "true");
         const modalEnigma=document.getElementById('bilanciaC');
         if (modalEnigma) {
             modalEnigma.style.pointerEvents="none";
             modalEnigma.style.opacity=0.5;
         }
+        aggiungiAlTaccuino("room2","bilancia","Un'equazione chimica va bilanciata","provvisorio");
         const avatar = document.getElementById('avatarid');
         avatar.classList.add('taccuino-aggiornato');
         setTimeout(() => {
             avatar.classList.remove('taccuino-aggiornato');
         }, 1200);
-        aggiungiAlTaccuino("room2","bilancia","Un'equazione chimica va bilanciata","provvisorio");
     } else {
         countBilancia++;
         if (countBilancia>=3) {
@@ -601,17 +640,18 @@ function controllaPozioni() {
         bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
         mostraMessaggio("Accettato", "Bravissimo! hai decifrato il principio. \n Continua la tua missione.");
         enigmiRisoltiC.pozioni=true;
+        localStorage.setItem("curie_pozioni_risolte", "true");
         const modalEnigma=document.getElementById('pozioniC');
         if (modalEnigma) {
             modalEnigma.style.pointerEvents="none";
             modalEnigma.style.opacity=0.5;
         }
+        aggiungiAlTaccuino("room2","pozioni","La legge di Lavoisier afferma che la materia non si crea nè si distrugge","provvisorio");
         const avatar = document.getElementById('avatarid');
         avatar.classList.add('taccuino-aggiornato');
         setTimeout(() => {
             avatar.classList.remove('taccuino-aggiornato');
         }, 1200);
-        aggiungiAlTaccuino("room2","pozioni","La legge di Lavoisier afferma che la materia non si crea nè si distrugge","provvisorio");
     } else {
         countPozioni++;
         if (countPozioni==2) {
@@ -653,15 +693,29 @@ function controllaEquazione() {
         }
         pulisciTaccuino();
         aggiungiAlTaccuino("room2","codice","Hai ottenuto questo numero: 3414", "finale");
-        const avatar = document.getElementById('avatarid');
-        avatar.classList.add('taccuino-aggiornato');
-        setTimeout(() => {
-            avatar.classList.remove('taccuino-aggiornato');
-        }, 1200);
         setTimeout(() => { window.location.href = "room3.html"; }, 2500);
     } else {
         document.getElementById('CurieSoluzione').value = "";
         document.getElementById('CurieSoluzione').placeholder = "Non sono i coefficienti giusti,riprova!";
+    }
+}
+
+function ripristinaStatoCurie() {
+    if (localStorage.getItem("curie_bilancia_risolta") === "true") {
+        enigmiRisoltiC.bilancia = true; 
+        const modalEnigma = document.getElementById('bilanciaC');
+        if (modalEnigma) {
+            modalEnigma.style.pointerEvents = "none";
+            modalEnigma.style.opacity = 0.5;
+        }
+    }
+    if (localStorage.getItem("curie_pozioni_risolte") === "true") {
+        enigmiRisoltiC.pozioni = true;
+        const modalEnigma = document.getElementById("pozioniC");
+        if (modalEnigma) {
+            modalEnigma.style.pointerEvents = "none";
+            modalEnigma.style.opacity = 0.5;
+        }
     }
 }
 
@@ -737,6 +791,12 @@ function iniziaEsplorazioneE() {
     const avatar=document.getElementById('avatarcontenitore3');
     avatar.classList.remove('d-none');
     avatar.classList.add('fade-in');
+    /* animazione taccuino */
+    const avatar2 = document.getElementById('avatarid');
+    avatar2.classList.add('taccuino-aggiornato');
+    setTimeout(() => {
+        avatar2.classList.remove('taccuino-aggiornato');
+    }, 1200);
 }
 
 let oggettiEsploratiE= {
@@ -803,6 +863,7 @@ function controllaMobile() {
         bootstrap.Modal.getInstance(document.getElementById('EinsteinModal')).hide();
         mostraMessaggio("Accettato", "Fortissimo! hai capito quali sono le grandezze. \n Puoi continuare la tua ricerca.");
         enigmiRisoltiE.mobile=true;
+        localStorage.setItem("einstein_mobile_risolto", "true");
         const modalEnigma=document.getElementById('mobileE');
         if (modalEnigma) {
             modalEnigma.style.pointerEvents="none";
@@ -843,6 +904,7 @@ function controllaMappamondoE() {
         bootstrap.Modal.getInstance(document.getElementById('EinsteinModal')).hide();
         mostraMessaggio("Accettato", "Perfetto, sai tutto sui sistemi di riferimento! \n Continua ad esplorare.");
         enigmiRisoltiE.mappamondo=true;
+        localStorage.setItem("einstein_mappamondo_risolto", "true");
         const modalEnigma=document.getElementById('mappamondoE');
         if (modalEnigma) {
             modalEnigma.style.pointerEvents="none";
@@ -896,15 +958,28 @@ function controllaEinstein() {
         }
         pulisciTaccuino();
         aggiungiAlTaccuino("room3","codice","Hai ottenuto questo numero: 2", "finale");
-        const avatar = document.getElementById('avatarid');
-        avatar.classList.add('taccuino-aggiornato');
-        setTimeout(() => {
-            avatar.classList.remove('taccuino-aggiornato');
-        }, 1200);
         setTimeout(() => { window.location.href = "room4.html"; }, 2500);
     } else {
         document.getElementById('EinsteinSoluzione').value = "";
         document.getElementById('EinsteinSoluzione').placeholder = "Non è questa la formula che cerchiamo,riprova!";
+    }
+}
+function ripristinaStatoEinsetin() {
+    if (localStorage.getItem("einstein_mobile_risolto") === "true") {
+        enigmiRisoltiE.mobile = true; 
+        const modalEnigma = document.getElementById('mobileE');
+        if (modalEnigma) {
+            modalEnigma.style.pointerEvents = "none";
+            modalEnigma.style.opacity = 0.5;
+        }
+    }
+    if (localStorage.getItem("einstein_mappamondo_risolto") === "true") {
+        enigmiRisoltiE.mappamondo = true;
+        const modalEnigma = document.getElementById("mappamondoE");
+        if (modalEnigma) {
+            modalEnigma.style.pointerEvents = "none";
+            modalEnigma.style.opacity = 0.5;
+        }
     }
 }
 
@@ -976,6 +1051,12 @@ function iniziaEsplorazioneL() {
     const avatar=document.getElementById('avatarcontenitore4');
     avatar.classList.remove('d-none');
     avatar.classList.add('fade-in');
+    /* animazione taccuino */
+    const avatar2 = document.getElementById('avatarid');
+    avatar2.classList.add('taccuino-aggiornato');
+    setTimeout(() => {
+        avatar2.classList.remove('taccuino-aggiornato');
+    }, 1200);
 }
 
 let countOrologio=0;
@@ -1048,6 +1129,7 @@ function controllaOrologio() {
         bootstrap.Modal.getInstance(document.getElementById('LovelaceModal')).hide();
         mostraMessaggio("Accettato", "Geniale! hai decifrato la sequenza. \n Puoi continuare a cercare.");
         enigmiRisoltiL.orologio=true;
+        localStorage.setItem("lovelace_orologio_risolto", "true");
         const modalEnigma=document.getElementById('orologioL');
         if (modalEnigma) {
             modalEnigma.style.pointerEvents="none";
@@ -1088,6 +1170,7 @@ function controllaLibri() {
         bootstrap.Modal.getInstance(document.getElementById('LovelaceModal')).hide();
         mostraMessaggio("Accettato", "Perfetto! hai capito il libro. \n Continua la tua esplorazione.");
         enigmiRisoltiL.libri=true;
+        localStorage.setItem("lovelace_libri_risolti", "true");
         const modalEnigma=document.getElementById('libriL');
         if (modalEnigma) {
             modalEnigma.style.pointerEvents="none";
@@ -1142,15 +1225,29 @@ function controllaLovelace() {
         }
         pulisciTaccuino();
         aggiungiAlTaccuino("room4","codice","Hai ottenuto questo numero: 46", "finale");
-        const avatar = document.getElementById('avatarid');
-        avatar.classList.add('taccuino-aggiornato');
-        setTimeout(() => {
-            avatar.classList.remove('taccuino-aggiornato');
-        }, 1200);
         setTimeout(() => { window.location.href = "room5.html"; }, 2500);
     } else {
         document.getElementById('LovelaceSoluzione').value = "";
         document.getElementById('LovelaceSoluzione').placeholder = "Non sono le variabili che cerchiamo. Riprova!";
+    }
+}
+
+function ripristinaStatoLovelace() {
+    if (localStorage.getItem("lovelace_orologio_risolto") === "true") {
+        enigmiRisoltiL.orologio = true; 
+        const modalEnigma = document.getElementById('orologioL');
+        if (modalEnigma) {
+            modalEnigma.style.pointerEvents = "none";
+            modalEnigma.style.opacity = 0.5;
+        }
+    }
+    if (localStorage.getItem("lovelace_libri_risolti") === "true") {
+        enigmiRisoltiL.libri = true;
+        const modalEnigma = document.getElementById("libriL");
+        if (modalEnigma) {
+            modalEnigma.style.pointerEvents = "none";
+            modalEnigma.style.opacity = 0.5;
+        }
     }
 }
 
@@ -1225,6 +1322,12 @@ function iniziaEsplorazioneF() {
     const avatar=document.getElementById('avatarcontenitore5');
     avatar.classList.remove('d-none');
     avatar.classList.add('fade-in');
+    /* animazione taccuino */
+    const avatar2 = document.getElementById('avatarid');
+    avatar2.classList.add('taccuino-aggiornato');
+    setTimeout(() => {
+        avatar2.classList.remove('taccuino-aggiornato');
+    }, 1200);
 }
 
 let oggettiEsploratiF= {
@@ -1268,6 +1371,7 @@ function controllaMuro() {
         bootstrap.Modal.getInstance(document.getElementById('FinalModal')).hide();
         mostraMessaggio("Accettato", "Agente bravissimo, hai capito il modo di ragionare.");
         enigmiRisoltiF.muro=true;
+        localStorage.setItem("final_muro_risolto","true");
         const modalEnigma=document.getElementById('muroF');
         if (modalEnigma) {
             modalEnigma.style.pointerEvents="none";
@@ -1295,6 +1399,18 @@ function controllaMuro() {
         }
     }
 }
+
+function ripristinaStatoFinal() {
+    if (localStorage.getItem("final_muro_risolto") === "true") {
+        enigmiRisoltiF.muro = true; 
+        const modalEnigma = document.getElementById('muroF');
+        if (modalEnigma) {
+            modalEnigma.style.pointerEvents = "none";
+            modalEnigma.style.opacity = 0.5;
+        }
+    }
+}
+
 
 // Gestione Audio e Volume
 document.addEventListener('DOMContentLoaded', function() {
