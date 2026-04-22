@@ -1,5 +1,6 @@
 const express = require('express')
 const app =express()
+require('dotenv').config();
 
 const port = 3000
 const host = '0.0.0.0'
@@ -12,8 +13,8 @@ app.use(express.static(root))
 
 //SetupSupabase
 const {createClient} = require("@supabase/supabase-js")
-const supabaseApi = 'https://iblnubgcuixwisofranz.supabase.co'
-const supabaseApiKey = 'sb_publishable_KsiaMEm63i8xkGs-r829yA_YYII_mKb'
+const supabaseApi = 'https://xuiutjpjlidhoprcntbk.supabase.co'
+const supabaseApiKey =process.env.SUPABASE_KEY;
 const supabase =createClient(supabaseApi,supabaseApiKey)
 
 //Funzioni server
