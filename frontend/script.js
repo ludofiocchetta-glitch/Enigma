@@ -1341,7 +1341,7 @@ let enigmiRisoltiF= {
 let countMuro=0;
 
 function mostraIndizioUomo() {
-    mostraMessaggio("Mandante", "Finalmente, sapevo che saresti arrivato fin qui!\n Hai attraversato grandi menti… ma non hai ancora finito, la conoscenza non serve a nulla se non sai collegarla.\n Hai dimostrato di saper osservare, analizzare, dedurre, ora non ti resta che un ultimo passo. \nIl codice che cerci non è nascosto qui, è dentro ciò che hai già fatto.\nSolo chi comprende l’insieme può andare oltre.");
+    mostraMessaggio("Mandante", "Finalmente, sapevo che arrivavi fin qui!\n Hai attraversato grandi menti… ma non hai ancora finito, la conoscenza non serve a nulla se non sai collegarla.\n Hai dimostrato di saper osservare, analizzare, dedurre, ora non ti resta che un ultimo passo. \nIl codice che cerci non è nascosto qui, è dentro ciò che hai già fatto.\nSolo chi comprende l’insieme può andare oltre.");
     oggettiEsploratiF.uomo=true;
 }
 
@@ -1352,7 +1352,7 @@ function apriModalF(titolo, descrizione, richiesta, testoBottone, funzioneContro
     
     let inputField = document.getElementById('FinalSoluzione');
     inputField.value = "";
-    inputField.placeholder = usaPlaceholder ? "??????" : "";
+    inputField.placeholder = usaPlaceholder ? "?????????" : "";
     let btnConferma = document.getElementById('btnConfermaF');
     btnConferma.innerText = testoBottone;
     btnConferma.onclick = funzioneControllo;
@@ -1362,7 +1362,17 @@ function apriModalF(titolo, descrizione, richiesta, testoBottone, funzioneContro
 }
 
 function mostraMuro() {
-    apriModalF("Intrecci", "Agente, il mandante vuole sapere qual è il linguaggio che avevano in comune tutte le stanze.","Inserisci la soluzione","Controlla", controllaMuro, true);
+    if (oggettiEsploratiF.uomo && !enigmiRisoltiF.muro) {
+        apriModalF("Intrecci", "Agente, il mandante vuole sapere qual è il linguaggio che avevano in comune tutte le stanze.","Inserisci la soluzione","Controlla", controllaMuro, false);
+        document.getElementById('FinalSoluzione').placeholder = "??????";
+    }
+    else if (oggettiEsploratiF.uomo && enigmiRisoltiF.muro) {
+        mostraCodiceFinale();
+    }
+    else {
+        mostraMessaggio("Accesso Negato", "Agente, corri a parlare con il tuo mandante prima. \n Poi torna qui.");
+        return;
+    }
 }
 
 function controllaMuro() {
@@ -1411,6 +1421,14 @@ function ripristinaStatoFinal() {
     }
 }
 
+function mostraCodiceFinale() {
+    apriModalF("Accesso finale","Agente, ora c'è bisogno del tuo codice! \n Inserisci il numero che hai ricostruito.","Codice:",
+    "Sblocca",controllaCodiceFinale,true);
+}
+
+function controllaCodiceFinale() {
+
+}
 
 // Gestione Audio e Volume
 document.addEventListener('DOMContentLoaded', function() {
