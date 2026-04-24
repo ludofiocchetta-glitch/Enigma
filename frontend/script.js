@@ -1,3 +1,4 @@
+// login
 function go() {
     const inputname=document.getElementById('inputname');
     const inputpassword=document.getElementById('inputpassword');
@@ -45,6 +46,7 @@ function go() {
     window.location.href = "mission.html";
 }
 
+// inizio stanze
 window.onload = function() {
     if (document.getElementById('testoMacchina')) {
         document.getElementById('testoMacchina').classList.add('cursore'); 
@@ -82,6 +84,7 @@ window.onload = function() {
 
 let skipIntro = false;
 
+//introduzione
 function avviaMissione() {
     const avatarName= localStorage.getItem('avatar');
     const userName= localStorage.getItem('username');
@@ -138,6 +141,7 @@ function scriviTesto(testo, indice) {
     }
 }
 
+// vai alla missione
 function mostraBottoneFinale() {
     document.getElementById('testoMacchina').classList.remove('cursore');
     const bottone = document.getElementById('btnEntra');
@@ -168,6 +172,7 @@ function caricaAvatarInAngolo() {
     }
 }
 
+// per gli indizi
 function mostraMessaggio(titolo, testo) {
     document.getElementById('infoTitolo').innerText = titolo;
     document.getElementById('infoTesto').innerText = testo;
@@ -239,13 +244,11 @@ function inizioStanzaT() {
 
 function scriviTestoT(testo, indice) {
     const elemento = document.getElementById('testoMacchina1');
-
     if (skipIntro) {
         elemento.innerHTML = testo.replace(/\n/g, "<br>");
         mostraBottoneFinaleT();
         return;
     }
-
     if (indice < testo.length) {
         let carattere = testo.charAt(indice);
         if (carattere === '\n') {
@@ -259,6 +262,7 @@ function scriviTestoT(testo, indice) {
     }
 }
 
+// inizio stanza
 function mostraBottoneFinaleT() {
     document.getElementById('testoMacchina1').classList.remove('cursore');
     const bottone = document.getElementById('btnEntra');
@@ -285,7 +289,8 @@ let countTelefono=0;
 
 let enigmiRisolti= {
     lavagna:false,
-    telefono:false
+    telefono:false,
+    macchina:false
 };
 
 let oggettiEsplorati= {
@@ -295,6 +300,7 @@ let oggettiEsplorati= {
     scatoloni:false
 };
 
+// indizi
 function mostraAtmosferaTuring() {
     mostraMessaggio("Mappamondo", "I messaggi attraversano il continente… ma vengono compresi solo in un luogo. \n Non cercare lontano Agente.");
     oggettiEsplorati.mappamondo=true;
@@ -319,7 +325,7 @@ function mostraCappello() {
     localStorage.setItem("turing_cappello_risolto", "true");
 }
 
-/*FUNZIONE PER IL MODALE DINAMICO*/
+/* per il modal dinamico */
 function apriModal(titolo, descrizione, richiesta, testoBottone, funzioneControllo, usaPlaceholder) {
     document.getElementById('modalTitle').innerText = titolo;
     document.getElementById('descrizione').innerText = descrizione;
@@ -336,6 +342,7 @@ function apriModal(titolo, descrizione, richiesta, testoBottone, funzioneControl
     mioModal.show();
 }
 
+// domande intermedie
 function mostraLavagna() {
     apriModal("Lavagna", "Se capisci la macchina, capisci tutto.\n GPKIOC",
         "Decifra gli appunti: ", "Controlla", controllaLavagna,false);
@@ -346,9 +353,9 @@ function controllaLavagna() {
     const risposta=document.getElementById('codiceSoluzione').value.trim().toLowerCase();
     if (risposta==="enigma") {
         bootstrap.Modal.getInstance(document.getElementById('enigmaModal')).hide();
-        mostraMessaggio("Accettato", "Geniale! hai decifrato il codice sulla lavagna. \n Puoi continuare a cercare.");
         enigmiRisolti.lavagna=true;
         localStorage.setItem("turing_lavagna_risolta", "true");
+        mostraMessaggio("Accettato", "Geniale! hai decifrato il codice sulla lavagna. \n Puoi continuare a cercare.");
         const modalEnigma=document.getElementById('lavagnaT');
         if (modalEnigma) {
             modalEnigma.style.pointerEvents="none";
@@ -388,9 +395,9 @@ function controllaTelefono() {
     const risposta=document.getElementById('codiceSoluzione').value.trim().toLowerCase();
     if (risposta==="turing") {
         bootstrap.Modal.getInstance(document.getElementById('enigmaModal')).hide();
-        mostraMessaggio("Accettato", "Fantastico! hai capito il significato nascosto del numero. \n Continua la tua esplorazione.");
         enigmiRisolti.telefono=true;
         localStorage.setItem("turing_telefono_risolto", "true");
+        mostraMessaggio("Accettato", "Fantastico! hai capito il significato nascosto del numero. \n Continua la tua esplorazione.");
         const modalEnigma=document.getElementById('telefonoT');
         if (modalEnigma) {
             modalEnigma.style.pointerEvents="none";
@@ -419,6 +426,7 @@ function controllaTelefono() {
     }
 }
 
+// enigma finale
 function mostraEnigmaFinale() {
     if (enigmiRisolti.telefono && enigmiRisolti.lavagna && oggettiEsplorati.mappamondo 
     && oggettiEsplorati.cappello && oggettiEsplorati.scatoloni && oggettiEsplorati.serranda) {
@@ -438,6 +446,8 @@ function controllaEnigma() {
     if (rispostaUtente === soluzioneCorretta) {
         bootstrap.Modal.getInstance(document.getElementById('enigmaModal')).hide();
         mostraMessaggio("Codice accettato!", "Bravo Agente! La porta si è sbloccata. Preparati a scappare...");
+        enigmiRisolti.macchina=true;
+        localStorage.setItem("turing_enigma_risolto", "true");
         const modalEnigma=document.getElementById('macchinaT');
         if (modalEnigma) {
             modalEnigma.style.pointerEvents="none";
@@ -452,8 +462,8 @@ function controllaEnigma() {
     }
 }
 
+// salvare le risposte intermedie nel localStorage in caso di ricaricamento pagina
 function ripristinaStatoTuring() {
-
     if (localStorage.getItem("turing_lavagna_risolta") === "true") {
         enigmiRisolti.lavagna = true; 
         const modalEnigma = document.getElementById('lavagnaT');
@@ -465,6 +475,14 @@ function ripristinaStatoTuring() {
     if (localStorage.getItem("turing_telefono_risolto") === "true") {
         enigmiRisolti.telefono = true;
         const modalEnigma = document.getElementById('telefonoT');
+        if (modalEnigma) {
+            modalEnigma.style.pointerEvents = "none";
+            modalEnigma.style.opacity = 0.5;
+        }
+    }
+    if (localStorage.getItem("turing_enigma_risolto")=== "true") {
+        enigmiRisolti.macchina = true;
+        const modalEnigma = document.getElementById('macchinaT');
         if (modalEnigma) {
             modalEnigma.style.pointerEvents = "none";
             modalEnigma.style.opacity = 0.5;
@@ -520,6 +538,7 @@ function scriviTestoC(testo, indice) {
     }
 }
 
+// inizio stanza
 function mostraBottoneFinaleC() {
     document.getElementById('testoMacchina2').classList.remove('cursore');
     const bottone = document.getElementById('btnEntra');
@@ -552,9 +571,11 @@ let oggettiEsploratiC= {
 
 let enigmiRisoltiC= {
     bilancia:false,
-    pozioni:false
+    pozioni:false,
+    lavagna:false
 };
 
+// indizi
 function mostraAtmosferaCurie() {
     mostraMessaggio("Tavolo", "Gli atomi non scompaiono. Cambiano solo disposizione. \n Sotto, una freccia disegnata collega due lati di un’equazione chimica.");
     oggettiEsploratiC.tavolo=true;
@@ -586,7 +607,7 @@ function apriModalC(titolo, descrizione, richiesta, testoBottone, funzioneContro
     mioModal.show();
 }
 
-
+// domande intermedie
 function mostraBilancia() {
     apriModalC("Bilancia", "Se gli atomi non si creano né si distruggono, cosa bisogna fare per rendere corretta un’equazione chimica?",
         "Inserisci la risposta: ","Controlla",controllaBilancia,false);
@@ -597,9 +618,9 @@ function controllaBilancia() {
     const risposta=document.getElementById('CurieSoluzione').value.trim().toLowerCase();
     if (risposta==="bilanciare") {
         bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
-        mostraMessaggio("Accettato", "Ottimo! hai capito le equazioni chimiche. \n Puoi continuare a cercare.");
         enigmiRisoltiC.bilancia=true;
         localStorage.setItem("curie_bilancia_risolta", "true");
+        mostraMessaggio("Accettato", "Ottimo! hai capito le equazioni chimiche. \n Puoi continuare a cercare.");
         const modalEnigma=document.getElementById('bilanciaC');
         if (modalEnigma) {
             modalEnigma.style.pointerEvents="none";
@@ -638,9 +659,9 @@ function controllaPozioni() {
     const risposta=document.getElementById('CurieSoluzione').value.trim().toLowerCase();
     if (risposta==="lavoisier" || risposta==="legge di lavoisier") {
         bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
-        mostraMessaggio("Accettato", "Bravissimo! hai decifrato il principio. \n Continua la tua missione.");
         enigmiRisoltiC.pozioni=true;
         localStorage.setItem("curie_pozioni_risolte", "true");
+        mostraMessaggio("Accettato", "Bravissimo! hai decifrato il principio. \n Continua la tua missione.");
         const modalEnigma=document.getElementById('pozioniC');
         if (modalEnigma) {
             modalEnigma.style.pointerEvents="none";
@@ -669,6 +690,7 @@ function controllaPozioni() {
     }
 }
 
+// enigma finale
 function risolviEquazioneFinale() {
     if (enigmiRisoltiC.bilancia && enigmiRisoltiC.pozioni && oggettiEsploratiC.foglio && oggettiEsploratiC.scaffale && oggettiEsploratiC.tavolo) {
         apriModalC("Equazione trovata","Agente, sul tavolo principale c'è un quaderno aperto di Marie. \nL’ultima pagina contiene un’equazione incompleta: \n aFe + bH₂O → cFe₃O₄ + dH₂ \n Sotto è scritto: “Solo chi rispetta la legge potrà aprire il passaggio.”",
@@ -686,6 +708,8 @@ function controllaEquazione() {
     if (rispostaUtente === soluzioneCorretta) {
         bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
         mostraMessaggio("Equazione Bilanciata!", "Ottimo lavoro, Agente! La porta si sta aprendo. Sei pronto per la prossima missione...");
+        enigmiRisoltiC.lavagna=true;
+        localStorage.setItem("curie_enigma_risolto", "true");
         const modalEnigma=document.getElementById('lavagnaC');
         if (modalEnigma) {
             modalEnigma.style.pointerEvents="none";
@@ -700,6 +724,7 @@ function controllaEquazione() {
     }
 }
 
+// salva le risoste nel local storage in caso di ricaricamento pagina
 function ripristinaStatoCurie() {
     if (localStorage.getItem("curie_bilancia_risolta") === "true") {
         enigmiRisoltiC.bilancia = true; 
@@ -712,6 +737,14 @@ function ripristinaStatoCurie() {
     if (localStorage.getItem("curie_pozioni_risolte") === "true") {
         enigmiRisoltiC.pozioni = true;
         const modalEnigma = document.getElementById("pozioniC");
+        if (modalEnigma) {
+            modalEnigma.style.pointerEvents = "none";
+            modalEnigma.style.opacity = 0.5;
+        }
+    }
+    if (localStorage.getItem("curie_enigma_risolto")=== "true") {
+        enigmiRisoltiC.lavagna= true;
+        const modalEnigma = document.getElementById("lavagnaC");
         if (modalEnigma) {
             modalEnigma.style.pointerEvents = "none";
             modalEnigma.style.opacity = 0.5;
@@ -778,6 +811,7 @@ function scriviTestoE(testo, indice) {
     }
 }
 
+// inizio stanza
 function mostraBottoneFinaleE() {
     document.getElementById('testoMacchina3').classList.remove('cursore');
     const bottone = document.getElementById('btnEntra');
@@ -809,12 +843,14 @@ let oggettiEsploratiE= {
 
 let enigmiRisoltiE= {
     mappamondo:false,
-    mobile:false
+    mobile:false,
+    lavagna:false
 };
 
 let countMobile=0;
 let countMappamondo=0;
 
+// indizi
 function mostraTavolo() {
     mostraMessaggio("Tavolo", "Tra gli appunti c'è una frase: “Massa ed energia sono la stessa cosa, in forme diverse.”");
     oggettiEsploratiE.tavolo=true;
@@ -851,6 +887,7 @@ function apriModalE(titolo, descrizione, richiesta, testoBottone, funzioneContro
     mioModal.show();
 }
 
+// domande intermedie
 function mostraMobile() {
     apriModalE("Mobile", "Quali due grandezze sono relative?",
         "Inserisci le grandezze: ","Controlla",controllaMobile,false);
@@ -861,9 +898,9 @@ function controllaMobile() {
     const risposta=document.getElementById('EinsteinSoluzione').value.trim().toLowerCase();
     if (risposta==="spazio e tempo" || risposta==="tempo e spazio") {
         bootstrap.Modal.getInstance(document.getElementById('EinsteinModal')).hide();
-        mostraMessaggio("Accettato", "Fortissimo! hai capito quali sono le grandezze. \n Puoi continuare la tua ricerca.");
         enigmiRisoltiE.mobile=true;
         localStorage.setItem("einstein_mobile_risolto", "true");
+        mostraMessaggio("Accettato", "Fortissimo! hai capito quali sono le grandezze. \n Puoi continuare la tua ricerca.");
         const modalEnigma=document.getElementById('mobileE');
         if (modalEnigma) {
             modalEnigma.style.pointerEvents="none";
@@ -902,9 +939,9 @@ function controllaMappamondoE() {
     const risposta=document.getElementById('EinsteinSoluzione').value.trim().toLowerCase();
     if (risposta==="riferimento" || risposta==="sistema di riferimento") {
         bootstrap.Modal.getInstance(document.getElementById('EinsteinModal')).hide();
-        mostraMessaggio("Accettato", "Perfetto, sai tutto sui sistemi di riferimento! \n Continua ad esplorare.");
         enigmiRisoltiE.mappamondo=true;
         localStorage.setItem("einstein_mappamondo_risolto", "true");
+        mostraMessaggio("Accettato", "Perfetto, sai tutto sui sistemi di riferimento! \n Continua ad esplorare.");
         const modalEnigma=document.getElementById('mappamondoE');
         if (modalEnigma) {
             modalEnigma.style.pointerEvents="none";
@@ -933,6 +970,7 @@ function controllaMappamondoE() {
     }
 }
 
+// enigma finale
 function apriEnigmaEinstein() {
     if (enigmiRisoltiE.mappamondo && enigmiRisoltiE.mobile && oggettiEsploratiE.cassetti && oggettiEsploratiE.tavolo 
         && oggettiEsploratiE.ritratto && oggettiEsploratiE.luna) {
@@ -951,6 +989,7 @@ function controllaEinstein() {
     if (rispostaUtente === soluzioneCorretta) {
         bootstrap.Modal.getInstance(document.getElementById('EinsteinModal')).hide();
         mostraMessaggio("Formula corretta!", "Bravissimo Agente! \n Il passaggio segreto si sta aprendo, puoi continuare la tua missione...");
+        localStorage.setItem("einstein_enigma_risolto", "true");
         const modalEnigma=document.getElementById('lavagnaE');
         if (modalEnigma) {
             modalEnigma.style.pointerEvents="none";
@@ -964,6 +1003,8 @@ function controllaEinstein() {
         document.getElementById('EinsteinSoluzione').placeholder = "Non è questa la formula che cerchiamo,riprova!";
     }
 }
+
+// salvataggio risposte nel local storage in caso di ricaricamento pagina
 function ripristinaStatoEinsetin() {
     if (localStorage.getItem("einstein_mobile_risolto") === "true") {
         enigmiRisoltiE.mobile = true; 
@@ -981,10 +1022,17 @@ function ripristinaStatoEinsetin() {
             modalEnigma.style.opacity = 0.5;
         }
     }
+    if (localStorage.getItem("einstein_enigma_risolto")=== "true") {
+        enigmiRisoltiE.lavagna=true;
+        const modalEnigma = document.getElementById("lavagnaE");
+        if (modalEnigma) {
+            modalEnigma.style.pointerEvents = "none";
+            modalEnigma.style.opacity = 0.5;
+        }
+    }
 }
 
-/* funzioni lovelace*/
-
+/* FUNZIONI LOVELACE */
 //funzioni per il testo all'entrata della stanza
 function inizioStanzaL() {
     const avatarName= localStorage.getItem('avatar');
@@ -1038,6 +1086,7 @@ function scriviTestoL(testo, indice) {
     }
 }
 
+// inizio stanza
 function mostraBottoneFinaleL() {
     document.getElementById('testoMacchina4').classList.remove('cursore');
     const bottone = document.getElementById('btnEntra');
@@ -1064,7 +1113,8 @@ let countLibri=0;
 
 let enigmiRisoltiL= {
     orologio:false,
-    libri:false
+    libri:false,
+    enigma:false
 };
 
 let oggettiEsploratiL= {
@@ -1075,6 +1125,7 @@ let oggettiEsploratiL= {
     camino:false
 };
 
+// indizi
 function mostraMappamondo() {
     mostraMessaggio("Mappamondo", "L'Italia e l'Inghilterra sono unite da un filo rosso. \n Accanto c'è un biglietto: \n gli appunti del matematico italiano Menabrea erano solo la teoria, il miracolo è tradurli in ingranaggi... fai molta attenzione alle operazioni di divisione.");
     oggettiEsploratiL.mappamondo2=true;
@@ -1116,7 +1167,7 @@ function apriModalL(titolo, descrizione, richiesta, testoBottone, funzioneContro
     mioModal.show();
 }
 
-
+// domande intermedie
 function mostraOrologio() { 
     apriModalL("Orologio", "Il pendolo oscilla seguendo un ritmo strano, inciso sul legno ci sono dei numeri: 1,1,2,3,5,8...\n Per far partire il primo programma, devi dimostrare di aver capito lo schema perfetto che la natura ha inserito.",
         "Decifra i successivi tre numeri della sequenza: ","Controlla",controllaOrologio,false);
@@ -1127,9 +1178,9 @@ function controllaOrologio() {
     const risposta=document.getElementById('LovelaceSoluzione').value.trim();
     if (risposta==="13,21,34") {
         bootstrap.Modal.getInstance(document.getElementById('LovelaceModal')).hide();
-        mostraMessaggio("Accettato", "Geniale! hai decifrato la sequenza. \n Puoi continuare a cercare.");
         enigmiRisoltiL.orologio=true;
         localStorage.setItem("lovelace_orologio_risolto", "true");
+        mostraMessaggio("Accettato", "Geniale! hai decifrato la sequenza. \n Puoi continuare a cercare.");
         const modalEnigma=document.getElementById('orologioL');
         if (modalEnigma) {
             modalEnigma.style.pointerEvents="none";
@@ -1168,9 +1219,9 @@ function controllaLibri() {
     const risposta=document.getElementById('LovelaceSoluzione').value.trim().toLowerCase()
     if (risposta==="algoritmo") {
         bootstrap.Modal.getInstance(document.getElementById('LovelaceModal')).hide();
-        mostraMessaggio("Accettato", "Perfetto! hai capito il libro. \n Continua la tua esplorazione.");
         enigmiRisoltiL.libri=true;
         localStorage.setItem("lovelace_libri_risolti", "true");
+        mostraMessaggio("Accettato", "Perfetto! hai capito il libro. \n Continua la tua esplorazione.");
         const modalEnigma=document.getElementById('libriL');
         if (modalEnigma) {
             modalEnigma.style.pointerEvents="none";
@@ -1199,6 +1250,7 @@ function controllaLibri() {
     }
 }
 
+// enigma finale
 function apriEnigmaLovelace() {
     if (enigmiRisoltiL.orologio && enigmiRisoltiL.libri && oggettiEsploratiL.mappamondo2 
     && oggettiEsploratiL.libreria && oggettiEsploratiL.quadro && oggettiEsploratiL.lampada && oggettiEsploratiL.camino) {
@@ -1214,10 +1266,11 @@ function apriEnigmaLovelace() {
 function controllaLovelace() {
     const rispostaUtente = document.getElementById('LovelaceSoluzione').value.trim().toLowerCase();
     const soluzioneCorretta = "v4,v6";
-    
     if (rispostaUtente === soluzioneCorretta) {
         bootstrap.Modal.getInstance(document.getElementById('LovelaceModal')).hide();
         mostraMessaggio("Risoluzione accettata!", "Bravissimo Agente! sei pronto per la missione finale...");
+        enigmiRisoltiL.enigma=true;
+        localStorage.setItem("lovelace_enigma_risolto", "true");
         const modalEnigma=document.getElementById('appuntiL');
         if (modalEnigma) {
             modalEnigma.style.pointerEvents="none";
@@ -1232,6 +1285,7 @@ function controllaLovelace() {
     }
 }
 
+// salvataggio risposte nel local storage in caso di ricaricamento pagina
 function ripristinaStatoLovelace() {
     if (localStorage.getItem("lovelace_orologio_risolto") === "true") {
         enigmiRisoltiL.orologio = true; 
@@ -1249,9 +1303,17 @@ function ripristinaStatoLovelace() {
             modalEnigma.style.opacity = 0.5;
         }
     }
+    if (localStorage.getItem("lovelace_enigma_risolto")=== "true") {
+        enigmiRisoltiL.enigma = true;
+        const modalEnigma = document.getElementById("appuntiL");
+        if (modalEnigma) {
+            modalEnigma.style.pointerEvents = "none";
+            modalEnigma.style.opacity = 0.5;
+        }
+    }
 }
 
-//room5
+// FUNZIONI STANZA FINALE
 function inizioStanzaF() {
     const avatarName= localStorage.getItem('avatar');
     let nomeAvatar = "";
@@ -1309,6 +1371,7 @@ function scriviTestoF(testo, indice) {
     }
 }
 
+// inizio stanza
 function mostraBottoneFinaleF() {
     document.getElementById('testoMacchina5').classList.remove('cursore');
     const bottone = document.getElementById('btnEntra');
@@ -1335,13 +1398,16 @@ let oggettiEsploratiF= {
 };
 
 let enigmiRisoltiF= {
-    muro:false
+    muro:false,
+    muro2:false
 };
 
 let countMuro=0;
+let countMuro2=0;
 
+// mandante
 function mostraIndizioUomo() {
-    mostraMessaggio("Mandante", "Finalmente, sapevo che arrivavi fin qui!\n Hai attraversato grandi menti… ma non hai ancora finito, la conoscenza non serve a nulla se non sai collegarla.\n Hai dimostrato di saper osservare, analizzare, dedurre, ora non ti resta che un ultimo passo. \nIl codice che cerci non è nascosto qui, è dentro ciò che hai già fatto.\nSolo chi comprende l’insieme può andare oltre.");
+    mostraMessaggio("Mandante", "Finalmente, sapevo che ce l'avresti fatta ad arrivare fin qui!\n Hai attraversato grandi menti… ma non hai ancora finito, la conoscenza non serve a nulla se non sai collegarla.\n Hai dimostrato di saper osservare, analizzare, dedurre, ora non ti resta che un ultimo passo. \nIl codice che cerci non è nascosto qui, è dentro ciò che hai già fatto.\nSolo chi comprende l’insieme può andare oltre.");
     oggettiEsploratiF.uomo=true;
 }
 
@@ -1361,6 +1427,25 @@ function apriModalF(titolo, descrizione, richiesta, testoBottone, funzioneContro
     mioModal.show();
 }
 
+function mostraMessaggioContinua(titolo, testo, callback) {
+    document.getElementById('infoTitolo').innerText = titolo;
+    document.getElementById('infoTesto').innerText = testo;
+    let btn = document.querySelector('#infoModal .modal-footer button');
+    btn.innerText = "Continua";
+    btn.removeAttribute('data-bs-dismiss'); 
+    btn.onclick = function() {
+        bootstrap.Modal.getInstance(document.getElementById('infoModal')).hide();
+        btn.innerText = "Chiudi";
+        btn.setAttribute('data-bs-dismiss', 'modal');
+        btn.onclick = null; 
+        callback(); 
+    };
+
+    var mioModalInfo = bootstrap.Modal.getOrCreateInstance(document.getElementById('infoModal'));
+    mioModalInfo.show();
+}
+
+// enigmi finali
 function mostraMuro() {
     if (oggettiEsploratiF.uomo && !enigmiRisoltiF.muro) {
         apriModalF("Intrecci", "Agente, il mandante vuole sapere qual è il linguaggio che avevano in comune tutte le stanze.","Inserisci la soluzione","Controlla", controllaMuro, false);
@@ -1376,23 +1461,14 @@ function mostraMuro() {
 }
 
 function controllaMuro() {
-    const risposta=document.getElementById('FinalSoluzione').value.trim().toLowerCase()
+    const risposta=document.getElementById('FinalSoluzione').value.trim().toLowerCase();
     if (risposta==="logica") {
         bootstrap.Modal.getInstance(document.getElementById('FinalModal')).hide();
-        mostraMessaggio("Accettato", "Agente bravissimo, hai capito il modo di ragionare.");
         enigmiRisoltiF.muro=true;
         localStorage.setItem("final_muro_risolto","true");
-        const modalEnigma=document.getElementById('muroF');
-        if (modalEnigma) {
-            modalEnigma.style.pointerEvents="none";
-            modalEnigma.style.opacity=0.5;
-        }
-        const avatar = document.getElementById('avatarid');
-        avatar.classList.add('taccuino-aggiornato');
         setTimeout(() => {
-            avatar.classList.remove('taccuino-aggiornato');
-        }, 1200);
-        localStorage.clear()
+            mostraMessaggioContinua("Accettato", "Agente bravissimo, hai capito il modo di ragionare. Ora unisci i frammenti.", mostraCodiceFinale);
+        }, 500);
     } else {
         countMuro++;
         if (countMuro==2) {
@@ -1410,9 +1486,13 @@ function controllaMuro() {
     }
 }
 
+// salva le risposte nel local storage nel caso di ricaricamento pagina
 function ripristinaStatoFinal() {
     if (localStorage.getItem("final_muro_risolto") === "true") {
         enigmiRisoltiF.muro = true; 
+    }
+    if (localStorage.getItem("final_muro2_risolto") === "true") {
+        enigmiRisoltiF.muro2 = true;
         const modalEnigma = document.getElementById('muroF');
         if (modalEnigma) {
             modalEnigma.style.pointerEvents = "none";
@@ -1427,7 +1507,33 @@ function mostraCodiceFinale() {
 }
 
 function controllaCodiceFinale() {
-
+    const risposta=document.getElementById('FinalSoluzione').value.trim();
+    if (risposta==="203414246") {
+        bootstrap.Modal.getInstance(document.getElementById('FinalModal')).hide();
+        enigmiRisoltiF.muro2=true;
+        localStorage.setItem("final_muro2_risolto","true");
+        mostraMessaggio("Codice Accettato!", "Incredibile Agente ce l'hai fatta! \n Hai completato tutta la missione in modo brillante. \n La porta si sta aprendo...");
+        const modalEnigma = document.getElementById('muroF');
+        if (modalEnigma) {
+            modalEnigma.style.pointerEvents = "none";
+            modalEnigma.style.opacity = 0.5;
+        }
+        localStorage.clear();
+    } else {
+        countMuro2++;
+        if (countMuro2==2) {
+            document.getElementById('FinalSoluzione').value = "";
+            document.getElementById('FinalSoluzione').placeholder = "Leggili attentamente";
+        }
+        else if (countMuro2>=3) {
+            document.getElementById('FinalSoluzione').value = "";
+            document.getElementById('FinalSoluzione').placeholder = "Attenzione all'ordine";
+        }
+        else {
+            document.getElementById('FinalSoluzione').value = "";
+            document.getElementById('FinalSoluzione').placeholder = "Controlla i tuoi appunti";
+        }
+    }
 }
 
 // Gestione Audio e Volume
@@ -1486,13 +1592,11 @@ document.addEventListener('DOMContentLoaded', function() {
 //tasto invio
 document.addEventListener('keydown', function(event) {
     if(event.key == 'Enter'){
-        const openModal = document.querySelector('.modal.show')
+        const openModal = document.querySelector('.modal.show');
         if(openModal){
             event.preventDefault();
-
-            const confirmButton = openModal.querySelector('[id^="btnConferma"]')
-            const closeButton = openModal.querySelector('.modal-footer [data-bs-dismiss="modal"]')
-
+            const confirmButton = openModal.querySelector('[id^="btnConferma"]');
+            const closeButton = openModal.querySelector('.modal-footer [data-bs-dismiss="modal"]');
             if(confirmButton){
                 confirmButton.click();
             }else if(closeButton){
