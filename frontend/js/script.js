@@ -43,7 +43,7 @@ function go() {
     localStorage.setItem('avatar',avatar);
     localStorage.setItem('password',password);
     console.log("Data saved"+nome+avatar+password+"\n");
-    window.location.href = "mission.html";
+    window.location.href = "../pages/mission.html";
 }
 
 // inizio stanze
@@ -94,16 +94,16 @@ function avviaMissione() {
 
     if (avatarName === "detective1") {
         nomeAvatar = "Alan Turing";
-        imgAvatar = "Alan Turing.png";
+        imgAvatar = "../assets/images/Alan Turing.png";
     } else if (avatarName === "detective2") {
         nomeAvatar = "Marie Curie";
-        imgAvatar = "Marie Curie.png";
+        imgAvatar = "../assets/images/Marie Curie.png";
     } else if (avatarName === "detective3") {
         nomeAvatar = "Albert Einstein";
-        imgAvatar = "Albert Einstein.png";
+        imgAvatar = "../assets/images/Albert Einstein.png";
     } else if (avatarName === "detective4") {
         nomeAvatar = "Ada Lovelace";
-        imgAvatar = "Ada Lovelace.png";
+        imgAvatar = "../assets/images/Ada Lovelace.png";
     }
     
     document.getElementById('avatarScelto').src = imgAvatar;
@@ -151,20 +151,20 @@ function mostraBottoneFinale() {
 
 function iniziaEscapeRoom() {
     const avatarname = localStorage.getItem('avatar');
-    window.location.href="room1.html";
+    window.location.href="../pages/room1.html";
 }
 
 function caricaAvatarInAngolo() {
     const avatarname = localStorage.getItem('avatar');
     let imgAvatar = "";
     if (avatarname === "detective1") {
-        imgAvatar = "Alan Turing.png";
+        imgAvatar = "../assets/images/Alan Turing.png";
     } else if (avatarname === "detective2") {
-        imgAvatar = "Marie Curie.png";
+        imgAvatar = "../assets/images/Marie Curie.png";
     } else if (avatarname === "detective3") {
-        imgAvatar = "Albert Einstein.png";
+        imgAvatar = "../assets/images/Albert Einstein.png";
     } else if (avatarname === "detective4") {
-        imgAvatar = "Ada Lovelace.png";
+        imgAvatar = "../assets/images/Ada Lovelace.png";
     }
     const targetImg = document.getElementById('avatarid');
     if (targetImg && imgAvatar !== "") {
@@ -455,7 +455,7 @@ function controllaEnigma() {
         }
         pulisciTaccuino();
         aggiungiAlTaccuino("room1","codice","Hai ottenuto questo numero: 20", "finale");
-        setTimeout(() => { window.location.href = "room2.html"; }, 2500);
+        setTimeout(() => { window.location.href = "../pages/room2.html"; }, 2500);
     } else {
         document.getElementById('codiceSoluzione').value = "";
         document.getElementById('codiceSoluzione').placeholder = "Non è il nome che stiamo cercando. Riprova!";
@@ -717,7 +717,7 @@ function controllaEquazione() {
         }
         pulisciTaccuino();
         aggiungiAlTaccuino("room2","codice","Hai ottenuto questo numero: 3414", "finale");
-        setTimeout(() => { window.location.href = "room3.html"; }, 2500);
+        setTimeout(() => { window.location.href = "../pages/room3.html"; }, 2500);
     } else {
         document.getElementById('CurieSoluzione').value = "";
         document.getElementById('CurieSoluzione').placeholder = "Non sono i coefficienti giusti,riprova!";
@@ -997,7 +997,7 @@ function controllaEinstein() {
         }
         pulisciTaccuino();
         aggiungiAlTaccuino("room3","codice","Hai ottenuto questo numero: 2", "finale");
-        setTimeout(() => { window.location.href = "room4.html"; }, 2500);
+        setTimeout(() => { window.location.href = "../pages/room4.html"; }, 2500);
     } else {
         document.getElementById('EinsteinSoluzione').value = "";
         document.getElementById('EinsteinSoluzione').placeholder = "Non è questa la formula che cerchiamo,riprova!";
@@ -1278,7 +1278,7 @@ function controllaLovelace() {
         }
         pulisciTaccuino();
         aggiungiAlTaccuino("room4","codice","Hai ottenuto questo numero: 46", "finale");
-        setTimeout(() => { window.location.href = "room5.html"; }, 2500);
+        setTimeout(() => { window.location.href = "../pages/room5.html"; }, 2500);
     } else {
         document.getElementById('LovelaceSoluzione').value = "";
         document.getElementById('LovelaceSoluzione').placeholder = "Non sono le variabili che cerchiamo. Riprova!";

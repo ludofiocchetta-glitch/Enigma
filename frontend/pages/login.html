@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="bootstrap.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,900&family=Special+Elite&display=swap" rel="stylesheet">
     <title> Login </title>
 </head>
@@ -36,19 +36,19 @@
             <div class="d-flex flex-wrap justify-content-center gap-3 gap-md-4 mb-4 avatar-grid-mobile">
                 <label class="avatar-label">
                 <input type="radio" name="avatar" value="detective1" class="d-none" checked>
-                <img src="Alan Turing.png" alt="Avatar 1" class="avatar-img">
+                <img src="../assets/images/Alan Turing.png" alt="Avatar 1" class="avatar-img">
                 </label>
                 <label class="avatar-label">
                 <input type="radio" name="avatar" value="detective2" class="d-none">
-                <img src="Marie Curie.png" alt="Avatar 2" class="avatar-img">
+                <img src="../assets/images/Marie Curie.png" alt="Avatar 2" class="avatar-img">
                 </label>
                 <label class="avatar-label">
                 <input type="radio" name="avatar" value="detective3" class="d-none">
-                <img src="Albert Einstein.png" alt="Avatar 3" class="avatar-img">
+                <img src="../assets/images/Albert Einstein.png" alt="Avatar 3" class="avatar-img">
                 </label>
                 <label class="avatar-label">
                 <input type="radio" name="avatar" value="detective4" class="d-none">
-                <img src="Ada Lovelace.png" alt="Avatar 4" class="avatar-img">
+                <img src="../assets/images/Ada Lovelace.png" alt="Avatar 4" class="avatar-img">
                 </label>
             </div>
             <button type="button" class="btn btn-outline-light btn-lg mt-3" onclick="go()"> GO! </button>
@@ -56,7 +56,7 @@
     </div>
         <!-- Pulsante musica -->
     <audio id="bgMusic" loop>
-        <source src="login.mp3" type="audio/mpeg">
+        <source src="../assets/audio/login.mp3" type="audio/mpeg">
     </audio>
     
     <button type="button" class="btn-music-gameT" data-bs-toggle="modal" data-bs-target="#volumeModal">
@@ -85,6 +85,6 @@
         </div>
     </div>
 </body>
-<script src="script.js"> </script>
+<script src="../js/script.js"> </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </html>
