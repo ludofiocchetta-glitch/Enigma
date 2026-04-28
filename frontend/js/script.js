@@ -283,7 +283,9 @@ function iniziaEsplorazioneT() {
         avatar2.classList.remove('taccuino-aggiornato');
     }, 1200);
 }
-
+//punteggio
+let score=0;
+//oggetti
 let countLavagna=0;
 let countTelefono=0;
 
@@ -352,6 +354,7 @@ function mostraLavagna() {
 function controllaLavagna() {
     const risposta=document.getElementById('codiceSoluzione').value.trim().toLowerCase();
     if (risposta==="enigma") {
+        score+=15;
         bootstrap.Modal.getInstance(document.getElementById('enigmaModal')).hide();
         enigmiRisolti.lavagna=true;
         localStorage.setItem("turing_lavagna_risolta", "true");
@@ -371,14 +374,17 @@ function controllaLavagna() {
     } else {
         countLavagna++;
         if (countLavagna==2) {
+            score-=5;
             document.getElementById('codiceSoluzione').value = "";
             document.getElementById('codiceSoluzione').placeholder = "Indizio: spostati nell'alfabeto";
         }
         else if (countLavagna>=3) {
+            score-=3;
             document.getElementById('codiceSoluzione').value = "";
             document.getElementById('codiceSoluzione').placeholder = "Indizio: shift=2";
         }
         else {
+            score-=5;
             document.getElementById('codiceSoluzione').value = "";
             document.getElementById('codiceSoluzione').placeholder = "Riprova";
         }
@@ -394,6 +400,7 @@ function mostraTelefono() {
 function controllaTelefono() {
     const risposta=document.getElementById('codiceSoluzione').value.trim().toLowerCase();
     if (risposta==="turing") {
+        score+=15;
         bootstrap.Modal.getInstance(document.getElementById('enigmaModal')).hide();
         enigmiRisolti.telefono=true;
         localStorage.setItem("turing_telefono_risolto", "true");
@@ -412,14 +419,17 @@ function controllaTelefono() {
     } else {
         countTelefono++;
         if (countTelefono==2) {
+            score-=5;
             document.getElementById('codiceSoluzione').value = "";
             document.getElementById('codiceSoluzione').placeholder = "Indizio: ogni lettera ha un posto";
         }
         else if (countTelefono>=3) {
+            score-=3;
             document.getElementById('codiceSoluzione').value = "";
             document.getElementById('codiceSoluzione').placeholder = "Indizio: A=1,B=2...";
         }
         else {
+            score-=5;
             document.getElementById('codiceSoluzione').value = "";
             document.getElementById('codiceSoluzione').placeholder = "Riprova";
         }
@@ -444,6 +454,7 @@ function controllaEnigma() {
     const soluzioneCorretta = "bombe";
     
     if (rispostaUtente === soluzioneCorretta) {
+        score+=20;
         bootstrap.Modal.getInstance(document.getElementById('enigmaModal')).hide();
         mostraMessaggio("Codice accettato!", "Bravo Agente! La porta si è sbloccata. Preparati a scappare...");
         enigmiRisolti.macchina=true;
@@ -457,6 +468,7 @@ function controllaEnigma() {
         aggiungiAlTaccuino("room1","codice","Hai ottenuto questo numero: 20", "finale");
         setTimeout(() => { window.location.href = "../pages/room2.html"; }, 2500);
     } else {
+        score-=5;
         document.getElementById('codiceSoluzione').value = "";
         document.getElementById('codiceSoluzione').placeholder = "Non è il nome che stiamo cercando. Riprova!";
     }
@@ -560,6 +572,7 @@ function iniziaEsplorazioneC() {
     }, 1200);
 }
 
+//oggetti
 let countBilancia=0;
 let countPozioni=0;
 
@@ -617,6 +630,7 @@ function mostraBilancia() {
 function controllaBilancia() {
     const risposta=document.getElementById('CurieSoluzione').value.trim().toLowerCase();
     if (risposta==="bilanciare") {
+        score+=15;
         bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
         enigmiRisoltiC.bilancia=true;
         localStorage.setItem("curie_bilancia_risolta", "true");
@@ -635,14 +649,17 @@ function controllaBilancia() {
     } else {
         countBilancia++;
         if (countBilancia>=3) {
+            score-=3;
             document.getElementById('CurieSoluzione').value = "";
             document.getElementById('CurieSoluzione').placeholder = "i due lati devono avere lo stesso numero di atomi";
         }
         else if (countBilancia==2) {
+            score-=5;
             document.getElementById('CurieSoluzione').value = "";
             document.getElementById('CurieSoluzione').placeholder = "Indizio: modificare i numeri davanti le formule";
         }
         else {
+            score-=5;
             document.getElementById('CurieSoluzione').value = "";
             document.getElementById('CurieSoluzione').placeholder = "Riprova";
         }
@@ -658,6 +675,7 @@ function mostraPozioni() {
 function controllaPozioni() {
     const risposta=document.getElementById('CurieSoluzione').value.trim().toLowerCase();
     if (risposta==="lavoisier" || risposta==="legge di lavoisier") {
+        score+=15;
         bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
         enigmiRisoltiC.pozioni=true;
         localStorage.setItem("curie_pozioni_risolte", "true");
@@ -676,14 +694,17 @@ function controllaPozioni() {
     } else {
         countPozioni++;
         if (countPozioni==2) {
+            score-=5;
             document.getElementById('CurieSoluzione').value = "";
             document.getElementById('CurieSoluzione').placeholder = "Indizio: nome di uno scienziato francese";
         }
         else if (countPozioni>=3) {
+            score-=3;
             document.getElementById('CurieSoluzione').value = "";
             document.getElementById('CurieSoluzione').placeholder = "Indizio: Lavo...";
         }
         else {
+            score-=5;
             document.getElementById('CurieSoluzione').value = "";
             document.getElementById('CurieSoluzione').placeholder = "Riprova";
         }
@@ -706,6 +727,7 @@ function controllaEquazione() {
     const rispostaUtente = document.getElementById('CurieSoluzione').value.trim();
     const soluzioneCorretta = "3,4,1,4";
     if (rispostaUtente === soluzioneCorretta) {
+        score+=20;
         bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
         mostraMessaggio("Equazione Bilanciata!", "Ottimo lavoro, Agente! La porta si sta aprendo. Sei pronto per la prossima missione...");
         enigmiRisoltiC.lavagna=true;
@@ -719,6 +741,7 @@ function controllaEquazione() {
         aggiungiAlTaccuino("room2","codice","Hai ottenuto questo numero: 3414", "finale");
         setTimeout(() => { window.location.href = "../pages/room3.html"; }, 2500);
     } else {
+        score-=5;
         document.getElementById('CurieSoluzione').value = "";
         document.getElementById('CurieSoluzione').placeholder = "Non sono i coefficienti giusti,riprova!";
     }
@@ -832,7 +855,7 @@ function iniziaEsplorazioneE() {
         avatar2.classList.remove('taccuino-aggiornato');
     }, 1200);
 }
-
+//oggetti
 let oggettiEsploratiE= {
     ritratto:false,
     tavolo:false,
@@ -897,6 +920,7 @@ function mostraMobile() {
 function controllaMobile() {
     const risposta=document.getElementById('EinsteinSoluzione').value.trim().toLowerCase();
     if (risposta==="spazio e tempo" || risposta==="tempo e spazio") {
+        score+=15;
         bootstrap.Modal.getInstance(document.getElementById('EinsteinModal')).hide();
         enigmiRisoltiE.mobile=true;
         localStorage.setItem("einstein_mobile_risolto", "true");
@@ -915,14 +939,17 @@ function controllaMobile() {
     } else {
         countMobile++;
         if (countMobile==2) {
+            score-=5;
             document.getElementById('EinsteinSoluzione').value = "";
             document.getElementById('EinsteinSoluzione').placeholder = "Indizio: formano un unico concetto";
         }
         else if (countMobile>=3) {
+            score-=3;
             document.getElementById('EinsteinSoluzione').value = "";
             document.getElementById('EinsteinSoluzione').placeholder = "Indizio: sono legate alla velocità";
         }
         else {
+            score-=5;
             document.getElementById('EinsteinSoluzione').value = "";
             document.getElementById('EinsteinSoluzione').placeholder = "Riprova";
         }
@@ -938,6 +965,7 @@ function mostraMappamondoE() {
 function controllaMappamondoE() {
     const risposta=document.getElementById('EinsteinSoluzione').value.trim().toLowerCase();
     if (risposta==="riferimento" || risposta==="sistema di riferimento") {
+        score+=15;
         bootstrap.Modal.getInstance(document.getElementById('EinsteinModal')).hide();
         enigmiRisoltiE.mappamondo=true;
         localStorage.setItem("einstein_mappamondo_risolto", "true");
@@ -956,14 +984,17 @@ function controllaMappamondoE() {
     } else {
         countMappamondo++;
         if (countMappamondo==2) {
+            score-=5;
             document.getElementById('EinsteinSoluzione').value = "";
             document.getElementById('EinsteinSoluzione').placeholder = "Indizio: un esempio classico è il treno";
         }
         else if (countMappamondo>=3) {
+            score-=3;
             document.getElementById('EinsteinSoluzione').value = "";
             document.getElementById('EinsteinSoluzione').placeholder = "Indizio: sistema di...";
         }
         else {
+            score-=5;
             document.getElementById('EinsteinSoluzione').value = "";
             document.getElementById('EinsteinSoluzione').placeholder = "Riprova";
         }
@@ -987,6 +1018,7 @@ function controllaEinstein() {
     const rispostaUtente = document.getElementById('EinsteinSoluzione').value.trim().toLowerCase();
     const soluzioneCorretta = "e=mc^2";
     if (rispostaUtente === soluzioneCorretta) {
+        score+=20;
         bootstrap.Modal.getInstance(document.getElementById('EinsteinModal')).hide();
         mostraMessaggio("Formula corretta!", "Bravissimo Agente! \n Il passaggio segreto si sta aprendo, puoi continuare la tua missione...");
         localStorage.setItem("einstein_enigma_risolto", "true");
@@ -999,6 +1031,7 @@ function controllaEinstein() {
         aggiungiAlTaccuino("room3","codice","Hai ottenuto questo numero: 2", "finale");
         setTimeout(() => { window.location.href = "../pages/room4.html"; }, 2500);
     } else {
+        score-=5;
         document.getElementById('EinsteinSoluzione').value = "";
         document.getElementById('EinsteinSoluzione').placeholder = "Non è questa la formula che cerchiamo,riprova!";
     }
@@ -1107,7 +1140,7 @@ function iniziaEsplorazioneL() {
         avatar2.classList.remove('taccuino-aggiornato');
     }, 1200);
 }
-
+//oggetti
 let countOrologio=0;
 let countLibri=0;
 
@@ -1177,6 +1210,7 @@ function mostraOrologio() {
 function controllaOrologio() {
     const risposta=document.getElementById('LovelaceSoluzione').value.trim();
     if (risposta==="13,21,34") {
+        score+=15;
         bootstrap.Modal.getInstance(document.getElementById('LovelaceModal')).hide();
         enigmiRisoltiL.orologio=true;
         localStorage.setItem("lovelace_orologio_risolto", "true");
@@ -1195,14 +1229,17 @@ function controllaOrologio() {
     } else {
         countOrologio++;
         if (countOrologio==2) {
+            score-=5;
             document.getElementById('LovelaceSoluzione').value = "";
             document.getElementById('LovelaceSoluzione').placeholder = "Indizio: Fibonacci";
         }
         else if (countOrologio>=3) {
+            score-=3;
             document.getElementById('LovelaceSoluzione').value = "";
             document.getElementById('LovelaceSoluzione').placeholder = "Indizio: somma gli ultimi due numeri";
         }
         else {
+            score-=5;
             document.getElementById('LovelaceSoluzione').value = "";
             document.getElementById('LovelaceSoluzione').placeholder = "Riprova";
         }
@@ -1218,6 +1255,7 @@ function mostraLibri() {
 function controllaLibri() {
     const risposta=document.getElementById('LovelaceSoluzione').value.trim().toLowerCase()
     if (risposta==="algoritmo") {
+        score+=15;
         bootstrap.Modal.getInstance(document.getElementById('LovelaceModal')).hide();
         enigmiRisoltiL.libri=true;
         localStorage.setItem("lovelace_libri_risolti", "true");
@@ -1236,14 +1274,17 @@ function controllaLibri() {
     } else {
         countLibri++;
         if (countLibri==2) {
+            score-=5;
             document.getElementById('LovelaceSoluzione').value = "";
             document.getElementById('LovelaceSoluzione').placeholder = "Indizio: ricetta";
         }
         else if (countLibri>=3) {
+            score-=3;
             document.getElementById('LovelaceSoluzione').value = "";
             document.getElementById('LovelaceSoluzione').placeholder = "Indizio: lo è quello di Fibonacci";
         }
         else {
+            score-=5;
             document.getElementById('LovelaceSoluzione').value = "";
             document.getElementById('LovelaceSoluzione').placeholder = "Riprova";
         }
@@ -1267,6 +1308,7 @@ function controllaLovelace() {
     const rispostaUtente = document.getElementById('LovelaceSoluzione').value.trim().toLowerCase();
     const soluzioneCorretta = "v4,v6";
     if (rispostaUtente === soluzioneCorretta) {
+        score+=20;
         bootstrap.Modal.getInstance(document.getElementById('LovelaceModal')).hide();
         mostraMessaggio("Risoluzione accettata!", "Bravissimo Agente! sei pronto per la missione finale...");
         enigmiRisoltiL.enigma=true;
@@ -1280,6 +1322,7 @@ function controllaLovelace() {
         aggiungiAlTaccuino("room4","codice","Hai ottenuto questo numero: 46", "finale");
         setTimeout(() => { window.location.href = "../pages/room5.html"; }, 2500);
     } else {
+        score-=5;
         document.getElementById('LovelaceSoluzione').value = "";
         document.getElementById('LovelaceSoluzione').placeholder = "Non sono le variabili che cerchiamo. Riprova!";
     }
@@ -1392,7 +1435,7 @@ function iniziaEsplorazioneF() {
         avatar2.classList.remove('taccuino-aggiornato');
     }, 1200);
 }
-
+//oggetti
 let oggettiEsploratiF= {
     uomo:false
 };
@@ -1463,6 +1506,7 @@ function mostraMuro() {
 function controllaMuro() {
     const risposta=document.getElementById('FinalSoluzione').value.trim().toLowerCase();
     if (risposta==="logica") {
+        score+=15;
         bootstrap.Modal.getInstance(document.getElementById('FinalModal')).hide();
         enigmiRisoltiF.muro=true;
         localStorage.setItem("final_muro_risolto","true");
@@ -1472,14 +1516,17 @@ function controllaMuro() {
     } else {
         countMuro++;
         if (countMuro==2) {
+            score-=5;
             document.getElementById('FinalSoluzione').value = "";
             document.getElementById('FinalSoluzione').placeholder = "fondamentale per l'AI";
         }
         else if (countMuro>=3) {
+            score-=3;
             document.getElementById('FinalSoluzione').value = "";
             document.getElementById('FinalSoluzione').placeholder = "lo è quella del primo ordine";
         }
         else {
+            score-=5;
             document.getElementById('FinalSoluzione').value = "";
             document.getElementById('FinalSoluzione').placeholder = "Pensaci bene, è un linguaggio formale";
         }
@@ -1509,6 +1556,7 @@ function mostraCodiceFinale() {
 function controllaCodiceFinale() {
     const risposta=document.getElementById('FinalSoluzione').value.trim();
     if (risposta==="203414246") {
+        score+=25;
         bootstrap.Modal.getInstance(document.getElementById('FinalModal')).hide();
         enigmiRisoltiF.muro2=true;
         localStorage.setItem("final_muro2_risolto","true");
@@ -1522,14 +1570,17 @@ function controllaCodiceFinale() {
     } else {
         countMuro2++;
         if (countMuro2==2) {
+            score-=5;
             document.getElementById('FinalSoluzione').value = "";
             document.getElementById('FinalSoluzione').placeholder = "Leggili attentamente";
         }
         else if (countMuro2>=3) {
+            score-=5;
             document.getElementById('FinalSoluzione').value = "";
             document.getElementById('FinalSoluzione').placeholder = "Attenzione all'ordine";
         }
         else {
+            score-=5;
             document.getElementById('FinalSoluzione').value = "";
             document.getElementById('FinalSoluzione').placeholder = "Controlla i tuoi appunti";
         }
