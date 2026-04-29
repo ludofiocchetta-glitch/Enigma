@@ -1,8 +1,8 @@
 const express = require('express')
 const app =express()
 require('dotenv').config();
-const session = require('express-session'); 
-const pgSession = require('connect-pg-simple')(session); 
+const session = require('express-session');
+const pgSession = require('connect-pg-simple')(session);
 const { Pool } = require('pg');
 const bcrypt = require('bcrypt');
 
@@ -31,7 +31,7 @@ const pgPool= new Pool ({
     connectionString: process.env.DATABASE_URL
 })
 
-//setup sessione 
+//setup sessione
 app.use(session({
     store: new pgSession({
     pool: pgPool,
@@ -56,13 +56,13 @@ app.post("/api/register",async (req,res)=> {
     if(!username || !password) {
         return res.status(400).json({error:`Tutti i campi sono obbligatori` })
     }
-     if(password.length <8) {
+    if(password.length <8) {
         return res.status(400).json({error:`La password deve avere almeno 8 caratteri`})
     }
     const salt=10;
     const password_hash =await bcrypt.hash(password,salt);
 
-     try {
+    try {
 
     const {data,error} = await supabase
             .from('User')
@@ -76,7 +76,7 @@ app.post("/api/register",async (req,res)=> {
 
     if (error) {
         if(error.code =='23505') {
-            return res.status(400),json({error: "Username già esistente, inserire un altro username!"});
+            return res.status(400).json({error: "Username già esistente, inserire un altro username!"});
         }
         throw error;
     }
@@ -93,33 +93,36 @@ app.post("/api/register",async (req,res)=> {
     // va aggiunto a user,completamento,inventario
 
 
-     } catch(err) {
+    } catch(err) {
         console.error("Errore nella registrazione: ",err);
         return res.status(500).json({errore: "Errore interno del server"});
-     }
+    }
 } )
 
 
 
 
 //Login
-app.post('/index/login', async (req,res) => {
+app.post('/api/login', async (req,res) => {
 
     const {username,password} = req.body;
 
 
-    const {data: user,error}= await supabase 
+    const {data: user,error}= await supabase
         .from('user')
-       
         .select(`
             id,
             password
         `)
-        .eq(`id`,username)
+        .eq(`username`,username)
         .single();
     
-    if (error || !user|| !(await bcrypt.compare(password,user.password))) {
-        return res.status(401).json({error: 'Username o password errati'})
+    if (error || !user){
+        return res.status(404).json({error: 'Utente inseistente. REGISTRATI!'});
+    }
+    
+    if(!(await bcrypt.compare(password, user.password))) {
+        return res.status(401).json({error: 'Password errata'})
         
     }
 
@@ -132,12 +135,12 @@ app.post('/index/login', async (req,res) => {
         .limit(1) // Prendi solo la prima riga in alto!
         .single(); // Restituisci l'oggetto singolo invece di un array
 
-         if (game_error) {
+        if (game_error) {
         console.error(game_error);
         return res.status(500).json({ error: "Errore database" });
     }
 
-         const { data: inventario, error:inventario_error } = await supabase
+        const { data: inventario, error:inventario_error } = await supabase
         .from('inventario')
         .select('*')
         .eq('username', user.id) //cerco rispetto username
@@ -150,20 +153,25 @@ app.post('/index/login', async (req,res) => {
 
 
         req.session.user ={
-            username: user.id,
+            username: user.username,
             room: game.room +1,
             inventory: inventario.taccuino
-            //va aggiunto avatar  
+            //va aggiunto avatar
             }
-        return res.status(201).json({message: "login effettuato"})
+        return res.status(201).json({message: "login effettuato", room: req.session.user.room});
         }
-    
+})
+
+app.get('/api/me', (req, res) => {
+    if(req.session.user){
+        res.status(200).json(req.session.user);
+    }else{
+        res.status(401).json({error: "Non loggato"});
+    }
 })
 
 
-
-
-//Avvio server 
+//Avvio server
 app.listen(port,host, ()=> {
     console.log(`server in esecuzione su http://localhost: ${port}`)
 })

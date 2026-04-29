@@ -51,7 +51,17 @@
                 <img src="../assets/images/Ada Lovelace.png" alt="Avatar 4" class="avatar-img">
                 </label>
             </div>
-            <button type="button" class="btn btn-outline-light btn-lg mt-3" onclick="go()"> GO! </button>
+            <button type="button" class="btn btn-outline-light btn-lg mt-3" onclick="eseguiLogin()"> ACCEDI </button>
+            <button type="button" class="btn btn-warning btn-lg" onclick="eseguiRegistrazione()"> REGISTRATI </button>
+        </div>
+    </div>
+
+    <div id="session-panel" class="d-none text-center fade-in">
+        <h2 class="special-elite mb-4"> Benvenuto, Agente! <span id="nome-agente-sessione"></span>!</h2>
+        <p class="fs-4">Abbiamo rilevato una missione in sospeso. Vuoi continuare?</p>
+        <div class="d-flex justify-content-center gap-3 mt-4">
+            <button type="button" class="btn btn-success btn-lg" onclick="continuaPartita()"> Continua </button>
+            <button type="button" class="btn btn-danger btn-lg" onclick="nuovaPartita()"> Nuova Missione </button>
         </div>
     </div>
         <!-- Pulsante musica -->

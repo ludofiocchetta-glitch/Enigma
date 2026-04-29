@@ -1,16 +1,16 @@
 // login
-function go() {
+async function eseguiLogin() {
     const inputname=document.getElementById('inputname');
     const inputpassword=document.getElementById('inputpassword');
-
-    const nome=inputname.value;
-    const password=inputpassword.value;
     const avatar=document.querySelector('input[name="avatar"]:checked').value;
+
+    const username=inputname.value.trim();
+    const password=inputpassword.value.trim();
 
     inputname.classList.remove('is-invalid');
     inputpassword.classList.remove('is-invalid');
 
-    if (nome.trim() === "") {
+    if (username === "") {
         inputname.classList.add('is-invalid');
         inputname.placeholder = "Campo obbligatorio!";
         return;
@@ -18,7 +18,7 @@ function go() {
 
     const specialCharRegex = /[!@#$%&*.?_]/;
 
-    if (password.trim()==="") {
+    if (password ==="") {
         inputpassword.classList.add('is-invalid');
         inputpassword.value="";
         inputpassword.placeholder = "Campo obbligatorio!";
@@ -39,17 +39,119 @@ function go() {
         return;
     }
 
-    localStorage.setItem('username',nome);
-    localStorage.setItem('avatar',avatar);
-    localStorage.setItem('password',password);
-    console.log("Data saved"+nome+avatar+password+"\n");
-    window.location.href = "../pages/mission.html";
+    try {
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: username, password:password})
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            localStorage.setItem('avatar',avatar);
+            localStorage.setItem('username',username);
+            alert("Bentornato Agente "+ username);
+            window.location.href = "../pages/mission.html";
+        }else{
+            alert(data.error || "Credenziali non valide");
+        }
+    } catch (err) {
+        console.error("Errore di connessione: ", err);
+        alert("Impossibile connettersi al server.");
+    //console.log("Data saved"+nome+avatar+password+"\n");
+    }
+}
+
+//registrazione
+async function eseguiRegistrazione() {
+    const inputname=document.getElementById('inputname');
+    const inputpassword=document.getElementById('inputpassword');
+    const avatar=document.querySelector('input[name="avatar"]:checked').value;
+
+    const username=inputname.value.trim();
+    const password=inputpassword.value.trim();
+
+    inputname.classList.remove('is-invalid');
+    inputpassword.classList.remove('is-invalid');
+
+    if (username === "") {
+        inputname.classList.add('is-invalid');
+        inputname.placeholder = "Campo obbligatorio!";
+        return;
+    }
+
+    const specialCharRegex = /[!@#$%&*.?_]/;
+
+    if (password ==="") {
+        inputpassword.classList.add('is-invalid');
+        inputpassword.value="";
+        inputpassword.placeholder = "Campo obbligatorio!";
+        return;
+    }
+    
+    else if (password.length < 8) {
+        inputpassword.classList.add('is-invalid');
+        inputpassword.value="";
+        inputpassword.placeholder = "Minimo 8 caratteri";
+        return;
+    }
+
+    else if (!specialCharRegex.test(password)) {
+        inputpassword.classList.add('is-invalid');
+        inputpassword.value="";
+        inputpassword.placeholder = "Minimo 1 carattere speciale !@#$%&*.?_";
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: username, password:password})
+        });
+
+        const data = await response.json();
+
+        if(response.ok) {
+            localStorage.setItem('avatar',avatar);
+            localStorage.setItem('username',username);
+
+            alert("Agente registrato con successo! Inizializzazione missione...");
+
+            window.location.href = "../pages/mission.html";
+        }else{
+            if (data.error && data.error.includes("Username già esistente")) {
+                alert("Utente già esistente. ACCEDI!");
+            }else{
+                alert(data.error || "Errore durante la registrazione");
+            }
+        }
+    } catch (err) {
+        console.error("Errore di connessione: ", err);
+        alert("Impossibile connettersi al server.");
+    }
 }
 
 // inizio stanze
-window.onload = function() {
-    if (document.getElementById('testoMacchina')) {
-        document.getElementById('testoMacchina').classList.add('cursore'); 
+window.onload = async function() {
+    try{
+        const response = await fetch('/api/me');
+        if(response.ok){
+            const data = await response.json();
+            //utente ha una sessione. Nascondo il form mostriamo il pannello di sessione
+            document.querySelector('.userform').classList.add('d-none');
+            document.getElementById('session-panel').classList.remove('d-none');
+
+            document.getElementById('nome-agente-sessione').innerText = data.username;
+            localStorage.setItem('stanzaSalvata', data.room);
+        }
+    } catch(err){
+        console.error("Errore di controllo della sessione: ", err);
+    }
+};
+    /*if (document.getElementById('testoMacchina')) {
+        document.getElementById('testoMacchina').classList.add('cursore');
         avviaMissione();
     }
     if (document.getElementById('testoMacchina1')) {
@@ -79,8 +181,22 @@ window.onload = function() {
     }
     if (document.getElementById('avatarid')) {
         caricaAvatarInAngolo();
+    }*/
+
+//Funzioni per la continuare o resettare la sessione
+function continuaPartita(){
+    const stanza = localStorage.getItem('stanzaSalvata') || 1;
+    if (stanza == 1){
+        window.location.href = "../pages/mission.html";
+    }else{
+        window.location.href = `../pages/room${stanza}.html`;
     }
-};
+}
+
+function nuovaPartita(){
+    localStorage.removeItem('taccuinoAgente');
+    window.location.href = "../pages/mission.html";
+}
 
 let skipIntro = false;
 
