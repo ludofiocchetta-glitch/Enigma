@@ -1,156 +1,146 @@
 // login
 async function eseguiLogin() {
-    const inputname=document.getElementById('inputname');
-    const inputpassword=document.getElementById('inputpassword');
-    const avatar=document.querySelector('input[name="avatar"]:checked').value;
-
-    const username=inputname.value.trim();
-    const password=inputpassword.value.trim();
-
+    const inputname = document.getElementById('inputname');
+    const inputpassword = document.getElementById('inputpassword');
+    const avatar = document.querySelector('input[name="avatar"]:checked').value;
+    const username = inputname.value.trim();
+    const password = inputpassword.value.trim();
     inputname.classList.remove('is-invalid');
     inputpassword.classList.remove('is-invalid');
-
     if (username === "") {
         inputname.classList.add('is-invalid');
         inputname.placeholder = "Campo obbligatorio!";
         return;
     }
-
     const specialCharRegex = /[!@#$%&*.?_]/;
-
-    if (password ==="") {
+    if (password === "") {
         inputpassword.classList.add('is-invalid');
-        inputpassword.value="";
+        inputpassword.value = "";
         inputpassword.placeholder = "Campo obbligatorio!";
         return;
-    }
-    
-    else if (password.length < 8) {
+    } else if (password.length < 8) {
         inputpassword.classList.add('is-invalid');
-        inputpassword.value="";
+        inputpassword.value = "";
         inputpassword.placeholder = "Minimo 8 caratteri";
         return;
-    }
-
-    else if (!specialCharRegex.test(password)) {
+    } else if (!specialCharRegex.test(password)) {
         inputpassword.classList.add('is-invalid');
-        inputpassword.value="";
+        inputpassword.value = "";
         inputpassword.placeholder = "Minimo 1 carattere speciale !@#$%&*.?_";
         return;
     }
-
     try {
         const response = await fetch('/api/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: username, password:password})
+            body: JSON.stringify({ username: username, password: password })
         });
-
         const data = await response.json();
-
         if (response.ok) {
-            localStorage.setItem('avatar',avatar);
-            localStorage.setItem('username',username);
-            alert("Bentornato Agente "+ username);
-            window.location.href = "../pages/mission.html";
-        }else{
-            alert(data.error || "Credenziali non valide");
+            localStorage.setItem('avatar', avatar);
+            localStorage.setItem('username', username);
+            localStorage.setItem('stanzaSalvata', data.room);
+            document.getElementById('modal-nome-agente').innerText = username;
+            const modalScelta = new bootstrap.Modal(document.getElementById('sceltaPartitaModal'));
+            modalScelta.show();
+        } else if (response.status === 404) {
+            console.log("Nuovo agente rilevato, avvio la registrazione...");
+            eseguiRegistrazione(); 
+        } else if (response.status === 401) {
+            inputpassword.classList.add('is-invalid');
+            inputpassword.value = "";
+            inputpassword.placeholder = "Password errata!";
+        } else {
+            inputname.classList.add('is-invalid');
+            inputname.value = "";
+            inputname.placeholder = data.error || "Errore di sistema";
         }
     } catch (err) {
         console.error("Errore di connessione: ", err);
-        alert("Impossibile connettersi al server.");
-    //console.log("Data saved"+nome+avatar+password+"\n");
+        const modalErrore = new bootstrap.Modal(document.getElementById('erroreServerModal'));
+        modalErrore.show();
     }
 }
-
 //registrazione
 async function eseguiRegistrazione() {
-    const inputname=document.getElementById('inputname');
-    const inputpassword=document.getElementById('inputpassword');
-    const avatar=document.querySelector('input[name="avatar"]:checked').value;
-
-    const username=inputname.value.trim();
-    const password=inputpassword.value.trim();
-
+    const inputname = document.getElementById('inputname');
+    const inputpassword = document.getElementById('inputpassword');
+    const avatar = document.querySelector('input[name="avatar"]:checked').value;
+    const username = inputname.value.trim();
+    const password = inputpassword.value.trim();
     inputname.classList.remove('is-invalid');
     inputpassword.classList.remove('is-invalid');
-
     if (username === "") {
         inputname.classList.add('is-invalid');
         inputname.placeholder = "Campo obbligatorio!";
         return;
     }
-
     const specialCharRegex = /[!@#$%&*.?_]/;
-
-    if (password ==="") {
+    if (password === "") {
         inputpassword.classList.add('is-invalid');
-        inputpassword.value="";
+        inputpassword.value = "";
         inputpassword.placeholder = "Campo obbligatorio!";
         return;
-    }
-    
-    else if (password.length < 8) {
+    } else if (password.length < 8) {
         inputpassword.classList.add('is-invalid');
-        inputpassword.value="";
+        inputpassword.value = "";
         inputpassword.placeholder = "Minimo 8 caratteri";
         return;
-    }
-
-    else if (!specialCharRegex.test(password)) {
+    } else if (!specialCharRegex.test(password)) {
         inputpassword.classList.add('is-invalid');
-        inputpassword.value="";
+        inputpassword.value = "";
         inputpassword.placeholder = "Minimo 1 carattere speciale !@#$%&*.?_";
         return;
     }
-
     try {
         const response = await fetch('/api/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: username, password:password})
+            body: JSON.stringify({ username: username, password: password })
         });
-
         const data = await response.json();
-
-        if(response.ok) {
-            localStorage.setItem('avatar',avatar);
-            localStorage.setItem('username',username);
-
-            alert("Agente registrato con successo! Inizializzazione missione...");
-
-            window.location.href = "../pages/mission.html";
-        }else{
+        if (response.ok) {
+            localStorage.setItem('avatar', avatar);
+            localStorage.setItem('username', username);
+            localStorage.setItem('stanzaSalvata', 1); 
+            window.location.href = "../pages/mission.html";    
+        } else {
             if (data.error && data.error.includes("Username già esistente")) {
-                alert("Utente già esistente. ACCEDI!");
-            }else{
-                alert(data.error || "Errore durante la registrazione");
+                inputname.classList.add('is-invalid');
+                inputname.value = "";
+                inputname.placeholder = "Agente già registrato. Accedi!";
+            } else {
+                inputname.classList.add('is-invalid');
+                inputname.value = "";
+                inputname.placeholder = data.error || "Errore di sistema";
             }
         }
     } catch (err) {
         console.error("Errore di connessione: ", err);
-        alert("Impossibile connettersi al server.");
+        const modalErrore = new bootstrap.Modal(document.getElementById('erroreServerModal'));
+        modalErrore.show();
     }
 }
 
 // inizio stanze
 window.onload = async function() {
-    try{
+    try {
         const response = await fetch('/api/me');
-        if(response.ok){
+        if (response.ok) {
             const data = await response.json();
-            //utente ha una sessione. Nascondo il form mostriamo il pannello di sessione
-            document.querySelector('.userform').classList.add('d-none');
-            document.getElementById('session-panel').classList.remove('d-none');
-
-            document.getElementById('nome-agente-sessione').innerText = data.username;
             localStorage.setItem('stanzaSalvata', data.room);
+            localStorage.setItem('username', data.username);
+            const userform = document.querySelector('.userform');
+            if (userform) {
+                document.getElementById('modal-nome-agente').innerText = data.username;
+                const modalScelta = new bootstrap.Modal(document.getElementById('sceltaPartitaModal'));
+                modalScelta.show();
+            }
         }
-    } catch(err){
+    } catch(err) {
         console.error("Errore di controllo della sessione: ", err);
     }
-};
-    /*if (document.getElementById('testoMacchina')) {
+    if (document.getElementById('testoMacchina')) {
         document.getElementById('testoMacchina').classList.add('cursore');
         avviaMissione();
     }
@@ -181,8 +171,11 @@ window.onload = async function() {
     }
     if (document.getElementById('avatarid')) {
         caricaAvatarInAngolo();
-    }*/
-
+    }
+    if (document.getElementById('testoVittoria')) {
+        inizioVittoria();
+    }
+};
 //Funzioni per la continuare o resettare la sessione
 function continuaPartita(){
     const stanza = localStorage.getItem('stanzaSalvata') || 1;
@@ -1682,7 +1675,8 @@ function controllaCodiceFinale() {
             modalEnigma.style.pointerEvents = "none";
             modalEnigma.style.opacity = 0.5;
         }
-        localStorage.clear();
+        //localStorage.clear();
+        setTimeout(() => { window.location.href = "../pages/victory.html"; }, 2500);
     } else {
         countMuro2++;
         if (countMuro2==2) {
@@ -1700,6 +1694,112 @@ function controllaCodiceFinale() {
             document.getElementById('FinalSoluzione').value = "";
             document.getElementById('FinalSoluzione').placeholder = "Controlla i tuoi appunti";
         }
+    }
+}
+
+//FUNZIONI STANZA VITTORIA
+
+let skipIntroV = false;
+
+function inizioVittoria() {
+    const userName = localStorage.getItem('username');
+    const avatarName = localStorage.getItem('avatar');
+    let imgAvatar = "";
+    if (avatarName === "detective1") {
+        imgAvatar = "../assets/images/Alan Turing.png";
+    } else if (avatarName === "detective2") {
+        imgAvatar = "../assets/images/Marie Curie.png";
+    } else if (avatarName === "detective3") {
+        imgAvatar = "../assets/images/Albert Einstein.png";
+    } else if (avatarName === "detective4") {
+        imgAvatar = "../assets/images/Ada Lovelace.png";
+    }
+    const targetImg = document.getElementById('avatar-vittoria');
+    if (targetImg && imgAvatar !== "") {
+        targetImg.src = imgAvatar;
+    }
+    const messaggio = `Missione conclusa con successo Agente ${userName}.\nHai esplorato e decifrato alla perfezione i segreti delle stanze di Turing, Curie, Einstein e Lovelace.\nLa tua mente si è dimostrata all'altezza dei più grandi geni della storia.\n Le tue risposte sono state analizzate attentamente...`;
+    const boxtesto = document.getElementById('testoVittoria');
+    if (boxtesto) {
+        boxtesto.style.cursor = "pointer";
+        boxtesto.onclick = function() {
+            skipIntroV = true;
+        }
+        scriviTestoV(messaggio, 0);
+    }
+}
+
+function scriviTestoV(testo, indice) {
+    const elemento = document.getElementById('testoVittoria');
+    if (skipIntroV) {
+        elemento.innerHTML = testo.replace(/\n/g, "<br>");
+        document.getElementById('btnClassifica').classList.remove('d-none');
+        return;
+    }
+    if (indice < testo.length) {
+        let carattere = testo.charAt(indice);
+        if (carattere === '\n') {
+            elemento.innerHTML += "<br>";
+        } else {
+            elemento.innerHTML += carattere;
+        }
+        setTimeout(() => scriviTestoV(testo, indice + 1), 30);
+    } else {
+        document.getElementById('btnClassifica').classList.remove('d-none');
+    }
+}
+
+function mostraClassifica() {
+    document.getElementById('debriefing-container').classList.add('d-none');
+    document.getElementById('leaderboard-container').classList.remove('d-none');
+    const scoreFinale = localStorage.getItem('punteggioFinale') || 0;
+    document.getElementById('punteggio-giocatore').innerText = scoreFinale;
+    popolaClassificaMock();
+}
+
+/* dati finti per prova */
+function popolaClassificaMock() {
+    const tbody = document.getElementById('leaderboard-body');
+    const userName = localStorage.getItem('username') || "Tu";
+    const score = parseInt(localStorage.getItem('punteggioFinale') || 0);
+    let leaderboardFake = [
+        { username: "AgenteSmith", punteggio: 120 },
+        { username: "Sherlock", punteggio: 110 },
+        { username: "EnigmaMaster", punteggio: 95 },
+        { username: "AdaFan99", punteggio: 80 },
+        { username: userName, punteggio: score } 
+    ];
+    leaderboardFake.sort((a, b) => b.punteggio - a.punteggio);
+    tbody.innerHTML = ""; 
+    // Genera le righe della tabella
+    leaderboardFake.forEach((player, index) => {
+        let rigaClasse = (player.username === userName) ? 'class="giocatore-corrente"' : '';
+        let row = `<tr ${rigaClasse}>
+            <td>#${index + 1}</td>
+            <td>${player.username}</td>
+            <td>${player.punteggio} pts</td>
+        </tr>`;
+        tbody.innerHTML += row;
+    });
+}
+
+// Funzione di Logout
+async function eseguiLogout() {
+    try {
+        const response = await fetch('/api/logout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        if (response.ok) {
+            console.log("Logout dal server completato con successo.");
+        } else {
+            console.warn("Il server ha risposto con un errore, ma forzo comunque l'uscita locale.");
+        }
+    } catch (err) {
+        console.error("Impossibile contattare il server", err);
+    } finally {
+        localStorage.clear(); 
+        window.location.href = "../pages/login.html"; 
     }
 }
 

@@ -244,6 +244,18 @@ input[type="radio"]:checked + .avatar-img {
     box-shadow: 0 0 15px rgba(0, 17, 255, 0.7);
     transform: scale(1.1);
 }
+
+.modal-log {
+    font-family: 'Playfair Display', 'Courier New', Courier, monospace;
+    letter-spacing: 2px;
+    font-size: 1.5vw;
+    box-shadow: 0 0 20px rgba(17, 2, 46, 0.75);
+}
+
+.modal-content.modal-log {
+    background-color: rgba(17, 2, 46, 0.75) !important;
+    border: 1px solid #8c9eff;
+}
 /*mission*/
 .missione {
     background-image: linear-gradient(rgba(11, 19, 43, 0.5), rgba(11, 19, 43, 0.5)), url('../assets/images/mission.jpg');
@@ -300,7 +312,7 @@ input[type="radio"]:checked + .avatar-img {
     pointer-events: none;
 }
 
-/* Personalizzazione scrollbar per taccuino */
+/* Personalizzazione scrollbar */
 
 .modal-enigma, .modal-enigma2, .modal-enigma3, .modal-enigma4, .modal-enigma5 {
     max-height: 80vh; 
@@ -867,6 +879,29 @@ input[type="radio"]:checked + .avatar-img {
     background-color: rgba(17, 2, 46, 0.7);
 }
 
+/*room vittoria*/
+.table-classifica {
+            background-color: transparent;
+            color: #F8F8FF;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+}
+.table-classifica th {
+    color: #8c9eff;
+    font-family: 'Special Elite', monospace;
+    border-bottom: 2px solid #8c9eff;
+}
+.table-classifica td {
+    border-bottom: 1px solid rgba(140, 158, 255, 0.3);
+    background-color: transparent !important;
+    color: #F8F8FF !important;
+}
+.giocatore-corrente td {
+    color: #8b07ff !important; 
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
 /* media query*/
 @media (min-width: 992px) {
     .avatar-img {
@@ -1019,6 +1054,30 @@ input[type="radio"]:checked + .avatar-img {
     }
     .btn-music-gameT span {
         font-size: 20px;
+    }
+    .modal-log .modal-header, 
+    .modal-log .modal-footer {
+        padding: 8px !important; 
+    }
+
+    .modal-log .modal-body {
+        padding: 10px !important; 
+    }
+
+    .modal-log .modal-title {
+        font-size: 1.2rem !important;
+    }
+
+    .modal-log .modal-body p, 
+    .modal-log .modal-body .fs-4, 
+    .modal-log .modal-body .fs-5 {
+        font-size: 1rem !important;
+        margin-bottom: 5px !important;
+    }
+
+    .modal-log .btn-lg {
+        padding: 5px 20px !important;
+        font-size: 1rem !important; 
     }
    
     /* mission */

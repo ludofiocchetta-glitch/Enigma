@@ -96,7 +96,6 @@ app.post("/api/register", async (req, res) => {
 // LOGIN
 app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
-
   try {
     const { data: user, error } = await supabase
         .from('User')
@@ -105,7 +104,7 @@ app.post('/api/login', async (req, res) => {
         .single();
     
     if (error || !user) {
-        return res.status(404).json({error: 'Utente inesistente. REGISTRATI!'});
+        return res.status(404).json({error: 'Utente inesistente. Registrati!'});
     }
 
     if(!(await bcrypt.compare(password, user.password))) {
