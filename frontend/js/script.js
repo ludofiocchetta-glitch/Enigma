@@ -50,7 +50,7 @@ async function eseguiLogin() {
         if (response.ok) {
             localStorage.setItem('username', username);
             localStorage.setItem('stanzaSalvata', data.room);
-            if (data.room>1 && data.room<6)  {
+            if (data.room>1 && data.room<=8)  {
                 window.avatarVecchio = data.avatar;
                 window.avatarNuovo = avatarSelezionato;
                 document.getElementById('modal-nome-agente').innerText = username;
@@ -151,9 +151,17 @@ window.onload = async function() {
             localStorage.setItem('avatar', data.avatar);
             const userform = document.querySelector('.userform');
             if (userform) {
-                document.getElementById('modal-nome-agente').innerText = data.username;
-                const modalScelta = new bootstrap.Modal(document.getElementById('sceltaPartitaModal'));
-                modalScelta.show();
+                if (data.room >= 2 && data.room <= 8) {
+                    const avatarRadio = document.querySelector('input[name="avatar"]:checked');
+                    window.avatarVecchio = data.avatar;
+                    window.avatarNuovo = avatarRadio ? avatarRadio.value : data.avatar;
+                    document.getElementById('modal-nome-agente').innerText = data.username;
+                    const modalScelta = new bootstrap.Modal(document.getElementById('sceltaPartitaModal'));
+                    modalScelta.show();
+                } else {
+                    window.avatarVecchio = data.avatar;
+                    continuaPartita(); 
+                }
             }
         }
     } catch(err) {
@@ -195,7 +203,7 @@ window.onload = async function() {
         inizioVittoria();
     }
 };
-//Funzioni per la continuare o resettare la sessione
+//Funzioni per continuare o resettare la sessione
 function continuaPartita() {
     localStorage.setItem('avatar', window.avatarVecchio);
     const stanza = parseInt(localStorage.getItem('stanzaSalvata')) || 2; 
@@ -1844,7 +1852,7 @@ async function eseguiLogout() {
         console.error("Impossibile contattare il server", err);
     } finally {
         localStorage.clear(); 
-        window.location.href = "../pages/index.html"; 
+        window.location.href = "../index.html"; 
     }
 }
 
