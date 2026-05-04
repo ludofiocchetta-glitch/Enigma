@@ -1,6 +1,6 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
-require('dotenv').config();
 const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
 const { Pool } = require('pg');
@@ -33,7 +33,7 @@ const supabase = createClient(supabaseApi, supabaseApiKey);
 
 // SESSIONI
 const pgPool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: process.env.DATABASE_URL
 });
 
 // Setup sessione

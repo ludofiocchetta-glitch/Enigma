@@ -66,8 +66,6 @@ async function eseguiLogin() {
         nuovaPartita();
       }
     } else if (response.status === 404) { //utente non trovato
-      inputname.value = '';
-      inputpassword.value = '';
       const modal = new bootstrap.Modal(document.getElementById('modalUtenteInesistente'));
       modal.show();;
     } else if (response.status === 401) { //password errata
@@ -138,8 +136,6 @@ async function eseguiRegistrazione() {
       window.location.href = '../pages/room0.html';
     } else {
       if (data.error && data.error.includes('Username già esistente')) {
-        inputname.value = '';
-        inputpassword.value = '';
         const modal = new bootstrap.Modal(document.getElementById('modalUtenteGiaEsistente'));
         modal.show();
       } else {
