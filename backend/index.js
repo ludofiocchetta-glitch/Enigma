@@ -20,6 +20,17 @@ const supabaseApi = 'https://xuiutjpjlidhoprcntbk.supabase.co';
 const supabaseApiKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseApi, supabaseApiKey);
 
+// IMPORTANTE
+// numeri stanze: 0 start, 1 login, 2 mission, 3 turing, 4 curie, 5 einstein, 6 lovelace, 
+// 7 final, 8 victory
+// nel database bisogna salvare il numero di stanza giusto già incrementato in cui rimandare
+// l'utente, cioè se un utente ha fatto solo il login salvo 2 per mandarlo a mission
+// se letto mission e cliccato inizia missione salvo 3
+// se ha risposto all'enigma finale di una stanza salvo come numero la stanza dopo seguendo
+// questa numerazione, se ha risposto solo alle domande intermedie salvo il numero di 
+// quella stanza sempre con questa numerazione
+// in pratica dopo che l'utente si è registrato sta già alla 2
+
 // SESSIONI
 const pgPool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -46,9 +57,9 @@ app.use(express.json());
 
 // REGISTRAZIONE
 app.post("/api/register", async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, avatar } = req.body;
     
-  if(!username || !password) {
+  if(!username || !password || !avatar) {
       return res.status(400).json({error: `Tutti i campi sono obbligatori` });
   }
   if(password.length < 8) {
@@ -73,7 +84,7 @@ app.post("/api/register", async (req, res) => {
 
     const { data: progress, error: progress_error } = await supabase
       .from('progress')
-      .insert([{ username: username, room: 0, score : 0}])
+      .insert([{ username: username, room: 2, score : 0}])
       .select();
 
     if (progress_error) throw progress_error;
@@ -87,9 +98,9 @@ app.post("/api/register", async (req, res) => {
 
     req.session.user = {
       username: data[0].id,
-      room: 0,
+      room: 2,
       inventory: [],
-      // va aggiunto l'avatar in futuro
+      avatar: avatar
     };
 
     return res.status(201).json({ message: 'Utente creato con successo', data: req.session.user });
@@ -102,12 +113,12 @@ app.post("/api/register", async (req, res) => {
 
 // LOGIN
 app.post('/api/login', async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, avatar } = req.body;
   try {
     const { data: user, error } = await supabase
         .from('User')
-        .select('id, password')
-        .eq('id', username)
+        .select('id, username, password, avatar')
+        .eq('username', username)
         .single();
     
     if (error || !user) {
@@ -144,9 +155,9 @@ app.post('/api/login', async (req, res) => {
     
     req.session.user = {
       username: user.id,
-      room: game.room + 1,
+      room: game.room,
       inventory: inventory ? inventory.notebook : [],
-      // va aggiunto avatar
+      avatar: user.avatar
     };
 
     return res.status(200).json({ message: 'Login effettuato', room: req.session.user.room });
@@ -160,9 +171,43 @@ app.post('/api/login', async (req, res) => {
 // CONTROLLO SESSIONE
 app.get('/api/me', (req, res) => {
     if(req.session.user){
-        res.status(200).json(req.session.user);
+      res.json({
+        username: req.session.user.username,
+        room: req.session.user.room,
+        avatar: req.session.user.avatar
+    });
     }else{
         res.status(401).json({error: "Non loggato"});
+    }
+});
+
+// RESET PARTITA
+app.post('/api/reset-game', async (req, res) => {
+    const { username, nuovoAvatar } = req.body;
+    try {
+        await supabase
+            .from('User')
+            .update({ avatar: nuovoAvatar })
+            .eq('username', username);
+        await supabase
+            .from('progress')
+            .update({ room: 2, score: 0 })
+            .eq('user', username);
+        await supabase
+            .from('inventory')
+            .update({ notebook: [] })
+            .eq('username', username);
+
+        if(req.session.user) {
+            req.session.user.avatar = nuovoAvatar;
+            req.session.user.room = 2;
+            req.session.user.inventory = [];
+        }
+
+        return res.status(200).json({ message: "Partita resettata" });
+    } catch (err) {
+        console.error("Errore nel reset:", err);
+        return res.status(500).json({ error: 'Impossibile resettare la partita' });
     }
 });
 

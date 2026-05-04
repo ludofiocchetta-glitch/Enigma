@@ -880,6 +880,23 @@ input[type="radio"]:checked + .avatar-img {
 }
 
 /*room vittoria*/
+.vittoria {
+    background-image: linear-gradient(rgba(11, 19, 43, 0.5), rgba(11, 19, 43, 0.5)), url('../assets/images/victory.jpg');
+    background-size: cover;
+    background-position: center;
+    height:100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.dossier-box {
+    background-color: rgba(17, 2, 46, 0.75); 
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px); 
+    border: 1px solid rgba(140, 169, 255, 0.902) ;
+    border-radius: 15px;
+}
 .table-classifica {
             background-color: transparent;
             color: #F8F8FF;
@@ -1118,20 +1135,20 @@ input[type="radio"]:checked + .avatar-img {
         border-width: 3px !important; 
     }
 
-    #introT, #introC, #introE, #introL, #introF{
+    #introT, #introC, #introE, #introL, #introF, #introV{
         padding: 15px !important; 
         max-height: 85vh !important; 
         max-width: 85% !important; 
         overflow-y: auto; 
     }
 
-    #introT p, #introC p, #introE p, #introL p, #introF p {
+    #introT p, #introC p, #introE p, #introL p, #introF p, #introV {
         font-size: 1rem !important;
         line-height: 1.3 !important;
         margin-bottom: 10px !important;
     }
 
-    #introT .btn-lg, #introC .btn-lg, #introE .btn-lg, #introL .btn-lg, #introF .btn-lg {
+    #introT .btn-lg, #introC .btn-lg, #introE .btn-lg, #introL .btn-lg, #introF .btn-lg, #introV .btn-lg {
         padding: 5px 25px !important;
         font-size: 1rem !important;
         margin-top: 5px !important;
@@ -1210,6 +1227,46 @@ input[type="radio"]:checked + .avatar-img {
         font-size: 1.2rem !important; 
         line-height: 1.4 !important;
         margin-bottom: 10px !important;
+    }
+    /* room victory */
+    #leaderboard-container {
+        padding: 10px 15px !important; 
+        overflow-y: auto; 
+        width: 95%; 
+    }
+
+    #leaderboard-container h2 {
+        font-size: 1.3rem !important; 
+        margin-bottom: 0 !important; 
+    }
+
+    #leaderboard-container .fs-4 {
+        font-size: 1rem !important; 
+        margin-bottom: 5px !important; 
+    }
+
+    .table-classifica {
+        font-size: 0.9rem !important;
+        margin-bottom: 0 !important; 
+    }
+
+    .table-classifica th, 
+    .table-classifica td {
+        padding: 2px 5px !important; 
+    }
+
+    .giocatore-corrente td {
+        font-size: 1rem !important; 
+    }
+
+    #leaderboard-container .mt-4 {
+        margin-top: 5px !important; 
+    }
+
+    #leaderboard-container .btn-lg {
+        padding: 4px 20px !important;
+        font-size: 1rem !important;
+        margin-top: 0 !important;
     }
 }
 

@@ -1,8 +1,19 @@
+// IMPORTANTE
+// numeri stanze: 0 start, 1 login, 2 mission, 3 turing, 4 curie, 5 einstein, 6 lovelace, 
+// 7 final, 8 victory
+// nel database bisogna salvare il numero di stanza giusto già incrementato in cui rimandare
+// l'utente, cioè se un utente ha fatto solo il login salvo 2 per mandarlo a mission
+// se letto mission e cliccato inizia missione salvo 3
+// se ha risposto all'enigma finale di una stanza salvo come numero la stanza dopo seguendo
+// questa numerazione, se ha risposto solo alle domande intermedie salvo il numero di 
+// quella stanza sempre con questa numerazione
+// in pratica dopo che l'utente si è registrato sta già alla 2
+
 // login
 async function eseguiLogin() {
     const inputname = document.getElementById('inputname');
     const inputpassword = document.getElementById('inputpassword');
-    const avatar = document.querySelector('input[name="avatar"]:checked').value;
+    const avatarSelezionato = document.querySelector('input[name="avatar"]:checked').value;
     const username = inputname.value.trim();
     const password = inputpassword.value.trim();
     inputname.classList.remove('is-invalid');
@@ -33,16 +44,23 @@ async function eseguiLogin() {
         const response = await fetch('/api/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: username, password: password })
+            body: JSON.stringify({ username: username, password: password})
         });
         const data = await response.json();
         if (response.ok) {
-            localStorage.setItem('avatar', avatar);
             localStorage.setItem('username', username);
             localStorage.setItem('stanzaSalvata', data.room);
-            document.getElementById('modal-nome-agente').innerText = username;
-            const modalScelta = new bootstrap.Modal(document.getElementById('sceltaPartitaModal'));
-            modalScelta.show();
+            if (data.room>1 && data.room<=8)  {
+                window.avatarVecchio = data.avatar;
+                window.avatarNuovo = avatarSelezionato;
+                document.getElementById('modal-nome-agente').innerText = username;
+                const modalScelta = new bootstrap.Modal(document.getElementById('sceltaPartitaModal'));
+                modalScelta.show();
+            }
+            else {
+                window.avatarNuovo = avatarSelezionato;
+                nuovaPartita();
+            }
         } else if (response.status === 404) {
             console.log("Nuovo agente rilevato, avvio la registrazione...");
             eseguiRegistrazione(); 
@@ -96,13 +114,13 @@ async function eseguiRegistrazione() {
         const response = await fetch('/api/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: username, password: password })
+            body: JSON.stringify({ username: username, password: password, avatar: avatar })
         });
         const data = await response.json();
         if (response.ok) {
             localStorage.setItem('avatar', avatar);
             localStorage.setItem('username', username);
-            localStorage.setItem('stanzaSalvata', 1); 
+            localStorage.setItem('stanzaSalvata', 2); 
             window.location.href = "../pages/mission.html";    
         } else {
             if (data.error && data.error.includes("Username già esistente")) {
@@ -130,11 +148,20 @@ window.onload = async function() {
             const data = await response.json();
             localStorage.setItem('stanzaSalvata', data.room);
             localStorage.setItem('username', data.username);
+            localStorage.setItem('avatar', data.avatar);
             const userform = document.querySelector('.userform');
             if (userform) {
-                document.getElementById('modal-nome-agente').innerText = data.username;
-                const modalScelta = new bootstrap.Modal(document.getElementById('sceltaPartitaModal'));
-                modalScelta.show();
+                if (data.room >= 2 && data.room <= 8) {
+                    const avatarRadio = document.querySelector('input[name="avatar"]:checked');
+                    window.avatarVecchio = data.avatar;
+                    window.avatarNuovo = avatarRadio ? avatarRadio.value : data.avatar;
+                    document.getElementById('modal-nome-agente').innerText = data.username;
+                    const modalScelta = new bootstrap.Modal(document.getElementById('sceltaPartitaModal'));
+                    modalScelta.show();
+                } else {
+                    window.avatarVecchio = data.avatar;
+                    continuaPartita(); 
+                }
             }
         }
     } catch(err) {
@@ -176,19 +203,46 @@ window.onload = async function() {
         inizioVittoria();
     }
 };
-//Funzioni per la continuare o resettare la sessione
-function continuaPartita(){
-    const stanza = localStorage.getItem('stanzaSalvata') || 1;
-    if (stanza == 1){
+//Funzioni per continuare o resettare la sessione
+function continuaPartita() {
+    localStorage.setItem('avatar', window.avatarVecchio);
+    const stanza = parseInt(localStorage.getItem('stanzaSalvata')) || 2; 
+
+    if (stanza === 2) {
         window.location.href = "../pages/mission.html";
-    }else{
-        window.location.href = `../pages/room${stanza}.html`;
+    } else if (stanza === 3) {
+        window.location.href = "../pages/room1.html";
+    } else if (stanza === 4) {
+        window.location.href = "../pages/room2.html";
+    } else if (stanza === 5) {
+        window.location.href = "../pages/room3.html";
+    } else if (stanza === 6) {
+        window.location.href = "../pages/room4.html";
+    } else if (stanza === 7) {
+        window.location.href = "../pages/room5.html";
+    } else if (stanza === 8) {
+        window.location.href = "../pages/victory.html";
+    } else {
+        window.location.href = "../pages/mission.html";
     }
 }
 
-function nuovaPartita(){
-    localStorage.removeItem('taccuinoAgente');
-    window.location.href = "../pages/mission.html";
+async function nuovaPartita() {
+    const username = localStorage.getItem('username');
+    const avatar = window.avatarNuovo;
+    try {
+        await fetch('/api/reset-game', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: username, nuovoAvatar: avatar })
+        });
+        localStorage.removeItem('taccuinoAgente');
+        localStorage.setItem('avatar', avatar);
+        localStorage.setItem('stanzaSalvata', 2);
+        window.location.href = "../pages/mission.html";
+    } catch(err) {
+        console.error("Impossibile contattare il server per il reset:", err);
+    }
 }
 
 let skipIntro = false;
@@ -1675,7 +1729,6 @@ function controllaCodiceFinale() {
             modalEnigma.style.pointerEvents = "none";
             modalEnigma.style.opacity = 0.5;
         }
-        //localStorage.clear();
         setTimeout(() => { window.location.href = "../pages/victory.html"; }, 2500);
     } else {
         countMuro2++;
@@ -1750,7 +1803,7 @@ function scriviTestoV(testo, indice) {
 }
 
 function mostraClassifica() {
-    document.getElementById('debriefing-container').classList.add('d-none');
+    document.getElementById('introV').classList.add('d-none');
     document.getElementById('leaderboard-container').classList.remove('d-none');
     const scoreFinale = localStorage.getItem('punteggioFinale') || 0;
     document.getElementById('punteggio-giocatore').innerText = scoreFinale;
@@ -1763,10 +1816,10 @@ function popolaClassificaMock() {
     const userName = localStorage.getItem('username') || "Tu";
     const score = parseInt(localStorage.getItem('punteggioFinale') || 0);
     let leaderboardFake = [
-        { username: "AgenteSmith", punteggio: 120 },
-        { username: "Sherlock", punteggio: 110 },
-        { username: "EnigmaMaster", punteggio: 95 },
-        { username: "AdaFan99", punteggio: 80 },
+        { username: "Prova1", punteggio: 120 },
+        { username: "Prova2", punteggio: 110 },
+        { username: "Prova3", punteggio: 95 },
+        { username: "Prova4", punteggio: 80 },
         { username: userName, punteggio: score } 
     ];
     leaderboardFake.sort((a, b) => b.punteggio - a.punteggio);
@@ -1799,7 +1852,7 @@ async function eseguiLogout() {
         console.error("Impossibile contattare il server", err);
     } finally {
         localStorage.clear(); 
-        window.location.href = "../pages/login.html"; 
+        window.location.href = "../index.html"; 
     }
 }
 
