@@ -61,7 +61,7 @@ app.post("/api/register", async (req, res) => {
   try {
     const { data, error } = await supabase
       .from('User')
-      .insert([{ username: username, password: password_hash }])
+      .insert([{ id: username, password: password_hash }])
       .select();
 
     if (error) {
@@ -73,14 +73,21 @@ app.post("/api/register", async (req, res) => {
 
     const { data: progress, error: progress_error } = await supabase
       .from('progress')
-      .insert([{ user: username, room: 0, score: 0 }])
+      .insert([{ username: username, room: 0, score : 0}])
       .select();
 
     if (progress_error) throw progress_error;
 
+    const {data : inventory, error: inventory_error} = await supabase
+      .from('inventory')
+      .insert([{ id: username, notebook: [] }])
+      .select();
+
+    if (inventory_error) throw inventory_error;
+
     req.session.user = {
-      username: data[0].username,
-      room: 1,
+      username: data[0].id,
+      room: 0,
       inventory: [],
       // va aggiunto l'avatar in futuro
     };
@@ -99,8 +106,8 @@ app.post('/api/login', async (req, res) => {
   try {
     const { data: user, error } = await supabase
         .from('User')
-        .select('id, username, password')
-        .eq('username', username)
+        .select('id, password')
+        .eq('id', username)
         .single();
     
     if (error || !user) {
@@ -114,7 +121,7 @@ app.post('/api/login', async (req, res) => {
     const { data: game, error: game_error } = await supabase
       .from('progress')
       .select('username, room')
-      .eq('username', user.username)
+      .eq('username', user.id)
       .limit(1)
       .single();
 
@@ -126,7 +133,7 @@ app.post('/api/login', async (req, res) => {
     const { data: inventory, error: inventory_error } = await supabase
       .from('inventory')
       .select('*')
-      .eq('username', user.username)
+      .eq('id', user.id)
       .single();
 
     if (inventory_error && inventory_error.code !== 'PGRST116') {
@@ -136,7 +143,7 @@ app.post('/api/login', async (req, res) => {
 
     
     req.session.user = {
-      username: user.username,
+      username: user.id,
       room: game.room + 1,
       inventory: inventory ? inventory.notebook : [],
       // va aggiunto avatar
