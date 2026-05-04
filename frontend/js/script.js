@@ -13,13 +13,14 @@
 async function eseguiLogin() {
   const inputname = document.getElementById('inputname');
   const inputpassword = document.getElementById('inputpassword');
-  const avatarSelezionato = document.querySelector(
-    'input[name="avatar"]:checked',
-  ).value;
+  const avatarSelezionato = document.querySelector('input[name="avatar"]:checked').value;
+  
   const username = inputname.value.trim();
   const password = inputpassword.value.trim();
+
   inputname.classList.remove('is-invalid');
   inputpassword.classList.remove('is-invalid');
+
   if (username === '') {
     inputname.classList.add('is-invalid');
     inputname.placeholder = 'Campo obbligatorio!';
@@ -48,35 +49,37 @@ async function eseguiLogin() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: username, password: password }),
     });
+
     const data = await response.json();
     if (response.ok) {
       localStorage.setItem('username', username);
       localStorage.setItem('stanzaSalvata', data.room);
+
       if (data.room > 1 && data.room <= 8) {
         window.avatarVecchio = data.avatar;
         window.avatarNuovo = avatarSelezionato;
         document.getElementById('modal-nome-agente').innerText = username;
-        const modalScelta = new bootstrap.Modal(
-          document.getElementById('sceltaPartitaModal'),
-        );
+        const modalScelta = new bootstrap.Modal(document.getElementById('sceltaPartitaModal'));
         modalScelta.show();
       } else {
         window.avatarNuovo = avatarSelezionato;
         nuovaPartita();
       }
-    } else if (response.status === 404) {
-      console.log('Nuovo agente rilevato, avvio la registrazione...');
-      eseguiRegistrazione();
-    } else if (response.status === 401) {
-      inputpassword.classList.add('is-invalid');
-      inputpassword.value = '';
-      inputpassword.placeholder = 'Password errata!';
-    } else {
-      inputname.classList.add('is-invalid');
+    } else if (response.status === 404) { //utente non trovato
       inputname.value = '';
-      inputname.placeholder = data.error || 'Errore di sistema';
+      inputpassword.value = '';
+      const modal = new bootstrap.Modal(document.getElementById('modalUtenteInesistente'));
+      modal.show();;
+    } else if (response.status === 401) { //password errata
+      inputpassword.value = '';
+      const modal = new bootstrap.Modal(document.getElementById('modalPasswordErrata'));
+      modal.show();
+    } else { //altri errori
+      inputname.value = '';
+      const modalErrore = new bootstrap.Modal(document.getElementById('erroreServerModal'));
+      modalErrore.show();
     }
-  } catch (err) {
+  } catch (err) { //errore di rete o connessione
     console.error('Errore di connessione: ', err);
     const modalErrore = new bootstrap.Modal(
       document.getElementById('erroreServerModal'),
@@ -91,8 +94,10 @@ async function eseguiRegistrazione() {
   const avatar = document.querySelector('input[name="avatar"]:checked').value;
   const username = inputname.value.trim();
   const password = inputpassword.value.trim();
+
   inputname.classList.remove('is-invalid');
   inputpassword.classList.remove('is-invalid');
+
   if (username === '') {
     inputname.classList.add('is-invalid');
     inputname.placeholder = 'Campo obbligatorio!';
@@ -133,20 +138,20 @@ async function eseguiRegistrazione() {
       window.location.href = '../pages/room0.html';
     } else {
       if (data.error && data.error.includes('Username già esistente')) {
-        inputname.classList.add('is-invalid');
         inputname.value = '';
-        inputname.placeholder = 'Agente già registrato. Accedi!';
+        inputpassword.value = '';
+        const modal = new bootstrap.Modal(document.getElementById('modalUtenteGiaEsistente'));
+        modal.show();
       } else {
-        inputname.classList.add('is-invalid');
         inputname.value = '';
-        inputname.placeholder = data.error || 'Errore di sistema';
+        inputpassword.value = '';
+        const modalErrore = new bootstrap.Modal(document.getElementById('erroreServerModal'));
+        modalErrore.show();
       }
     }
   } catch (err) {
     console.error('Errore di connessione: ', err);
-    const modalErrore = new bootstrap.Modal(
-      document.getElementById('erroreServerModal'),
-    );
+    const modalErrore = new bootstrap.Modal(document.getElementById('erroreServerModal'));
     modalErrore.show();
   }
 }
