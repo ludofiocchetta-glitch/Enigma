@@ -57,7 +57,7 @@ async function eseguiLogin() {
       localStorage.setItem('username', username);
       localStorage.setItem('stanzaSalvata', data.room);
 
-      if (data.room >= 1 && data.room <= 6) {
+      if (data.room >= 0 && data.room <= 6) {
         window.avatarVecchio = data.avatar;
         window.avatarNuovo = avatarSelezionato;
         document.getElementById('modal-nome-agente').innerText = username;
@@ -183,7 +183,7 @@ window.onload = async function () {
       localStorage.setItem('avatar', data.avatar);
       const userform = document.querySelector('.userform');
       if (userform) {
-        if (data.room >= 1 && data.room <= 6) {
+        if (data.room >= 0 && data.room <= 6) {
           const avatarRadio = document.querySelector(
             'input[name="avatar"]:checked',
           );

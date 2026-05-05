@@ -271,15 +271,7 @@ const wrongRoom = (req, res, next) => {
   }
 };
 
-//middleware per check login
-const loggedIn = (req, res, next) => {
-  if (req.session.user && req.session) {
-    return res.redirect(`/index/room/${req.session.user.room}`);
-  }
-  next();
-};
-
-app.get('/login', loggedIn, (req, res) => {
+app.get('/login', (req, res) => {
   res.sendFile(path.join(root, 'frontend', 'pages', 'login.html'));
 });
 
