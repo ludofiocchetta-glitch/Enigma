@@ -12,7 +12,6 @@ const host = '0.0.0.0';
 // Rotte
 const path = require('path');
 const root = path.join(__dirname, '..', 'frontend');
-app.use(express.static(root));
 
 // Setup Supabase
 const { createClient } = require('@supabase/supabase-js');
@@ -55,6 +54,29 @@ app.use(
 
 app.use(express.json());
 
+//SICUREZZA (evita l'accesso diretto alle stanze senza login)
+app.use((req, res, next) => {
+  if (req.path.startsWith('/pages/room') && req.path.endsWith('.html')) {
+
+    if (!req.session || !req.session.user) {
+      return res.redirect('/login');
+    }
+
+    //allineamento matematico per le stanze
+    const fileIndex = req.session.user.room - 2;
+
+    if (fileIndex >= 0 && fileIndex <= 5) {
+      return res.redirect(`/index/room/${fileIndex}`);
+    }else if (fileIndex === 6) {
+      return res.redirect('/pages/victory.html');
+    }
+    return res.redirect('/login');
+  }
+  next();
+});
+
+app.use(express.static(root));
+
 // REGISTRAZIONE
 app.post('/api/register', async (req, res) => {
   const { username, password, avatar } = req.body;
@@ -74,21 +96,19 @@ app.post('/api/register', async (req, res) => {
   try {
     const { data, error } = await supabase
       .from('User')
-      .insert([{ id: username, password: password_hash }])
+      .insert([{ id: username, password: password_hash, avatar: avatar }])
       .select();
 
     if (error) {
       if (error.code == '23505') {
-        return res.status(400).json({
-          error: 'Username già esistente, inserire un altro username!',
-        });
+        return res.status(400).json({error: 'Username già esistente, inserire un altro username!'});
       }
       throw error;
     }
 
     const { data: progress, error: progress_error } = await supabase
       .from('progress')
-      .insert([{ username: username, room: 0, score: 0 }])
+      .insert([{ username: username, room: 1, score: 0 }])
       .select();
 
     if (progress_error) throw progress_error;
@@ -101,15 +121,13 @@ app.post('/api/register', async (req, res) => {
     if (inventory_error) throw inventory_error;
 
     req.session.user = {
-      username: data[0].id,
-      room: 0,
+      username: username,
+      room: 2,
       inventory: [],
       avatar: avatar,
     };
 
-    return res
-      .status(201)
-      .json({ message: 'Utente creato con successo', data: req.session.user });
+    return res.status(201).json({ message: 'Utente creato con successo', data: req.session.user });
   } catch (err) {
     console.error('Errore nella registrazione: ', err);
     return res.status(500).json({ errore: 'Errore interno del server' });
@@ -122,8 +140,8 @@ app.post('/api/login', async (req, res) => {
   try {
     const { data: user, error } = await supabase
       .from('User')
-      .select('id, username, password, avatar')
-      .eq('username', username)
+      .select('id, password, avatar')
+      .eq('id', username)
       .single();
 
     if (error || !user) {
@@ -159,7 +177,7 @@ app.post('/api/login', async (req, res) => {
 
     req.session.user = {
       username: user.id,
-      room: game.room + 1, //ricordiamoci di incrementare la stanza di 1 per mandare l'utente alla stanza giusta
+      room: game.room + 1, //incrementare la stanza di 1 per mandare l'utente alla stanza giusta
       inventory: inventory ? inventory.notebook : [],
       avatar: user.avatar,
     };
@@ -193,19 +211,19 @@ app.post('/api/reset-game', async (req, res) => {
     await supabase
       .from('User')
       .update({ avatar: nuovoAvatar })
-      .eq('username', username);
+      .eq('id', username);
     await supabase
       .from('progress')
-      .update({ room: 0, score: 0 })
-      .eq('user', username);
+      .update({ room: 1, score: 0 })
+      .eq('username', username);
     await supabase
       .from('inventory')
       .update({ notebook: [] })
-      .eq('username', username);
+      .eq('id', username);
 
     if (req.session.user) {
       req.session.user.avatar = nuovoAvatar;
-      req.session.user.room = 0;
+      req.session.user.room = 2;
       req.session.user.inventory = [];
     }
 
@@ -252,44 +270,55 @@ app.put('/api/room-completed', async (req, res) => {
       .eq('username', username);
 
     req.session.user.room = newRoom + 1;
-    res
-      .status(200)
-      .json({ message: 'Stanza aggiornata', newRoom: newRoom + 1 });
-    //return res.redirect(`/index/room${newRoom + 1}`);
+    res.status(200).json({ message: 'Stanza aggiornata', newRoom: newRoom + 1 });
   } catch (err) {
     console.error("Errore nell'aggiornamento della stanza:", err);
     return res.status(500).json({ error: 'Errore interno del server' });
   }
 });
 
-// reindirizzare se in stanza non autorizzata
-
+//middleware per check login generale
+const checkSession = (req, res, next) => {
+  if (!req.session || !req.session.user) {
+    return res.redirect('/login');
+  }
+  next();
+};
 //middleware per stanza sbagliata
 const wrongRoom = (req, res, next) => {
   const requiredroom = parseInt(req.params.numero, 10);
-  if (req.session.user.room !== requiredroom) {
-    return res.redirect(`/index/room/${requiredroom}`);
+  const actualRoom = req.session.user.room - 2; //allineamento matematico per le stanze
+
+  if (actualRoom === 6) {
+    return res.redirect('/pages/victory.html');
   }
+
+  if (requiredroom != actualRoom) {
+    return res.redirect(`/index/room/${actualRoom}`);
+  }
+  next();
 };
 
 //middleware per check login
 const loggedIn = (req, res, next) => {
-  if (req.session.user) {
-    return res.redirect(`/index/room/${req.session.user.room}`);
+  if (req.session && req.session.user) {
+    const actualRoom = req.session.user.room - 2; //allineamento matematico per le stanze
+    if(actualRoom === 6) {
+      return res.redirect('/pages/victory.html');
+    }
+    return res.redirect(`/index/room/${actualRoom}`);
   }
   next();
 };
 
 app.get('/login', loggedIn, (req, res) => {
-  res.sendFile(path.join(root, 'frontend', 'pages', 'login.html'));
+  res.sendFile(path.join(root, 'pages', 'login.html'));
 });
 
 // non accede a mission poichè la sessione parte dalla room 1 e lascio mission al frontrnd
-app.get('/index/room/:numero', wrongRoom, (req, res) => {
+app.get('/index/room/:numero', checkSession,wrongRoom, (req, res) => {
   const numeroStanza = req.params.numero;
-  res.sendFile(
-    path.join(root, 'frontend', 'pages', `room${numeroStanza}.html`),
-  );
+  res.sendFile(path.join(root, 'pages', `room${numeroStanza}.html`));
 });
 
 //classifica (primi 5 utenti con punteggio più alto)
