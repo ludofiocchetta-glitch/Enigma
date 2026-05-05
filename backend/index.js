@@ -23,9 +23,8 @@ const supabase = createClient(supabaseApi, supabaseApiKey);
 // IMPORTANTE
 // numeri stanze: start e login niente, 0 mission, 1 turing, 2 curie, 3 einstein, 4 lovelace,
 // 5 final, 6 victory.
-// il database incrementa salva la stanza completata e incrementa il numero per mandarti a 
+// il database incrementa salva la stanza completata e incrementa il numero per mandarti a
 // quella che devi fare
-
 
 // SESSIONI
 const pgPool = new Pool({
@@ -95,6 +94,13 @@ app.post('/api/register', async (req, res) => {
       .select();
 
     if (inventory_error) throw inventory_error;
+
+    const { data: leaderboard_entry, error: leaderboard_error } = await supabase
+      .from('Leaderboard')
+      .insert([{ user: username, score: 0 }])
+      .select();
+
+    if (leaderboard_error) throw leaderboard_error;
 
     req.session.user = {
       username: data[0].id,
@@ -238,9 +244,44 @@ app.put('/api/update-score', async (req, res) => {
   }
 });
 
+//taccuino
+app.put('api/update-notebook', async (req, res) => {
+  const username = req.session.user.username;
+  const { notebook, note } = req.body;
+  try {
+    const { data: room, error: room_error } = await supabase
+      .from('room')
+      .select('name')
+      .eq('id', req.session.user.room);
+    if (room_error) {
+      console.error('Errore nel recupero della stanza:', room_error);
+      return res.status(500).json({ error: 'Errore interno del server' });
+    }
+    const { data: text, error: text_error } = await supabase
+      .from('notes')
+      .select('text')
+      .eq('id', note);
+
+    if (text_error) {
+      console.error('Errore nel recupero della nota:', text_error);
+      return res.status(500).json({ error: 'Errore interno del server' });
+    }
+
+    const NewNotebook = [...notebook, { stanza: room, testo: text }]; //aggiungere le altre cose nel caso
+    const { data, error } = await supabase
+      .from('inventory')
+      .update({ notebook: NewNotebook })
+      .eq('id', username);
+  } catch (err) {
+    console.error("Errore nell'aggiornamento del taccuino:", err);
+    return res.status(500).json({ error: 'Errore interno del server' });
+  }
+});
+
 //Enigma risolto
 app.put('/api/room-completed', async (req, res) => {
-  const { username, newRoom } = req.body;
+  const username = req.session.user.username;
+  const { newRoom } = req.body;
   try {
     const { data, error } = await supabase
       .from('progress')
@@ -253,6 +294,36 @@ app.put('/api/room-completed', async (req, res) => {
       .json({ message: 'Stanza aggiornata', newRoom: newRoom + 1 });
   } catch (err) {
     console.error("Errore nell'aggiornamento della stanza:", err);
+    return res.status(500).json({ error: 'Errore interno del server' });
+  }
+});
+
+// aggiornamento e rivelazione classifica
+app.put('/api/leaderboard', async (req, res) => {
+  const username = req.session.user.username;
+  const { final_score } = req.body;
+  try {
+    const { data, error } = await supabase
+      .from('Leaderboard')
+      .update({ score: final_score })
+      .eq('user', username);
+
+    const { data: leaderboard, error: leaderboard_error } = await supabase
+      .from('Leaderboard')
+      .select('*')
+      .order('score', { ascending: false })
+      .limit(5);
+
+    if (leaderboard_error) {
+      console.error('Errore nel recupero della classifica:', leaderboard_error);
+      return res.status(500).json({ error: 'Errore interno del server' });
+    }
+
+    return res
+      .status(200)
+      .json({ message: 'Classifica aggiornata', leaderboard: leaderboard });
+  } catch (err) {
+    console.error("Errore nell'aggiornamento della classifica:", err);
     return res.status(500).json({ error: 'Errore interno del server' });
   }
 });
@@ -270,29 +341,27 @@ const wrongRoom = (req, res, next) => {
 };
 
 app.get('/login', (req, res) => {
-  res.sendFile(path.join(root, 'frontend', 'pages', 'login.html'));
+  res.sendFile(path.join(root, 'pages', 'login.html'));
 });
 
 // indirizzamento stanze
 app.get('/index/room/:numero', wrongRoom, (req, res) => {
   const numeroStanza = req.params.numero;
-  res.sendFile(
-    path.join(root, 'pages', `room${numeroStanza}.html`),
-  );
+  res.sendFile(path.join(root, 'pages', `room${numeroStanza}.html`));
 });
 
 //rotta base: mostra la pagina di inizio
 app.get('/', (req, res) => {
-  res.sendFile(path.join(root, 'frontend', 'index.html')); 
+  res.sendFile(path.join(root, 'index.html'));
 });
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // IMPORTANTE
-// DA FARE 
-//taccuino 
-//mette nel campo del db lo score che gli dà il frontend
+// DA FARE
+//taccuino da capire
+//mette nel campo del db lo score che gli dà il frontend fatto
 // aggiornare numero stanza dopo che l'utente risponde all'enigma finale
-//classifica (primi 5 utenti con punteggio più alto)
+//classifica (primi 5 utenti con punteggio più alto) fatto
 
 // AVVIO SERVER
 app.listen(port, host, () => {
