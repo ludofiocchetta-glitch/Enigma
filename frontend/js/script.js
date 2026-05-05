@@ -1,13 +1,8 @@
 // IMPORTANTE
-// numeri stanze: 0 start, 1 login, 2 mission, 3 turing, 4 curie, 5 einstein, 6 lovelace,
-// 7 final, 8 victory
-// nel database bisogna salvare il numero di stanza giusto già incrementato in cui rimandare
-// l'utente, cioè se un utente ha fatto solo il login salvo 2 per mandarlo a mission
-// se letto mission e cliccato inizia missione salvo 3
-// se ha risposto all'enigma finale di una stanza salvo come numero la stanza dopo seguendo
-// questa numerazione, se ha risposto solo alle domande intermedie salvo il numero di
-// quella stanza sempre con questa numerazione
-// in pratica dopo che l'utente si è registrato sta già alla 2
+// numeri stanze: start e login niente, 0 mission, 1 turing, 2 curie, 3 einstein, 4 lovelace,
+// 5 final, 6 victory.
+// il database incrementa salva la stanza completata e incrementa il numero per mandarti a 
+// quella che devi fare
 
 // login
 async function eseguiLogin() {
@@ -147,7 +142,7 @@ async function eseguiRegistrazione() {
       localStorage.setItem('avatar', avatar);
       localStorage.setItem('username', username);
       localStorage.setItem('stanzaSalvata', 2);
-      window.location.href = '../pages/room0.html';
+      window.location.href = '/index/room/0';
     } else {
       if (data.error && data.error.includes('Username già esistente')) {
         const modal = new bootstrap.Modal(
@@ -246,21 +241,21 @@ function continuaPartita() {
   const stanza = parseInt(localStorage.getItem('stanzaSalvata')) || 0;
 
   if (stanza === 0) {
-    window.location.href = '../pages/room0.html';
+    window.location.href = '/index/room/0';
   } else if (stanza === 1) {
-    window.location.href = '../pages/room1.html';
+    window.location.href = '/index/room/1';
   } else if (stanza === 2) {
-    window.location.href = '../pages/room2.html';
+    window.location.href = '/index/room/2';
   } else if (stanza === 3) {
-    window.location.href = '../pages/room3.html';
+    window.location.href = '/index/room/3';
   } else if (stanza === 4) {
-    window.location.href = '../pages/room4.html';
+    window.location.href = '/index/room/4';
   } else if (stanza === 5) {
-    window.location.href = '../pages/room5.html';
+    window.location.href = '/index/room/5';
   } else if (stanza === 6) {
-    window.location.href = '../pages/victory.html';
+    window.location.href = '/index/room/6';
   } else {
-    window.location.href = '../pages/room0.html';
+    window.location.href = '/index/room/0';
   }
 }
 
@@ -276,7 +271,7 @@ async function nuovaPartita() {
     localStorage.removeItem('taccuinoAgente');
     localStorage.setItem('avatar', avatar);
     localStorage.setItem('stanzaSalvata', 0);
-    window.location.href = '../pages/room0.html';
+    window.location.href = '/index/room/0';
   } catch (err) {
     console.error('Impossibile contattare il server per il reset:', err);
   }
@@ -294,16 +289,16 @@ function avviaMissione() {
 
   if (avatarName === 'detective1') {
     nomeAvatar = 'Alan Turing';
-    imgAvatar = '../assets/images/Alan Turing.png';
+    imgAvatar = '/assets/images/Alan Turing.png';
   } else if (avatarName === 'detective2') {
     nomeAvatar = 'Marie Curie';
-    imgAvatar = '../assets/images/Marie Curie.png';
+    imgAvatar = '/assets/images/Marie Curie.png';
   } else if (avatarName === 'detective3') {
     nomeAvatar = 'Albert Einstein';
-    imgAvatar = '../assets/images/Albert Einstein.png';
+    imgAvatar = '/assets/images/Albert Einstein.png';
   } else if (avatarName === 'detective4') {
     nomeAvatar = 'Ada Lovelace';
-    imgAvatar = '../assets/images/Ada Lovelace.png';
+    imgAvatar = '/assets/images/Ada Lovelace.png';
   }
 
   document.getElementById('avatarScelto').src = imgAvatar;
@@ -349,22 +344,38 @@ function mostraBottoneFinale() {
   bottone.classList.add('fade-in');
 }
 
-function iniziaEscapeRoom() {
-  const avatarname = localStorage.getItem('avatar');
-  window.location.href = '../pages/room1.html';
+async function iniziaEscapeRoom() {
+  const username = localStorage.getItem('username');
+  try {
+    const response = await fetch('/api/room-completed', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        username: username, 
+        newRoom: 0 // Il backend salva 0 nel DB e imposta la sessione a 1
+      }),
+    });
+    if (response.ok) {
+      window.location.href = '/index/room/1';
+    } else {
+      console.error('Errore durante l\'aggiornamento della stanza');
+    }
+  } catch (err) {
+    console.error('Errore di connessione: ', err);
+  }
 }
 
 function caricaAvatarInAngolo() {
   const avatarname = localStorage.getItem('avatar');
   let imgAvatar = '';
   if (avatarname === 'detective1') {
-    imgAvatar = '../assets/images/Alan Turing.png';
+    imgAvatar = '/assets/images/Alan Turing.png';
   } else if (avatarname === 'detective2') {
-    imgAvatar = '../assets/images/Marie Curie.png';
+    imgAvatar = '/assets/images/Marie Curie.png';
   } else if (avatarname === 'detective3') {
-    imgAvatar = '../assets/images/Albert Einstein.png';
+    imgAvatar = '/assets/images/Albert Einstein.png';
   } else if (avatarname === 'detective4') {
-    imgAvatar = '../assets/images/Ada Lovelace.png';
+    imgAvatar = '/assets/images/Ada Lovelace.png';
   }
   const targetImg = document.getElementById('avatarid');
   if (targetImg && imgAvatar !== '') {
@@ -385,12 +396,7 @@ function mostraMessaggio(titolo, testo) {
 //funzioni per il taccuino
 function aggiungiAlTaccuino(stanza, oggetto, contenuto, tipo) {
   let taccuino = JSON.parse(localStorage.getItem('taccuinoAgente')) || [];
-  taccuino.push({
-    stanza: stanza,
-    oggetto: oggetto,
-    contenuto: contenuto,
-    tipo: tipo,
-  });
+  taccuino.push({stanza: stanza,oggetto: oggetto,contenuto: contenuto,tipo: tipo});
   localStorage.setItem('taccuinoAgente', JSON.stringify(taccuino));
 }
 
@@ -510,28 +516,19 @@ let oggettiEsplorati = {
 
 // indizi
 function mostraAtmosferaTuring() {
-  mostraMessaggio(
-    'Mappamondo',
-    'I messaggi attraversano il continente… ma vengono compresi solo in un luogo. \n Non cercare lontano Agente.',
-  );
+  mostraMessaggio('Mappamondo','I messaggi attraversano il continente… ma vengono compresi solo in un luogo. \n Non cercare lontano Agente.');
   oggettiEsplorati.mappamondo = true;
   localStorage.setItem('turing_mappamondo_risolto', 'true');
 }
 
 function mostraIndizioTuring() {
-  mostraMessaggio(
-    'Serranda',
-    'Ci sei quasi, hai trovato un appunto segreto appeso qui: Le parole più importanti non sono scritte per intero.\n B_MBE',
-  );
+  mostraMessaggio('Serranda','Ci sei quasi, hai trovato un appunto segreto appeso qui: Le parole più importanti non sono scritte per intero.\n B_MBE');
   oggettiEsplorati.serranda = true;
   localStorage.setItem('turing_serranda_risolto', 'true');
 }
 
 function mostraScatoloni() {
-  mostraMessaggio(
-    'Scatoloni polverosi',
-    'Scartoffie, appunti tecnici  e... una tazza di tè ormai fredda. \n Qualcuno ha lavorato qui a lungo.',
-  );
+  mostraMessaggio('Scatoloni polverosi','Scartoffie, appunti tecnici  e... una tazza di tè ormai fredda. \n Qualcuno ha lavorato qui a lungo.');
   oggettiEsplorati.scatoloni = true;
   localStorage.setItem('turing_scatoloni_risolto', 'true');
 }
@@ -543,14 +540,7 @@ function mostraCappello() {
 }
 
 /* per il modal dinamico */
-function apriModal(
-  titolo,
-  descrizione,
-  richiesta,
-  testoBottone,
-  funzioneControllo,
-  usaPlaceholder,
-) {
+function apriModal(titolo,descrizione,richiesta,testoBottone,funzioneControllo,usaPlaceholder) {
   document.getElementById('modalTitle').innerText = titolo;
   document.getElementById('descrizione').innerText = descrizione;
   document.getElementById('richiesta').innerText = richiesta;
@@ -570,42 +560,26 @@ function apriModal(
 
 // domande intermedie
 function mostraLavagna() {
-  apriModal(
-    'Lavagna',
-    'Se capisci la macchina, capisci tutto.\n GPKIOC',
-    'Decifra gli appunti: ',
-    'Controlla',
-    controllaLavagna,
-    false,
-  );
+  apriModal('Lavagna','Se capisci la macchina, capisci tutto.\n GPKIOC','Decifra gli appunti: ',
+    'Controlla',controllaLavagna,false);
   document.getElementById('codiceSoluzione').placeholder = '??????';
 }
 
 function controllaLavagna() {
-  const risposta = document
-    .getElementById('codiceSoluzione')
-    .value.trim()
-    .toLowerCase();
+  const risposta = document.getElementById('codiceSoluzione').value.trim().toLowerCase();
   if (risposta === 'enigma') {
     score += 15;
     bootstrap.Modal.getInstance(document.getElementById('enigmaModal')).hide();
     enigmiRisolti.lavagna = true;
     localStorage.setItem('turing_lavagna_risolta', 'true');
-    mostraMessaggio(
-      'Accettato',
-      'Geniale! hai decifrato il codice sulla lavagna. \n Puoi continuare a cercare.',
-    );
+    mostraMessaggio('Accettato','Geniale! hai decifrato il codice sulla lavagna. \n Puoi continuare a cercare.');
     const modalEnigma = document.getElementById('lavagnaT');
     if (modalEnigma) {
       modalEnigma.style.pointerEvents = 'none';
       modalEnigma.style.opacity = 0.5;
     }
-    aggiungiAlTaccuino(
-      'room1',
-      'lavagna',
-      'GPKIOC corrisponde a enigma',
-      'provvisorio',
-    ); // Aggiungi la classe per far partire l'animazione
+    aggiungiAlTaccuino('room1','lavagna','GPKIOC corrisponde a enigma','provvisorio'); 
+    // Aggiungi la classe per far partire l'animazione
     /* animazione taccuino */
     const avatar = document.getElementById('avatarid');
     avatar.classList.add('taccuino-aggiornato');
@@ -617,13 +591,11 @@ function controllaLavagna() {
     if (countLavagna == 2) {
       score -= 5;
       document.getElementById('codiceSoluzione').value = '';
-      document.getElementById('codiceSoluzione').placeholder =
-        "Indizio: spostati nell'alfabeto";
+      document.getElementById('codiceSoluzione').placeholder = "Indizio: spostati nell'alfabeto";
     } else if (countLavagna >= 3) {
       score -= 3;
       document.getElementById('codiceSoluzione').value = '';
-      document.getElementById('codiceSoluzione').placeholder =
-        'Indizio: shift=2';
+      document.getElementById('codiceSoluzione').placeholder ='Indizio: shift=2';
     } else {
       score -= 5;
       document.getElementById('codiceSoluzione').value = '';
@@ -633,42 +605,25 @@ function controllaLavagna() {
 }
 
 function mostraTelefono() {
-  apriModal(
-    'Telefono',
-    'Ogni numero ha una voce. Ascoltala.\n 20-21-18-9-14-7',
-    'Decifra numero: ',
-    'Controlla',
-    controllaTelefono,
-    false,
-  );
+  apriModal('Telefono','Ogni numero ha una voce. Ascoltala.\n 20-21-18-9-14-7','Decifra numero: ',
+  'Controlla',controllaTelefono,false);
   document.getElementById('codiceSoluzione').placeholder = '??????';
 }
 
 function controllaTelefono() {
-  const risposta = document
-    .getElementById('codiceSoluzione')
-    .value.trim()
-    .toLowerCase();
+  const risposta = document.getElementById('codiceSoluzione').value.trim().toLowerCase();
   if (risposta === 'turing') {
     score += 15;
     bootstrap.Modal.getInstance(document.getElementById('enigmaModal')).hide();
     enigmiRisolti.telefono = true;
     localStorage.setItem('turing_telefono_risolto', 'true');
-    mostraMessaggio(
-      'Accettato',
-      'Fantastico! hai capito il significato nascosto del numero. \n Continua la tua esplorazione.',
-    );
+    mostraMessaggio('Accettato','Fantastico! hai capito il significato nascosto del numero. \n Continua la tua esplorazione.');
     const modalEnigma = document.getElementById('telefonoT');
     if (modalEnigma) {
       modalEnigma.style.pointerEvents = 'none';
       modalEnigma.style.opacity = 0.5;
     }
-    aggiungiAlTaccuino(
-      'room1',
-      'telefono',
-      '20-21-18-9-14-7 corrisponde a Turing',
-      'provvisorio',
-    );
+    aggiungiAlTaccuino('room1','telefono','20-21-18-9-14-7 corrisponde a Turing','provvisorio');
     const avatar = document.getElementById('avatarid');
     avatar.classList.add('taccuino-aggiornato');
     setTimeout(() => {
@@ -679,13 +634,11 @@ function controllaTelefono() {
     if (countTelefono == 2) {
       score -= 5;
       document.getElementById('codiceSoluzione').value = '';
-      document.getElementById('codiceSoluzione').placeholder =
-        'Indizio: ogni lettera ha un posto';
+      document.getElementById('codiceSoluzione').placeholder ='Indizio: ogni lettera ha un posto';
     } else if (countTelefono >= 3) {
       score -= 3;
       document.getElementById('codiceSoluzione').value = '';
-      document.getElementById('codiceSoluzione').placeholder =
-        'Indizio: A=1,B=2...';
+      document.getElementById('codiceSoluzione').placeholder ='Indizio: A=1,B=2...';
     } else {
       score -= 5;
       document.getElementById('codiceSoluzione').value = '';
@@ -696,45 +649,24 @@ function controllaTelefono() {
 
 // enigma finale
 function mostraEnigmaFinale() {
-  if (
-    enigmiRisolti.telefono &&
-    enigmiRisolti.lavagna &&
-    oggettiEsplorati.mappamondo &&
-    oggettiEsplorati.cappello &&
-    oggettiEsplorati.scatoloni &&
-    oggettiEsplorati.serranda
-  ) {
-    apriModal(
-      'Macchina Enigma Intercettata',
-      'Agente, abbiamo decifrato parte del messaggio. Serve il nome della macchina che ha permesso di decifrare i messaggi nemici.',
-      'Inserisci il nome: ',
-      'Decodifica la macchina',
-      controllaEnigma,
-      true,
-    );
+  if (enigmiRisolti.telefono && enigmiRisolti.lavagna && oggettiEsplorati.mappamondo &&
+  oggettiEsplorati.cappello && oggettiEsplorati.scatoloni && oggettiEsplorati.serranda) {
+    apriModal('Macchina Enigma Intercettata','Agente, abbiamo decifrato parte del messaggio. Serve il nome della macchina che ha permesso di decifrare i messaggi nemici.',
+    'Inserisci il nome: ','Decodifica la macchina',controllaEnigma,true);
   } else {
-    mostraMessaggio(
-      'Accesso Negato',
-      'Agente, non sei ancora pronto per la decodifica finale. Ispeziona e risolvi tutti gli oggetti nella stanza.',
-    );
+    mostraMessaggio('Accesso Negato','Agente, non sei ancora pronto per la decodifica finale. Ispeziona e risolvi tutti gli oggetti nella stanza.');
     return;
   }
 }
 
-function controllaEnigma() {
-  const rispostaUtente = document
-    .getElementById('codiceSoluzione')
-    .value.trim()
-    .toLowerCase();
+async function controllaEnigma() {
+  const rispostaUtente = document.getElementById('codiceSoluzione').value.trim().toLowerCase();
   const soluzioneCorretta = 'bombe';
 
   if (rispostaUtente === soluzioneCorretta) {
     score += 20;
     bootstrap.Modal.getInstance(document.getElementById('enigmaModal')).hide();
-    mostraMessaggio(
-      'Codice accettato!',
-      'Bravo Agente! La porta si è sbloccata. Preparati a scappare...',
-    );
+    mostraMessaggio('Codice accettato!','Bravo Agente! La porta si è sbloccata. Preparati a scappare...');
     enigmiRisolti.macchina = true;
     localStorage.setItem('turing_enigma_risolto', 'true');
     const modalEnigma = document.getElementById('macchinaT');
@@ -743,20 +675,24 @@ function controllaEnigma() {
       modalEnigma.style.opacity = 0.5;
     }
     pulisciTaccuino();
-    aggiungiAlTaccuino(
-      'room1',
-      'codice',
-      'Hai ottenuto questo numero: 20',
-      'finale',
-    );
-    setTimeout(() => {
-      window.location.href = '../pages/room2.html';
-    }, 2500);
+    aggiungiAlTaccuino('room1','codice','Hai ottenuto questo numero: 20','finale');
+    const username = localStorage.getItem('username');
+    try {
+      await fetch('/api/room-completed', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: username, newRoom: 1 }),
+      });
+      setTimeout(() => {
+        window.location.href = '/index/room/2';
+      }, 2500);
+    } catch (err) {
+      console.error('Impossibile aggiornare la stanza nel database:', err);
+    }
   } else {
     score -= 5;
     document.getElementById('codiceSoluzione').value = '';
-    document.getElementById('codiceSoluzione').placeholder =
-      'Non è il nome che stiamo cercando. Riprova!';
+    document.getElementById('codiceSoluzione').placeholder ='Non è il nome che stiamo cercando. Riprova!';
   }
 }
 
@@ -875,18 +811,12 @@ let enigmiRisoltiC = {
 
 // indizi
 function mostraAtmosferaCurie() {
-  mostraMessaggio(
-    'Tavolo',
-    'Gli atomi non scompaiono. Cambiano solo disposizione. \n Sotto, una freccia disegnata collega due lati di un’equazione chimica.',
-  );
+  mostraMessaggio('Tavolo','Gli atomi non scompaiono. Cambiano solo disposizione. \n Sotto, una freccia disegnata collega due lati di un’equazione chimica.');
   oggettiEsploratiC.tavolo = true;
 }
 
 function mostraIndizioCurie() {
-  mostraMessaggio(
-    'Appunti appesi',
-    'Un foglio ingiallito è fissato al muro. \n Alcune parole sono cerchiate più volte: \n “In ogni reazione… la massa totale rimane costante.”',
-  );
+  mostraMessaggio('Appunti appesi','Un foglio ingiallito è fissato al muro. \n Alcune parole sono cerchiate più volte: \n “In ogni reazione… la massa totale rimane costante.”');
   oggettiEsploratiC.foglio = true;
 }
 
@@ -898,14 +828,7 @@ function mostraScaffale() {
   oggettiEsploratiC.scaffale = true;
 }
 
-function apriModalC(
-  titolo,
-  descrizione,
-  richiesta,
-  testoBottone,
-  funzioneControllo,
-  usaPlaceholder,
-) {
+function apriModalC(titolo,descrizione,richiesta,testoBottone,funzioneControllo,usaPlaceholder) {
   document.getElementById('modalTitleC').innerText = titolo;
   document.getElementById('descrizioneC').innerText = descrizione;
   document.getElementById('richiestaC').innerText = richiesta;
@@ -925,42 +848,25 @@ function apriModalC(
 
 // domande intermedie
 function mostraBilancia() {
-  apriModalC(
-    'Bilancia',
-    'Se gli atomi non si creano né si distruggono, cosa bisogna fare per rendere corretta un’equazione chimica?',
-    'Inserisci la risposta: ',
-    'Controlla',
-    controllaBilancia,
-    false,
-  );
+  apriModalC('Bilancia','Se gli atomi non si creano né si distruggono, cosa bisogna fare per rendere corretta un’equazione chimica?',
+  'Inserisci la risposta: ','Controlla',controllaBilancia,false);
   document.getElementById('CurieSoluzione').placeholder = '??????????';
 }
 
 function controllaBilancia() {
-  const risposta = document
-    .getElementById('CurieSoluzione')
-    .value.trim()
-    .toLowerCase();
+  const risposta = document.getElementById('CurieSoluzione').value.trim().toLowerCase();
   if (risposta === 'bilanciare') {
     score += 15;
     bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
     enigmiRisoltiC.bilancia = true;
     localStorage.setItem('curie_bilancia_risolta', 'true');
-    mostraMessaggio(
-      'Accettato',
-      'Ottimo! hai capito le equazioni chimiche. \n Puoi continuare a cercare.',
-    );
+    mostraMessaggio('Accettato','Ottimo! hai capito le equazioni chimiche. \n Puoi continuare a cercare.');
     const modalEnigma = document.getElementById('bilanciaC');
     if (modalEnigma) {
       modalEnigma.style.pointerEvents = 'none';
       modalEnigma.style.opacity = 0.5;
     }
-    aggiungiAlTaccuino(
-      'room2',
-      'bilancia',
-      "Un'equazione chimica va bilanciata",
-      'provvisorio',
-    );
+    aggiungiAlTaccuino('room2','bilancia',"Un'equazione chimica va bilanciata",'provvisorio');
     const avatar = document.getElementById('avatarid');
     avatar.classList.add('taccuino-aggiornato');
     setTimeout(() => {
@@ -971,13 +877,11 @@ function controllaBilancia() {
     if (countBilancia >= 3) {
       score -= 3;
       document.getElementById('CurieSoluzione').value = '';
-      document.getElementById('CurieSoluzione').placeholder =
-        'i due lati devono avere lo stesso numero di atomi';
+      document.getElementById('CurieSoluzione').placeholder ='i due lati devono avere lo stesso numero di atomi';
     } else if (countBilancia == 2) {
       score -= 5;
       document.getElementById('CurieSoluzione').value = '';
-      document.getElementById('CurieSoluzione').placeholder =
-        'Indizio: modificare i numeri davanti le formule';
+      document.getElementById('CurieSoluzione').placeholder ='Indizio: modificare i numeri davanti le formule';
     } else {
       score -= 5;
       document.getElementById('CurieSoluzione').value = '';
@@ -987,42 +891,25 @@ function controllaBilancia() {
 }
 
 function mostraPozioni() {
-  apriModalC(
-    'Pozioni',
-    'Qual è il nome della legge che afferma che la materia non si crea né si distrugge?',
-    'Inserisci il nome della legge: ',
-    'Controlla',
-    controllaPozioni,
-    false,
-  );
+  apriModalC('Pozioni','Qual è il nome della legge che afferma che la materia non si crea né si distrugge?',
+  'Inserisci il nome della legge: ','Controlla',controllaPozioni,false);
   document.getElementById('CurieSoluzione').placeholder = '?????????';
 }
 
 function controllaPozioni() {
-  const risposta = document
-    .getElementById('CurieSoluzione')
-    .value.trim()
-    .toLowerCase();
+  const risposta = document.getElementById('CurieSoluzione').value.trim().toLowerCase();
   if (risposta === 'lavoisier' || risposta === 'legge di lavoisier') {
     score += 15;
     bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
     enigmiRisoltiC.pozioni = true;
     localStorage.setItem('curie_pozioni_risolte', 'true');
-    mostraMessaggio(
-      'Accettato',
-      'Bravissimo! hai decifrato il principio. \n Continua la tua missione.',
-    );
+    mostraMessaggio('Accettato','Bravissimo! hai decifrato il principio. \n Continua la tua missione.');
     const modalEnigma = document.getElementById('pozioniC');
     if (modalEnigma) {
       modalEnigma.style.pointerEvents = 'none';
       modalEnigma.style.opacity = 0.5;
     }
-    aggiungiAlTaccuino(
-      'room2',
-      'pozioni',
-      'La legge di Lavoisier afferma che la materia non si crea nè si distrugge',
-      'provvisorio',
-    );
+    aggiungiAlTaccuino('room2','pozioni','La legge di Lavoisier afferma che la materia non si crea nè si distrugge','provvisorio');
     const avatar = document.getElementById('avatarid');
     avatar.classList.add('taccuino-aggiornato');
     setTimeout(() => {
@@ -1033,13 +920,11 @@ function controllaPozioni() {
     if (countPozioni == 2) {
       score -= 5;
       document.getElementById('CurieSoluzione').value = '';
-      document.getElementById('CurieSoluzione').placeholder =
-        'Indizio: nome di uno scienziato francese';
+      document.getElementById('CurieSoluzione').placeholder ='Indizio: nome di uno scienziato francese';
     } else if (countPozioni >= 3) {
       score -= 3;
       document.getElementById('CurieSoluzione').value = '';
-      document.getElementById('CurieSoluzione').placeholder =
-        'Indizio: Lavo...';
+      document.getElementById('CurieSoluzione').placeholder ='Indizio: Lavo...';
     } else {
       score -= 5;
       document.getElementById('CurieSoluzione').value = '';
@@ -1050,40 +935,24 @@ function controllaPozioni() {
 
 // enigma finale
 function risolviEquazioneFinale() {
-  if (
-    enigmiRisoltiC.bilancia &&
-    enigmiRisoltiC.pozioni &&
-    oggettiEsploratiC.foglio &&
-    oggettiEsploratiC.scaffale &&
-    oggettiEsploratiC.tavolo
-  ) {
-    apriModalC(
-      'Equazione trovata',
-      "Agente, sul tavolo principale c'è un quaderno aperto di Marie. \nL’ultima pagina contiene un’equazione incompleta: \n aFe + bH₂O → cFe₃O₄ + dH₂ \n Sotto è scritto: “Solo chi rispetta la legge potrà aprire il passaggio.”",
-      'Inserisci i coefficienti corretti nella forma a,b,c,d',
-      "Risolvi l'equazione",
-      controllaEquazione,
-      true,
-    );
+  if (enigmiRisoltiC.bilancia && enigmiRisoltiC.pozioni && oggettiEsploratiC.foglio 
+  && oggettiEsploratiC.scaffale && oggettiEsploratiC.tavolo) {
+    apriModalC('Equazione trovata',"Agente, sul tavolo principale c'è un quaderno aperto di Marie. \nL’ultima pagina contiene un’equazione incompleta: \n aFe + bH₂O → cFe₃O₄ + dH₂ \n Sotto è scritto: “Solo chi rispetta la legge potrà aprire il passaggio.”",
+    'Inserisci i coefficienti corretti nella forma a,b,c,d',"Risolvi l'equazione",controllaEquazione,
+      true);
   } else {
-    mostraMessaggio(
-      'Accesso Negato',
-      'Agente, non sei ancora pronto per la risoluzione finale. Ispeziona e risolvi tutti gli oggetti nella stanza.',
-    );
+    mostraMessaggio('Accesso Negato','Agente, non sei ancora pronto per la risoluzione finale. Ispeziona e risolvi tutti gli oggetti nella stanza.');
     return;
   }
 }
 
-function controllaEquazione() {
+async function controllaEquazione() {
   const rispostaUtente = document.getElementById('CurieSoluzione').value.trim();
   const soluzioneCorretta = '3,4,1,4';
   if (rispostaUtente === soluzioneCorretta) {
     score += 20;
     bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
-    mostraMessaggio(
-      'Equazione Bilanciata!',
-      'Ottimo lavoro, Agente! La porta si sta aprendo. Sei pronto per la prossima missione...',
-    );
+    mostraMessaggio('Equazione Bilanciata!','Ottimo lavoro, Agente! La porta si sta aprendo. Sei pronto per la prossima missione...');
     enigmiRisoltiC.lavagna = true;
     localStorage.setItem('curie_enigma_risolto', 'true');
     const modalEnigma = document.getElementById('lavagnaC');
@@ -1092,20 +961,24 @@ function controllaEquazione() {
       modalEnigma.style.opacity = 0.5;
     }
     pulisciTaccuino();
-    aggiungiAlTaccuino(
-      'room2',
-      'codice',
-      'Hai ottenuto questo numero: 3414',
-      'finale',
-    );
-    setTimeout(() => {
-      window.location.href = '../pages/room3.html';
-    }, 2500);
+    aggiungiAlTaccuino('room2','codice','Hai ottenuto questo numero: 3414','finale');
+    const username = localStorage.getItem('username');
+    try {
+      await fetch('/api/room-completed', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: username, newRoom: 2 }),
+      });
+      setTimeout(() => {
+        window.location.href = '/index/room/3';
+      }, 2500);
+    } catch (err) {
+      console.error('Impossibile aggiornare la stanza nel database:', err);
+    }
   } else {
     score -= 5;
     document.getElementById('CurieSoluzione').value = '';
-    document.getElementById('CurieSoluzione').placeholder =
-      'Non sono i coefficienti giusti,riprova!';
+    document.getElementById('CurieSoluzione').placeholder = 'Non sono i coefficienti giusti,riprova!';
   }
 }
 
@@ -1234,45 +1107,26 @@ let countMappamondo = 0;
 
 // indizi
 function mostraTavolo() {
-  mostraMessaggio(
-    'Tavolo',
-    "Tra gli appunti c'è una frase: “Massa ed energia sono la stessa cosa, in forme diverse.”",
-  );
+  mostraMessaggio('Tavolo',"Tra gli appunti c'è una frase: “Massa ed energia sono la stessa cosa, in forme diverse.”");
   oggettiEsploratiE.tavolo = true;
 }
 
 function mostraAtmosferaEinstein() {
-  mostraMessaggio(
-    'Cassettiera',
-    "Nei cassetti c'è un foglio con una formula:\n E = ? · c² \n Accanto qualcuno ha annotato:“Manca una sola lettera”",
-  );
+  mostraMessaggio('Cassettiera',"Nei cassetti c'è un foglio con una formula:\n E = ? · c² \n Accanto qualcuno ha annotato:“Manca una sola lettera”");
   oggettiEsploratiE.cassetti = true;
 }
 
 function mostraIndizioEinstein() {
-  mostraMessaggio(
-    'Ritratto',
-    'Un uomo dai capelli spettinati ti osserva dalla cornice.\n Sotto è inciso: \n“La fantasia è più importante della conoscenza.”',
-  );
+  mostraMessaggio('Ritratto','Un uomo dai capelli spettinati ti osserva dalla cornice.\n Sotto è inciso: \n“La fantasia è più importante della conoscenza.”');
   oggettiEsploratiE.ritratto = true;
 }
 
 function mostraLuna() {
-  mostraMessaggio(
-    'Quadro',
-    'Ciò che sembra vero per uno, può non esserlo per un altro.',
-  );
+  mostraMessaggio('Quadro','Ciò che sembra vero per uno, può non esserlo per un altro.');
   oggettiEsploratiE.luna = true;
 }
 
-function apriModalE(
-  titolo,
-  descrizione,
-  richiesta,
-  testoBottone,
-  funzioneControllo,
-  usaPlaceholder,
-) {
+function apriModalE(titolo,descrizione,richiesta,testoBottone,funzioneControllo,usaPlaceholder) {
   document.getElementById('modalTitleE').innerText = titolo;
   document.getElementById('descrizioneE').innerText = descrizione;
   document.getElementById('richiestaE').innerText = richiesta;
@@ -1292,44 +1146,25 @@ function apriModalE(
 
 // domande intermedie
 function mostraMobile() {
-  apriModalE(
-    'Mobile',
-    'Quali due grandezze sono relative?',
-    'Inserisci le grandezze: ',
-    'Controlla',
-    controllaMobile,
-    false,
-  );
+  apriModalE('Mobile','Quali due grandezze sono relative?','Inserisci le grandezze: ','Controlla',
+  controllaMobile,false);
   document.getElementById('EinsteinSoluzione').placeholder = '?????? e ?????';
 }
 
 function controllaMobile() {
-  const risposta = document
-    .getElementById('EinsteinSoluzione')
-    .value.trim()
-    .toLowerCase();
+  const risposta = document.getElementById('EinsteinSoluzione').value.trim().toLowerCase();
   if (risposta === 'spazio e tempo' || risposta === 'tempo e spazio') {
     score += 15;
-    bootstrap.Modal.getInstance(
-      document.getElementById('EinsteinModal'),
-    ).hide();
+    bootstrap.Modal.getInstance(document.getElementById('EinsteinModal')).hide();
     enigmiRisoltiE.mobile = true;
     localStorage.setItem('einstein_mobile_risolto', 'true');
-    mostraMessaggio(
-      'Accettato',
-      'Fortissimo! hai capito quali sono le grandezze. \n Puoi continuare la tua ricerca.',
-    );
+    mostraMessaggio('Accettato','Fortissimo! hai capito quali sono le grandezze. \n Puoi continuare la tua ricerca.');
     const modalEnigma = document.getElementById('mobileE');
     if (modalEnigma) {
       modalEnigma.style.pointerEvents = 'none';
       modalEnigma.style.opacity = 0.5;
     }
-    aggiungiAlTaccuino(
-      'room3',
-      'mobile',
-      'Lo spazio e il tempo sono relativi',
-      'provvisorio',
-    );
+    aggiungiAlTaccuino('room3','mobile','Lo spazio e il tempo sono relativi','provvisorio');
     const avatar = document.getElementById('avatarid');
     avatar.classList.add('taccuino-aggiornato');
     setTimeout(() => {
@@ -1340,13 +1175,11 @@ function controllaMobile() {
     if (countMobile == 2) {
       score -= 5;
       document.getElementById('EinsteinSoluzione').value = '';
-      document.getElementById('EinsteinSoluzione').placeholder =
-        'Indizio: formano un unico concetto';
+      document.getElementById('EinsteinSoluzione').placeholder ='Indizio: formano un unico concetto';
     } else if (countMobile >= 3) {
       score -= 3;
       document.getElementById('EinsteinSoluzione').value = '';
-      document.getElementById('EinsteinSoluzione').placeholder =
-        'Indizio: sono legate alla velocità';
+      document.getElementById('EinsteinSoluzione').placeholder ='Indizio: sono legate alla velocità';
     } else {
       score -= 5;
       document.getElementById('EinsteinSoluzione').value = '';
@@ -1356,44 +1189,26 @@ function controllaMobile() {
 }
 
 function mostraMappamondoE() {
-  apriModalE(
-    'Mobile',
-    'Come si chiama il punto di vista da cui osservi un fenomeno?',
-    'Inserisci la risposta: ',
-    'Controlla',
-    controllaMappamondoE,
-    false,
-  );
+  apriModalE('Mobile','Come si chiama il punto di vista da cui osservi un fenomeno?','Inserisci la risposta: ',
+  'Controlla',controllaMappamondoE,false);
   document.getElementById('EinsteinSoluzione').placeholder = '???????????';
 }
 
 function controllaMappamondoE() {
-  const risposta = document
-    .getElementById('EinsteinSoluzione')
-    .value.trim()
-    .toLowerCase();
+  const risposta = document.getElementById('EinsteinSoluzione').value.trim().toLowerCase();
   if (risposta === 'riferimento' || risposta === 'sistema di riferimento') {
     score += 15;
     bootstrap.Modal.getInstance(
-      document.getElementById('EinsteinModal'),
-    ).hide();
+      document.getElementById('EinsteinModal')).hide();
     enigmiRisoltiE.mappamondo = true;
     localStorage.setItem('einstein_mappamondo_risolto', 'true');
-    mostraMessaggio(
-      'Accettato',
-      'Perfetto, sai tutto sui sistemi di riferimento! \n Continua ad esplorare.',
-    );
+    mostraMessaggio('Accettato','Perfetto, sai tutto sui sistemi di riferimento! \n Continua ad esplorare.');
     const modalEnigma = document.getElementById('mappamondoE');
     if (modalEnigma) {
       modalEnigma.style.pointerEvents = 'none';
       modalEnigma.style.opacity = 0.5;
     }
-    aggiungiAlTaccuino(
-      'room3',
-      'mappamondo',
-      'Il punto da cui osservi in fisica è il punto di riferimento',
-      'provvisorio',
-    );
+    aggiungiAlTaccuino('room3','mappamondo','Il punto da cui osservi in fisica è il punto di riferimento','provvisorio');
     const avatar = document.getElementById('avatarid');
     avatar.classList.add('taccuino-aggiornato');
     setTimeout(() => {
@@ -1404,13 +1219,11 @@ function controllaMappamondoE() {
     if (countMappamondo == 2) {
       score -= 5;
       document.getElementById('EinsteinSoluzione').value = '';
-      document.getElementById('EinsteinSoluzione').placeholder =
-        'Indizio: un esempio classico è il treno';
+      document.getElementById('EinsteinSoluzione').placeholder ='Indizio: un esempio classico è il treno';
     } else if (countMappamondo >= 3) {
       score -= 3;
       document.getElementById('EinsteinSoluzione').value = '';
-      document.getElementById('EinsteinSoluzione').placeholder =
-        'Indizio: sistema di...';
+      document.getElementById('EinsteinSoluzione').placeholder ='Indizio: sistema di...';
     } else {
       score -= 5;
       document.getElementById('EinsteinSoluzione').value = '';
@@ -1421,46 +1234,24 @@ function controllaMappamondoE() {
 
 // enigma finale
 function apriEnigmaEinstein() {
-  if (
-    enigmiRisoltiE.mappamondo &&
-    enigmiRisoltiE.mobile &&
-    oggettiEsploratiE.cassetti &&
-    oggettiEsploratiE.tavolo &&
-    oggettiEsploratiE.ritratto &&
-    oggettiEsploratiE.luna
+  if (enigmiRisoltiE.mappamondo && enigmiRisoltiE.mobile && oggettiEsploratiE.cassetti &&
+  oggettiEsploratiE.tavolo && oggettiEsploratiE.ritratto && oggettiEsploratiE.luna
   ) {
-    apriModalE(
-      'Formula trovata',
-      "Agente, sulla lavagna un po' cancellata è scritta la formula scoperta da Einstein che ha rivoluzionato la fisica. \n Completala tu per aprire il passaggio. \n E=...",
-      'Inserisci la formula completa',
-      "Risolvi l'equazione",
-      controllaEinstein,
-      true,
-    );
+    apriModalE('Formula trovata',"Agente, sulla lavagna un po' cancellata è scritta la formula scoperta da Einstein che ha rivoluzionato la fisica. \n Completala tu per aprire il passaggio. \n E=...",
+    'Inserisci la formula completa',"Risolvi l'equazione",controllaEinstein,true);
   } else {
-    mostraMessaggio(
-      'Accesso Negato',
-      'Agente, non sei ancora pronto per la risoluzione finale. Ispeziona e risolvi tutti gli oggetti nella stanza.',
-    );
+    mostraMessaggio('Accesso Negato','Agente, non sei ancora pronto per la risoluzione finale. Ispeziona e risolvi tutti gli oggetti nella stanza.');
     return;
   }
 }
 
-function controllaEinstein() {
-  const rispostaUtente = document
-    .getElementById('EinsteinSoluzione')
-    .value.trim()
-    .toLowerCase();
+async function controllaEinstein() {
+  const rispostaUtente = document.getElementById('EinsteinSoluzione').value.trim().toLowerCase();
   const soluzioneCorretta = 'e=mc^2';
   if (rispostaUtente === soluzioneCorretta) {
     score += 20;
-    bootstrap.Modal.getInstance(
-      document.getElementById('EinsteinModal'),
-    ).hide();
-    mostraMessaggio(
-      'Formula corretta!',
-      'Bravissimo Agente! \n Il passaggio segreto si sta aprendo, puoi continuare la tua missione...',
-    );
+    bootstrap.Modal.getInstance(document.getElementById('EinsteinModal')).hide();
+    mostraMessaggio('Formula corretta!','Bravissimo Agente! \n Il passaggio segreto si sta aprendo, puoi continuare la tua missione...');
     localStorage.setItem('einstein_enigma_risolto', 'true');
     const modalEnigma = document.getElementById('lavagnaE');
     if (modalEnigma) {
@@ -1468,20 +1259,24 @@ function controllaEinstein() {
       modalEnigma.style.opacity = 0.5;
     }
     pulisciTaccuino();
-    aggiungiAlTaccuino(
-      'room3',
-      'codice',
-      'Hai ottenuto questo numero: 2',
-      'finale',
-    );
-    setTimeout(() => {
-      window.location.href = '../pages/room4.html';
-    }, 2500);
+    aggiungiAlTaccuino('room3','codice','Hai ottenuto questo numero: 2','finale');
+    const username = localStorage.getItem('username');
+    try {
+      await fetch('/api/room-completed', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: username, newRoom: 3 }),
+      });
+      setTimeout(() => {
+        window.location.href = '/index/room/4';
+      }, 2500);
+    } catch (err) {
+      console.error('Impossibile aggiornare la stanza nel database:', err);
+    }
   } else {
     score -= 5;
     document.getElementById('EinsteinSoluzione').value = '';
-    document.getElementById('EinsteinSoluzione').placeholder =
-      'Non è questa la formula che cerchiamo,riprova!';
+    document.getElementById('EinsteinSoluzione').placeholder ='Non è questa la formula che cerchiamo,riprova!';
   }
 }
 
@@ -1545,13 +1340,11 @@ function inizioStanzaL() {
 
 function scriviTestoL(testo, indice) {
   const elemento = document.getElementById('testoMacchina4');
-
   if (skipIntro) {
     elemento.innerHTML = testo.replace(/\n/g, '<br>');
     mostraBottoneFinaleL();
     return;
   }
-
   if (indice < testo.length) {
     let carattere = testo.charAt(indice);
     if (carattere === '\n') {
@@ -1606,53 +1399,31 @@ let oggettiEsploratiL = {
 
 // indizi
 function mostraMappamondo() {
-  mostraMessaggio(
-    'Mappamondo',
-    "L'Italia e l'Inghilterra sono unite da un filo rosso. \n Accanto c'è un biglietto: \n gli appunti del matematico italiano Menabrea erano solo la teoria, il miracolo è tradurli in ingranaggi... fai molta attenzione alle operazioni di divisione.",
-  );
+  mostraMessaggio('Mappamondo',"L'Italia e l'Inghilterra sono unite da un filo rosso. \n Accanto c'è un biglietto: \n gli appunti del matematico italiano Menabrea erano solo la teoria, il miracolo è tradurli in ingranaggi... fai molta attenzione alle operazioni di divisione.");
   oggettiEsploratiL.mappamondo2 = true;
 }
 
 function mostraAtmosferaLovelace() {
-  mostraMessaggio(
-    'Camino',
-    "Sulla cassa di legno c'è inciso: perché il meccanismo funzioni, il denominatore finale deve nascere da una somma, non da una moltiplicazione.",
-  );
+  mostraMessaggio('Camino',"Sulla cassa di legno c'è inciso: perché il meccanismo funzioni, il denominatore finale deve nascere da una somma, non da una moltiplicazione.");
   oggettiEsploratiL.camino = true;
 }
 
 function mostraLampada() {
-  mostraMessaggio(
-    'Lampada',
-    'La macchina può replicare i modelli perfetti della natura, come la spirale di una conchiglia o i petali di un fiore. \n Ogni nuovo passo si basa sulla somma del passato.',
-  );
+  mostraMessaggio('Lampada','La macchina può replicare i modelli perfetti della natura, come la spirale di una conchiglia o i petali di un fiore. \n Ogni nuovo passo si basa sulla somma del passato.');
   oggettiEsploratiL.lampada = true;
 }
 
 function mostraQuadro() {
-  mostraMessaggio(
-    'Quadro',
-    "Sotto il quadro, c'è una piccola targhetta: \n il futuro appartiene a chi sa trasformare i numeri in idee.",
-  );
+  mostraMessaggio('Quadro',"Sotto il quadro, c'è una piccola targhetta: \n il futuro appartiene a chi sa trasformare i numeri in idee.");
   oggettiEsploratiL.quadro = true;
 }
 
 function mostraLibreria() {
-  mostraMessaggio(
-    'Libreria',
-    "Ci sono degli appunti:\n l'equazione per i numeri di Bernoulli è immensa, per iniziare la macchina deve prima calcolare il coefficiente base. \nBisogna prendere (2n-1) e dividerlo per (2n+1).",
-  );
+  mostraMessaggio('Libreria',"Ci sono degli appunti:\n l'equazione per i numeri di Bernoulli è immensa, per iniziare la macchina deve prima calcolare il coefficiente base. \nBisogna prendere (2n-1) e dividerlo per (2n+1).");
   oggettiEsploratiL.libreria = true;
 }
 
-function apriModalL(
-  titolo,
-  descrizione,
-  richiesta,
-  testoBottone,
-  funzioneControllo,
-  usaPlaceholder,
-) {
+function apriModalL(titolo,descrizione,richiesta,testoBottone,funzioneControllo,usaPlaceholder) {
   document.getElementById('modalTitleL').innerText = titolo;
   document.getElementById('descrizioneL').innerText = descrizione;
   document.getElementById('richiestaL').innerText = richiesta;
@@ -1672,14 +1443,8 @@ function apriModalL(
 
 // domande intermedie
 function mostraOrologio() {
-  apriModalL(
-    'Orologio',
-    'Il pendolo oscilla seguendo un ritmo strano, inciso sul legno ci sono dei numeri: 1,1,2,3,5,8...\n Per far partire il primo programma, devi dimostrare di aver capito lo schema perfetto che la natura ha inserito.',
-    'Decifra i successivi tre numeri della sequenza: ',
-    'Controlla',
-    controllaOrologio,
-    false,
-  );
+  apriModalL('Orologio','Il pendolo oscilla seguendo un ritmo strano, inciso sul legno ci sono dei numeri: 1,1,2,3,5,8...\n Per far partire il primo programma, devi dimostrare di aver capito lo schema perfetto che la natura ha inserito.',
+  'Decifra i successivi tre numeri della sequenza: ','Controlla',controllaOrologio,false);
   document.getElementById('LovelaceSoluzione').placeholder = '?,?,?';
 }
 
@@ -1688,25 +1453,16 @@ function controllaOrologio() {
   if (risposta === '13,21,34') {
     score += 15;
     bootstrap.Modal.getInstance(
-      document.getElementById('LovelaceModal'),
-    ).hide();
+      document.getElementById('LovelaceModal')).hide();
     enigmiRisoltiL.orologio = true;
     localStorage.setItem('lovelace_orologio_risolto', 'true');
-    mostraMessaggio(
-      'Accettato',
-      'Geniale! hai decifrato la sequenza. \n Puoi continuare a cercare.',
-    );
+    mostraMessaggio('Accettato','Geniale! hai decifrato la sequenza. \n Puoi continuare a cercare.');
     const modalEnigma = document.getElementById('orologioL');
     if (modalEnigma) {
       modalEnigma.style.pointerEvents = 'none';
       modalEnigma.style.opacity = 0.5;
     }
-    aggiungiAlTaccuino(
-      'room4',
-      'orologio',
-      'La sequenza di Fibonacci continua con 13,21,34',
-      'provvisorio',
-    );
+    aggiungiAlTaccuino('room4','orologio','La sequenza di Fibonacci continua con 13,21,34','provvisorio');
     const avatar = document.getElementById('avatarid');
     avatar.classList.add('taccuino-aggiornato');
     setTimeout(() => {
@@ -1717,13 +1473,11 @@ function controllaOrologio() {
     if (countOrologio == 2) {
       score -= 5;
       document.getElementById('LovelaceSoluzione').value = '';
-      document.getElementById('LovelaceSoluzione').placeholder =
-        'Indizio: Fibonacci';
+      document.getElementById('LovelaceSoluzione').placeholder ='Indizio: Fibonacci';
     } else if (countOrologio >= 3) {
       score -= 3;
       document.getElementById('LovelaceSoluzione').value = '';
-      document.getElementById('LovelaceSoluzione').placeholder =
-        'Indizio: somma gli ultimi due numeri';
+      document.getElementById('LovelaceSoluzione').placeholder ='Indizio: somma gli ultimi due numeri';
     } else {
       score -= 5;
       document.getElementById('LovelaceSoluzione').value = '';
@@ -1733,44 +1487,27 @@ function controllaOrologio() {
 }
 
 function mostraLibri() {
-  apriModalL(
-    'Libri',
-    "Un titolo spicca: le istruzioni contano più dei numeri.\n Qualcuno ha sottolineato una frase: 'ordine delle operazioni.'",
-    "Come si chiama l'insieme di istruzioni che ti permette di risolvere problemi, tenendo conto dell'ordine: ",
-    'Controlla',
-    controllaLibri,
-    false,
-  );
+  apriModalL('Libri',"Un titolo spicca: le istruzioni contano più dei numeri.\n Qualcuno ha sottolineato una frase: 'ordine delle operazioni.'",
+  "Come si chiama l'insieme di istruzioni che ti permette di risolvere problemi, tenendo conto dell'ordine: ",
+  'Controlla',controllaLibri,false);
   document.getElementById('LovelaceSoluzione').placeholder = '?????????';
 }
 
 function controllaLibri() {
-  const risposta = document
-    .getElementById('LovelaceSoluzione')
-    .value.trim()
-    .toLowerCase();
+  const risposta = document.getElementById('LovelaceSoluzione').value.trim().toLowerCase();
   if (risposta === 'algoritmo') {
     score += 15;
     bootstrap.Modal.getInstance(
-      document.getElementById('LovelaceModal'),
-    ).hide();
+      document.getElementById('LovelaceModal')).hide();
     enigmiRisoltiL.libri = true;
     localStorage.setItem('lovelace_libri_risolti', 'true');
-    mostraMessaggio(
-      'Accettato',
-      'Perfetto! hai capito il libro. \n Continua la tua esplorazione.',
-    );
+    mostraMessaggio('Accettato','Perfetto! hai capito il libro. \n Continua la tua esplorazione.');
     const modalEnigma = document.getElementById('libriL');
     if (modalEnigma) {
       modalEnigma.style.pointerEvents = 'none';
       modalEnigma.style.opacity = 0.5;
     }
-    aggiungiAlTaccuino(
-      'room4',
-      'libri',
-      "L'algoritmo è una sequenza di istruzioni ordinate",
-      'provvisorio',
-    );
+    aggiungiAlTaccuino('room4','libri',"L'algoritmo è una sequenza di istruzioni ordinate",'provvisorio');
     const avatar = document.getElementById('avatarid');
     avatar.classList.add('taccuino-aggiornato');
     setTimeout(() => {
@@ -1781,13 +1518,11 @@ function controllaLibri() {
     if (countLibri == 2) {
       score -= 5;
       document.getElementById('LovelaceSoluzione').value = '';
-      document.getElementById('LovelaceSoluzione').placeholder =
-        'Indizio: ricetta';
+      document.getElementById('LovelaceSoluzione').placeholder ='Indizio: ricetta';
     } else if (countLibri >= 3) {
       score -= 3;
       document.getElementById('LovelaceSoluzione').value = '';
-      document.getElementById('LovelaceSoluzione').placeholder =
-        'Indizio: lo è quello di Fibonacci';
+      document.getElementById('LovelaceSoluzione').placeholder ='Indizio: lo è quello di Fibonacci';
     } else {
       score -= 5;
       document.getElementById('LovelaceSoluzione').value = '';
@@ -1798,47 +1533,25 @@ function controllaLibri() {
 
 // enigma finale
 function apriEnigmaLovelace() {
-  if (
-    enigmiRisoltiL.orologio &&
-    enigmiRisoltiL.libri &&
-    oggettiEsploratiL.mappamondo2 &&
-    oggettiEsploratiL.libreria &&
-    oggettiEsploratiL.quadro &&
-    oggettiEsploratiL.lampada &&
-    oggettiEsploratiL.camino
-  ) {
-    apriModalL(
-      'Algoritmo trovato',
-      'Agente, hai trovato il libro di Ada Lovelace con il suo algoritmo Note G, ma una variabile sembra sbagliata. Correggila! \n V1 = 1,V2 = 2,V3 = n,V4 = V2*V3,V5 = V4-V1,V6 = V4+V1,V7 = V5/V4',
-      'Inserisci la variabile sbagliata e poi quella coretta nella forma Vx,Vy:',
-      "Risolvi l'algoritmo",
-      controllaLovelace,
-      true,
-    );
+  if (enigmiRisoltiL.orologio && enigmiRisoltiL.libri && oggettiEsploratiL.mappamondo2 &&
+  oggettiEsploratiL.libreria && oggettiEsploratiL.quadro && oggettiEsploratiL.lampada && oggettiEsploratiL.camino) {
+    apriModalL('Algoritmo trovato', 'Agente, hai trovato il libro di Ada Lovelace con il suo algoritmo Note G, ma una variabile sembra sbagliata. Correggila! \n V1 = 1,V2 = 2,V3 = n,V4 = V2*V3,V5 = V4-V1,V6 = V4+V1,V7 = V5/V4',
+    'Inserisci la variabile sbagliata e poi quella coretta nella forma Vx,Vy:',"Risolvi l'algoritmo",
+    controllaLovelace,true);
   } else {
-    mostraMessaggio(
-      'Accesso Negato',
-      'Agente, non sei ancora pronto per la risoluzione finale. Ispeziona e risolvi tutti gli oggetti nella stanza.',
-    );
+    mostraMessaggio('Accesso Negato','Agente, non sei ancora pronto per la risoluzione finale. Ispeziona e risolvi tutti gli oggetti nella stanza.');
     return;
   }
 }
 
-function controllaLovelace() {
-  const rispostaUtente = document
-    .getElementById('LovelaceSoluzione')
-    .value.trim()
-    .toLowerCase();
+async function controllaLovelace() {
+  const rispostaUtente = document.getElementById('LovelaceSoluzione').value.trim().toLowerCase();
   const soluzioneCorretta = 'v4,v6';
   if (rispostaUtente === soluzioneCorretta) {
     score += 20;
     bootstrap.Modal.getInstance(
-      document.getElementById('LovelaceModal'),
-    ).hide();
-    mostraMessaggio(
-      'Risoluzione accettata!',
-      'Bravissimo Agente! sei pronto per la missione finale...',
-    );
+      document.getElementById('LovelaceModal')).hide();
+    mostraMessaggio('Risoluzione accettata!','Bravissimo Agente! sei pronto per la missione finale...');
     enigmiRisoltiL.enigma = true;
     localStorage.setItem('lovelace_enigma_risolto', 'true');
     const modalEnigma = document.getElementById('appuntiL');
@@ -1847,20 +1560,24 @@ function controllaLovelace() {
       modalEnigma.style.opacity = 0.5;
     }
     pulisciTaccuino();
-    aggiungiAlTaccuino(
-      'room4',
-      'codice',
-      'Hai ottenuto questo numero: 46',
-      'finale',
-    );
-    setTimeout(() => {
-      window.location.href = '../pages/room5.html';
-    }, 2500);
+    aggiungiAlTaccuino('room4','codice','Hai ottenuto questo numero: 46','finale');
+    const username = localStorage.getItem('username');
+    try {
+      await fetch('/api/room-completed', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: username, newRoom: 4 }),
+      });
+      setTimeout(() => {
+        window.location.href = '/index/room/5';
+      }, 2500);
+    } catch (err) {
+      console.error('Impossibile aggiornare la stanza nel database:', err);
+    }
   } else {
     score -= 5;
     document.getElementById('LovelaceSoluzione').value = '';
-    document.getElementById('LovelaceSoluzione').placeholder =
-      'Non sono le variabili che cerchiamo. Riprova!';
+    document.getElementById('LovelaceSoluzione').placeholder ='Non sono le variabili che cerchiamo. Riprova!';
   }
 }
 
@@ -1984,21 +1701,11 @@ let countMuro2 = 0;
 
 // mandante
 function mostraIndizioUomo() {
-  mostraMessaggio(
-    'Mandante',
-    "Finalmente, sapevo che ce l'avresti fatta ad arrivare fin qui!\n Hai attraversato grandi menti… ma non hai ancora finito, la conoscenza non serve a nulla se non sai collegarla.\n Hai dimostrato di saper osservare, analizzare, dedurre, ora non ti resta che un ultimo passo. \nIl codice che cerci non è nascosto qui, è dentro ciò che hai già fatto.\nSolo chi comprende l’insieme può andare oltre.",
-  );
+  mostraMessaggio('Mandante',"Finalmente, sapevo che ce l'avresti fatta ad arrivare fin qui!\n Hai attraversato grandi menti… ma non hai ancora finito, la conoscenza non serve a nulla se non sai collegarla.\n Hai dimostrato di saper osservare, analizzare, dedurre, ora non ti resta che un ultimo passo. \nIl codice che cerci non è nascosto qui, è dentro ciò che hai già fatto.\nSolo chi comprende l’insieme può andare oltre.");
   oggettiEsploratiF.uomo = true;
 }
 
-function apriModalF(
-  titolo,
-  descrizione,
-  richiesta,
-  testoBottone,
-  funzioneControllo,
-  usaPlaceholder,
-) {
+function apriModalF(titolo,descrizione,richiesta,testoBottone,funzioneControllo,usaPlaceholder) {
   document.getElementById('modalTitleF').innerText = titolo;
   document.getElementById('descrizioneF').innerText = descrizione;
   document.getElementById('richiestaF').innerText = richiesta;
@@ -2010,9 +1717,7 @@ function apriModalF(
   btnConferma.innerText = testoBottone;
   btnConferma.onclick = funzioneControllo;
 
-  var mioModal = bootstrap.Modal.getOrCreateInstance(
-    document.getElementById('FinalModal'),
-  );
+  var mioModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('FinalModal'));
   mioModal.show();
 }
 
@@ -2039,22 +1744,13 @@ function mostraMessaggioContinua(titolo, testo, callback) {
 // enigmi finali
 function mostraMuro() {
   if (oggettiEsploratiF.uomo && !enigmiRisoltiF.muro) {
-    apriModalF(
-      'Intrecci',
-      'Agente, il mandante vuole sapere qual è il linguaggio che avevano in comune tutte le stanze.',
-      'Inserisci la soluzione',
-      'Controlla',
-      controllaMuro,
-      false,
-    );
+    apriModalF('Intrecci','Agente, il mandante vuole sapere qual è il linguaggio che avevano in comune tutte le stanze.',
+    'Inserisci la soluzione','Controlla',controllaMuro,false);
     document.getElementById('FinalSoluzione').placeholder = '??????';
   } else if (oggettiEsploratiF.uomo && enigmiRisoltiF.muro) {
     mostraCodiceFinale();
   } else {
-    mostraMessaggio(
-      'Accesso Negato',
-      'Agente, corri a parlare con il tuo mandante prima. \n Poi torna qui.',
-    );
+    mostraMessaggio('Accesso Negato','Agente, corri a parlare con il tuo mandante prima. \n Poi torna qui.');
     return;
   }
 }
@@ -2070,29 +1766,22 @@ function controllaMuro() {
     enigmiRisoltiF.muro = true;
     localStorage.setItem('final_muro_risolto', 'true');
     setTimeout(() => {
-      mostraMessaggioContinua(
-        'Accettato',
-        'Agente bravissimo, hai capito il modo di ragionare. Ora unisci i frammenti.',
-        mostraCodiceFinale,
-      );
+      mostraMessaggioContinua('Accettato', 'Agente bravissimo, hai capito il modo di ragionare. Ora unisci i frammenti.',mostraCodiceFinale);
     }, 500);
   } else {
     countMuro++;
     if (countMuro == 2) {
       score -= 5;
       document.getElementById('FinalSoluzione').value = '';
-      document.getElementById('FinalSoluzione').placeholder =
-        "fondamentale per l'AI";
+      document.getElementById('FinalSoluzione').placeholder ="Fondamentale per l'AI";
     } else if (countMuro >= 3) {
       score -= 3;
       document.getElementById('FinalSoluzione').value = '';
-      document.getElementById('FinalSoluzione').placeholder =
-        'lo è quella del primo ordine';
+      document.getElementById('FinalSoluzione').placeholder ='Lo è quella del primo ordine';
     } else {
       score -= 5;
       document.getElementById('FinalSoluzione').value = '';
-      document.getElementById('FinalSoluzione').placeholder =
-        'Pensaci bene, è un linguaggio formale';
+      document.getElementById('FinalSoluzione').placeholder ='Pensaci bene, è un linguaggio formale';
     }
   }
 }
@@ -2113,52 +1802,50 @@ function ripristinaStatoFinal() {
 }
 
 function mostraCodiceFinale() {
-  apriModalF(
-    'Accesso finale',
-    "Agente, ora c'è bisogno del tuo codice! \n Inserisci il numero che hai ricostruito.",
-    'Codice:',
-    'Sblocca',
-    controllaCodiceFinale,
-    true,
-  );
+  apriModalF('Accesso finale',"Agente, ora c'è bisogno del tuo codice! \n Inserisci il numero che hai ricostruito.",
+  'Codice:','Sblocca',controllaCodiceFinale,true);
 }
 
-function controllaCodiceFinale() {
+async function controllaCodiceFinale() {
   const risposta = document.getElementById('FinalSoluzione').value.trim();
   if (risposta === '203414246') {
     score += 25;
     bootstrap.Modal.getInstance(document.getElementById('FinalModal')).hide();
     enigmiRisoltiF.muro2 = true;
     localStorage.setItem('final_muro2_risolto', 'true');
-    mostraMessaggio(
-      'Codice Accettato!',
-      "Incredibile Agente ce l'hai fatta! \n Hai completato tutta la missione in modo brillante. \n La porta si sta aprendo...",
-    );
+    mostraMessaggio('Codice Accettato!',"Incredibile Agente ce l'hai fatta! \n Hai completato tutta la missione in modo brillante. \n La porta si sta aprendo...");
     const modalEnigma = document.getElementById('muroF');
     if (modalEnigma) {
       modalEnigma.style.pointerEvents = 'none';
       modalEnigma.style.opacity = 0.5;
     }
-    setTimeout(() => {
-      window.location.href = '../pages/victory.html';
-    }, 2500);
+    const username = localStorage.getItem('username');
+    try {
+      await fetch('/api/room-completed', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: username, newRoom: 5 }),
+      });
+      setTimeout(() => {
+        window.location.href = '/index/room/6';
+      }, 2500);
+    } catch (err) {
+      console.error('Impossibile aggiornare la stanza nel database:', err);
+    }
   } else {
     countMuro2++;
     if (countMuro2 == 2) {
       score -= 5;
       document.getElementById('FinalSoluzione').value = '';
-      document.getElementById('FinalSoluzione').placeholder =
-        'Leggili attentamente';
+      document.getElementById('FinalSoluzione').placeholder ='Leggili attentamente';
     } else if (countMuro2 >= 3) {
       score -= 5;
       document.getElementById('FinalSoluzione').value = '';
-      document.getElementById('FinalSoluzione').placeholder =
-        "Attenzione all'ordine";
+      document.getElementById('FinalSoluzione').placeholder ="Attenzione all'ordine";
     } else {
       score -= 5;
       document.getElementById('FinalSoluzione').value = '';
-      document.getElementById('FinalSoluzione').placeholder =
-        'Controlla i tuoi appunti';
+      document.getElementById('FinalSoluzione').placeholder = 'Controlla i tuoi appunti';
     }
   }
 }
@@ -2172,13 +1859,13 @@ function inizioVittoria() {
   const avatarName = localStorage.getItem('avatar');
   let imgAvatar = '';
   if (avatarName === 'detective1') {
-    imgAvatar = '../assets/images/Alan Turing.png';
+    imgAvatar = '/assets/images/Alan Turing.png';
   } else if (avatarName === 'detective2') {
-    imgAvatar = '../assets/images/Marie Curie.png';
+    imgAvatar = '/assets/images/Marie Curie.png';
   } else if (avatarName === 'detective3') {
-    imgAvatar = '../assets/images/Albert Einstein.png';
+    imgAvatar = '/assets/images/Albert Einstein.png';
   } else if (avatarName === 'detective4') {
-    imgAvatar = '../assets/images/Ada Lovelace.png';
+    imgAvatar = '/assets/images/Ada Lovelace.png';
   }
   const targetImg = document.getElementById('avatar-vittoria');
   if (targetImg && imgAvatar !== '') {
@@ -2268,7 +1955,7 @@ async function eseguiLogout() {
     console.error('Impossibile contattare il server', err);
   } finally {
     localStorage.clear();
-    window.location.href = '../index.html';
+    window.location.href = '/';
   }
 }
 

@@ -21,15 +21,11 @@ const supabaseApiKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseApi, supabaseApiKey);
 
 // IMPORTANTE
-// numeri stanze: 0 start, 1 login, 2 mission, 3 turing, 4 curie, 5 einstein, 6 lovelace,
-// 7 final, 8 victory
-// nel database bisogna salvare il numero di stanza giusto già incrementato in cui rimandare
-// l'utente, cioè se un utente ha fatto solo il login salvo 2 per mandarlo a mission
-// se letto mission e cliccato inizia missione salvo 3
-// se ha risposto all'enigma finale di una stanza salvo come numero la stanza dopo seguendo
-// questa numerazione, se ha risposto solo alle domande intermedie salvo il numero di
-// quella stanza sempre con questa numerazione
-// in pratica dopo che l'utente si è registrato sta già alla 2
+// numeri stanze: start e login niente, 0 mission, 1 turing, 2 curie, 3 einstein, 4 lovelace,
+// 5 final, 6 victory.
+// il database incrementa salva la stanza completata e incrementa il numero per mandarti a 
+// quella che devi fare
+
 
 // SESSIONI
 const pgPool = new Pool({
@@ -261,28 +257,41 @@ app.put('/api/room-completed', async (req, res) => {
   }
 });
 
-// reindirizzare se in stanza non autorizzata
-
-//middleware per stanza sbagliata
+//middleware per utente che bara o non loggato
 const wrongRoom = (req, res, next) => {
+  if (!req.session || !req.session.user) {
+    return res.redirect('/login');
+  }
   const requiredroom = parseInt(req.params.numero, 10);
   if (req.session.user.room !== requiredroom) {
-    return res.redirect(`/index/room/${requiredroom}`);
+    return res.redirect(`/index/room/${req.session.user.room}`);
   }
+  next();
 };
 
 app.get('/login', (req, res) => {
   res.sendFile(path.join(root, 'frontend', 'pages', 'login.html'));
 });
 
-// non accede a mission poichè la sessione parte dalla room 1 e lascio mission al frontrnd
+// indirizzamento stanze
 app.get('/index/room/:numero', wrongRoom, (req, res) => {
   const numeroStanza = req.params.numero;
   res.sendFile(
-    path.join(root, 'frontend', 'pages', `room${numeroStanza}.html`),
+    path.join(root, 'pages', `room${numeroStanza}.html`),
   );
 });
 
+//rotta base: mostra la pagina di inizio
+app.get('/', (req, res) => {
+  res.sendFile(path.join(root, 'frontend', 'index.html')); 
+});
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// IMPORTANTE
+// DA FARE 
+//taccuino 
+//mette nel campo del db lo score che gli dà il frontend
+// aggiornare numero stanza dopo che l'utente risponde all'enigma finale
 //classifica (primi 5 utenti con punteggio più alto)
 
 // AVVIO SERVER
