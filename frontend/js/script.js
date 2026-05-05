@@ -13,8 +13,10 @@
 async function eseguiLogin() {
   const inputname = document.getElementById('inputname');
   const inputpassword = document.getElementById('inputpassword');
-  const avatarSelezionato = document.querySelector('input[name="avatar"]:checked').value;
-  
+  const avatarSelezionato = document.querySelector(
+    'input[name="avatar"]:checked',
+  ).value;
+
   const username = inputname.value.trim();
   const password = inputpassword.value.trim();
 
@@ -55,29 +57,41 @@ async function eseguiLogin() {
       localStorage.setItem('username', username);
       localStorage.setItem('stanzaSalvata', data.room);
 
-      if (data.room > 1 && data.room <= 8) {
+      if (data.room >= 1 && data.room <= 6) {
         window.avatarVecchio = data.avatar;
         window.avatarNuovo = avatarSelezionato;
         document.getElementById('modal-nome-agente').innerText = username;
-        const modalScelta = new bootstrap.Modal(document.getElementById('sceltaPartitaModal'));
+        const modalScelta = new bootstrap.Modal(
+          document.getElementById('sceltaPartitaModal'),
+        );
         modalScelta.show();
       } else {
         window.avatarNuovo = avatarSelezionato;
         nuovaPartita();
       }
-    } else if (response.status === 404) { //utente non trovato
-      const modal = new bootstrap.Modal(document.getElementById('modalUtenteInesistente'));
-      modal.show();;
-    } else if (response.status === 401) { //password errata
-      inputpassword.value = '';
-      const modal = new bootstrap.Modal(document.getElementById('modalPasswordErrata'));
+    } else if (response.status === 404) {
+      //utente non trovato
+      const modal = new bootstrap.Modal(
+        document.getElementById('modalUtenteInesistente'),
+      );
       modal.show();
-    } else { //altri errori
+    } else if (response.status === 401) {
+      //password errata
+      inputpassword.value = '';
+      const modal = new bootstrap.Modal(
+        document.getElementById('modalPasswordErrata'),
+      );
+      modal.show();
+    } else {
+      //altri errori
       inputname.value = '';
-      const modalErrore = new bootstrap.Modal(document.getElementById('erroreServerModal'));
+      const modalErrore = new bootstrap.Modal(
+        document.getElementById('erroreServerModal'),
+      );
       modalErrore.show();
     }
-  } catch (err) { //errore di rete o connessione
+  } catch (err) {
+    //errore di rete o connessione
     console.error('Errore di connessione: ', err);
     const modalErrore = new bootstrap.Modal(
       document.getElementById('erroreServerModal'),
@@ -136,18 +150,24 @@ async function eseguiRegistrazione() {
       window.location.href = '../pages/room0.html';
     } else {
       if (data.error && data.error.includes('Username già esistente')) {
-        const modal = new bootstrap.Modal(document.getElementById('modalUtenteGiaEsistente'));
+        const modal = new bootstrap.Modal(
+          document.getElementById('modalUtenteGiaEsistente'),
+        );
         modal.show();
       } else {
         inputname.value = '';
         inputpassword.value = '';
-        const modalErrore = new bootstrap.Modal(document.getElementById('erroreServerModal'));
+        const modalErrore = new bootstrap.Modal(
+          document.getElementById('erroreServerModal'),
+        );
         modalErrore.show();
       }
     }
   } catch (err) {
     console.error('Errore di connessione: ', err);
-    const modalErrore = new bootstrap.Modal(document.getElementById('erroreServerModal'));
+    const modalErrore = new bootstrap.Modal(
+      document.getElementById('erroreServerModal'),
+    );
     modalErrore.show();
   }
 }
@@ -163,7 +183,7 @@ window.onload = async function () {
       localStorage.setItem('avatar', data.avatar);
       const userform = document.querySelector('.userform');
       if (userform) {
-        if (data.room >= 2 && data.room <= 8) {
+        if (data.room >= 1 && data.room <= 6) {
           const avatarRadio = document.querySelector(
             'input[name="avatar"]:checked',
           );
@@ -225,19 +245,19 @@ function continuaPartita() {
   localStorage.setItem('avatar', window.avatarVecchio);
   const stanza = parseInt(localStorage.getItem('stanzaSalvata')) || 0;
 
-  if (stanza === 2) {
+  if (stanza === 0) {
     window.location.href = '../pages/room0.html';
-  } else if (stanza === 3) {
+  } else if (stanza === 1) {
     window.location.href = '../pages/room1.html';
-  } else if (stanza === 4) {
+  } else if (stanza === 2) {
     window.location.href = '../pages/room2.html';
-  } else if (stanza === 5) {
+  } else if (stanza === 3) {
     window.location.href = '../pages/room3.html';
-  } else if (stanza === 6) {
+  } else if (stanza === 4) {
     window.location.href = '../pages/room4.html';
-  } else if (stanza === 7) {
+  } else if (stanza === 5) {
     window.location.href = '../pages/room5.html';
-  } else if (stanza === 8) {
+  } else if (stanza === 6) {
     window.location.href = '../pages/victory.html';
   } else {
     window.location.href = '../pages/room0.html';
