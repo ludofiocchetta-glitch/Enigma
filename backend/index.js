@@ -12,7 +12,6 @@ const host = '0.0.0.0';
 // Rotte
 const path = require('path');
 const root = path.join(__dirname, '..', 'frontend');
-app.use(express.static(root));
 
 // Setup Supabase
 const { createClient } = require('@supabase/supabase-js');
@@ -34,7 +33,7 @@ const pgPool = new Pool({
 // Setup sessione
 app.use(
   session({
-    store: new pgSession({
+      store: new pgSession({
       pool: pgPool,
       tableName: 'session',
     }),
@@ -58,9 +57,7 @@ app.post('/api/register', async (req, res) => {
     return res.status(400).json({ error: `Tutti i campi sono obbligatori` });
   }
   if (password.length < 8) {
-    return res
-      .status(400)
-      .json({ error: `La password deve avere almeno 8 caratteri` });
+    return res.status(400).json({ error: `La password deve avere almeno 8 caratteri` });
   }
 
   const salt = 10;
@@ -74,9 +71,7 @@ app.post('/api/register', async (req, res) => {
 
     if (error) {
       if (error.code == '23505') {
-        return res.status(400).json({
-          error: 'Username già esistente, inserire un altro username!',
-        });
+        return res.status(400).json({error: 'Username già esistente, inserire un altro username!'});
       }
       throw error;
     }
@@ -109,9 +104,7 @@ app.post('/api/register', async (req, res) => {
       avatar: avatar,
     };
 
-    return res
-      .status(201)
-      .json({ message: 'Utente creato con successo', data: req.session.user });
+    return res.status(201).json({ message: 'Utente creato con successo', data: req.session.user });
   } catch (err) {
     console.error('Errore nella registrazione: ', err);
     return res.status(500).json({ errore: 'Errore interno del server' });
@@ -166,9 +159,7 @@ app.post('/api/login', async (req, res) => {
       avatar: user.avatar,
     };
 
-    return res
-      .status(200)
-      .json({ message: 'Login effettuato', room: req.session.user.room });
+    return res.status(200).json({ message: 'Login effettuato', room: req.session.user.room });
   } catch (err) {
     console.error('Errore generico nel login:', err);
     return res.status(500).json({ error: 'Errore interno del server' });
@@ -238,6 +229,7 @@ app.put('/api/update-score', async (req, res) => {
       .from('progress')
       .update({ score: newScore })
       .eq('username', username);
+    return res.status(200).json({ message: 'Punteggio aggiornato' });
   } catch (err) {
     console.error("Errore nell'aggiornamento del punteggio:", err);
     return res.status(500).json({ error: 'Errore interno del server' });
@@ -245,14 +237,15 @@ app.put('/api/update-score', async (req, res) => {
 });
 
 //taccuino
-app.put('api/update-notebook', async (req, res) => {
+app.put('/api/update-notebook', async (req, res) => {
   const username = req.session.user.username;
   const { notebook, note } = req.body;
   try {
     const { data: room, error: room_error } = await supabase
       .from('room')
       .select('name')
-      .eq('id', req.session.user.room);
+      .eq('num', req.session.user.room)
+      .single();
     if (room_error) {
       console.error('Errore nel recupero della stanza:', room_error);
       return res.status(500).json({ error: 'Errore interno del server' });
@@ -272,6 +265,8 @@ app.put('api/update-notebook', async (req, res) => {
       .from('inventory')
       .update({ notebook: NewNotebook })
       .eq('id', username);
+
+    return res.status(200).json({ message: 'Taccuino aggiornato', notebook: NewNotebook });
   } catch (err) {
     console.error("Errore nell'aggiornamento del taccuino:", err);
     return res.status(500).json({ error: 'Errore interno del server' });
@@ -289,9 +284,7 @@ app.put('/api/room-completed', async (req, res) => {
       .eq('username', username);
 
     req.session.user.room = newRoom + 1;
-    res
-      .status(200)
-      .json({ message: 'Stanza aggiornata', newRoom: newRoom + 1 });
+    res.status(200).json({ message: 'Stanza aggiornata', newRoom: newRoom + 1 });
   } catch (err) {
     console.error("Errore nell'aggiornamento della stanza:", err);
     return res.status(500).json({ error: 'Errore interno del server' });
@@ -319,9 +312,7 @@ app.put('/api/leaderboard', async (req, res) => {
       return res.status(500).json({ error: 'Errore interno del server' });
     }
 
-    return res
-      .status(200)
-      .json({ message: 'Classifica aggiornata', leaderboard: leaderboard });
+    return res.status(200).json({ message: 'Classifica aggiornata', leaderboard: leaderboard });
   } catch (err) {
     console.error("Errore nell'aggiornamento della classifica:", err);
     return res.status(500).json({ error: 'Errore interno del server' });
@@ -343,6 +334,8 @@ const wrongRoom = (req, res, next) => {
 app.get('/login', (req, res) => {
   res.sendFile(path.join(root, 'pages', 'login.html'));
 });
+
+app.use(express.static(root));
 
 // indirizzamento stanze
 app.get('/index/room/:numero', wrongRoom, (req, res) => {
