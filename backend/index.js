@@ -173,6 +173,7 @@ app.get('/api/me', (req, res) => {
       username: req.session.user.username,
       room: req.session.user.room,
       avatar: req.session.user.avatar,
+      notebook: req.session.user.inventory || []
     });
   } else {
     res.status(401).json({ error: 'Non loggato' });
@@ -236,57 +237,33 @@ app.put('/api/update-score', async (req, res) => {
   }
 });
 
-//taccuino
-app.put('/api/update-notebook', async (req, res) => {
-  const username = req.session.user.username;
-  const { notebook, note } = req.body;
-  try {
-    const { data: room, error: room_error } = await supabase
-      .from('room')
-      .select('name')
-      .eq('num', req.session.user.room)
-      .single();
-    if (room_error) {
-      console.error('Errore nel recupero della stanza:', room_error);
-      return res.status(500).json({ error: 'Errore interno del server' });
-    }
-    const { data: text, error: text_error } = await supabase
-      .from('notes')
-      .select('text')
-      .eq('id', note);
-
-    if (text_error) {
-      console.error('Errore nel recupero della nota:', text_error);
-      return res.status(500).json({ error: 'Errore interno del server' });
-    }
-
-    const NewNotebook = [...notebook, { stanza: room, testo: text }]; //aggiungere le altre cose nel caso
-    const { data, error } = await supabase
-      .from('inventory')
-      .update({ notebook: NewNotebook })
-      .eq('id', username);
-
-    return res.status(200).json({ message: 'Taccuino aggiornato', notebook: NewNotebook });
-  } catch (err) {
-    console.error("Errore nell'aggiornamento del taccuino:", err);
-    return res.status(500).json({ error: 'Errore interno del server' });
-  }
-});
-
-//Enigma risolto
+//salva stanza e taccuino
 app.put('/api/room-completed', async (req, res) => {
+  if (!req.session || !req.session.user) {
+    return res.status(401).json({ error: 'Non autorizzato' });
+  }
+
   const username = req.session.user.username;
-  const { newRoom } = req.body;
+  const { newRoom, notebook } = req.body; 
+  
   try {
-    const { data, error } = await supabase
+    await supabase
       .from('progress')
       .update({ room: newRoom })
       .eq('username', username);
 
+    if (notebook) {
+      await supabase
+        .from('inventory')
+        .update({ notebook: notebook })
+        .eq('id', username);
+        
+      req.session.user.inventory = notebook; 
+    }
     req.session.user.room = newRoom + 1;
-    res.status(200).json({ message: 'Stanza aggiornata', newRoom: newRoom + 1 });
+    res.status(200).json({ message: 'Progresso salvato', newRoom: newRoom + 1 });
   } catch (err) {
-    console.error("Errore nell'aggiornamento della stanza:", err);
+    console.error("Errore nell'aggiornamento:", err);
     return res.status(500).json({ error: 'Errore interno del server' });
   }
 });
@@ -348,13 +325,6 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(root, 'index.html'));
 });
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// IMPORTANTE
-// DA FARE
-//taccuino da capire
-//mette nel campo del db lo score che gli dà il frontend fatto
-// aggiornare numero stanza dopo che l'utente risponde all'enigma finale
-//classifica (primi 5 utenti con punteggio più alto) fatto
 
 // AVVIO SERVER
 app.listen(port, host, () => {

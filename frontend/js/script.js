@@ -177,6 +177,9 @@ window.onload = async function () {
       localStorage.setItem('stanzaSalvata', data.room);
       localStorage.setItem('username', data.username);
       localStorage.setItem('avatar', data.avatar);
+      if (data.notebook) {
+        localStorage.setItem('taccuinoAgente', JSON.stringify(data.notebook));
+      }
       const userform = document.querySelector('.userform');
       if (userform) {
         if (data.room >= 0 && data.room <= 6) {
@@ -503,10 +506,9 @@ function iniziaEsplorazioneT() {
 async function aggiornaPunteggioGlobale(pti) {
   let punteggioAttuale = parseInt(localStorage.getItem('punteggioFinale')) || 0;
   punteggioAttuale += pti;
-
   localStorage.setItem('punteggioFinale', punteggioAttuale);
-
   const username = localStorage.getItem('username');
+
   if(username){
     try{
       await fetch('/api/update-score', {
@@ -698,19 +700,25 @@ async function controllaEnigma() {
     }
     pulisciTaccuino();
     aggiungiAlTaccuino('room1','codice','Hai ottenuto questo numero: 20','finale');
-    const username = localStorage.getItem('username');
-    try {
-      await fetch('/api/room-completed', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: username, newRoom: 1 }),
-      });
-      setTimeout(() => {
-        window.location.href = '/index/room/2';
-      }, 2500);
-    } catch (err) {
-      console.error('Impossibile aggiornare la stanza nel database:', err);
-    }
+    const taccuinoDaSalvare = JSON.parse(localStorage.getItem('taccuinoAgente')) || [];
+  try {
+    const response = await fetch('/api/room-completed', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        newRoom: 1, 
+        notebook: taccuinoDaSalvare
+      }),
+  });
+
+  if (response.ok) {
+    setTimeout(() => {
+      window.location.href = '/index/room/2';
+    }, 2500);
+  }
+} catch (err) {
+  console.error("Errore nel salvataggio progressi: ", err);
+}
   } else {
     aggiornaPunteggioGlobale(-5);
     document.getElementById('codiceSoluzione').value = '';
@@ -984,19 +992,26 @@ async function controllaEquazione() {
     }
     pulisciTaccuino();
     aggiungiAlTaccuino('room2','codice','Hai ottenuto questo numero: 3414','finale');
-    const username = localStorage.getItem('username');
-    try {
-      await fetch('/api/room-completed', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: username, newRoom: 2 }),
-      });
-      setTimeout(() => {
-        window.location.href = '/index/room/3';
-      }, 2500);
-    } catch (err) {
-      console.error('Impossibile aggiornare la stanza nel database:', err);
-    }
+    const taccuinoDaSalvare = JSON.parse(localStorage.getItem('taccuinoAgente')) || [];
+
+  try {
+    const response = await fetch('/api/room-completed', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+      newRoom: 2, 
+      notebook: taccuinoDaSalvare 
+    }),
+  });
+
+  if (response.ok) {
+    setTimeout(() => {
+      window.location.href = '/index/room/3';
+    }, 2500);
+  }
+} catch (err) {
+  console.error("Errore nel salvataggio progressi: ", err);
+}
   } else {
     aggiornaPunteggioGlobale(-5);
     document.getElementById('CurieSoluzione').value = '';
@@ -1282,19 +1297,26 @@ async function controllaEinstein() {
     }
     pulisciTaccuino();
     aggiungiAlTaccuino('room3','codice','Hai ottenuto questo numero: 2','finale');
-    const username = localStorage.getItem('username');
-    try {
-      await fetch('/api/room-completed', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: username, newRoom: 3 }),
-      });
-      setTimeout(() => {
-        window.location.href = '/index/room/4';
-      }, 2500);
-    } catch (err) {
-      console.error('Impossibile aggiornare la stanza nel database:', err);
-    }
+    const taccuinoDaSalvare = JSON.parse(localStorage.getItem('taccuinoAgente')) || [];
+
+  try {
+    const response = await fetch('/api/room-completed', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ 
+      newRoom: 3, 
+      notebook: taccuinoDaSalvare 
+    }),
+  });
+
+  if (response.ok) {
+    setTimeout(() => {
+      window.location.href = '/index/room/4';
+    }, 2500);
+  }
+} catch (err) {
+  console.error("Errore nel salvataggio progressi: ", err);
+}
   } else {
     aggiornaPunteggioGlobale(-5);
     document.getElementById('EinsteinSoluzione').value = '';
@@ -1583,19 +1605,26 @@ async function controllaLovelace() {
     }
     pulisciTaccuino();
     aggiungiAlTaccuino('room4','codice','Hai ottenuto questo numero: 46','finale');
-    const username = localStorage.getItem('username');
-    try {
-      await fetch('/api/room-completed', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: username, newRoom: 4 }),
-      });
-      setTimeout(() => {
-        window.location.href = '/index/room/5';
-      }, 2500);
-    } catch (err) {
-      console.error('Impossibile aggiornare la stanza nel database:', err);
-    }
+    const taccuinoDaSalvare = JSON.parse(localStorage.getItem('taccuinoAgente')) || [];
+
+  try {
+    const response = await fetch('/api/room-completed', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+      newRoom: 4, 
+      notebook: taccuinoDaSalvare 
+    }),
+  });
+
+  if (response.ok) {
+    setTimeout(() => {
+      window.location.href = '/index/room/5';
+    }, 2500);
+  }
+} catch (err) {
+  console.error("Errore nel salvataggio progressi: ", err);
+}
   } else {
     aggiornaPunteggioGlobale(-5);
     document.getElementById('LovelaceSoluzione').value = '';
@@ -1936,7 +1965,7 @@ async function mostraClassifica() {
     const response = await fetch('/api/leaderboard',{
       method: 'PUT',
       headers: { 'Content-type' : 'application/json' },
-      body: JSON.stringify({ username: username, punteggio: scoreFinale })
+      body: JSON.stringify({ username: username, final_score: scoreFinale })
     });
 
     if(response.ok){
