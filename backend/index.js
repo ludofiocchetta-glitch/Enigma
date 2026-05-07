@@ -90,13 +90,6 @@ app.post('/api/register', async (req, res) => {
 
     if (inventory_error) throw inventory_error;
 
-    const { data: leaderboard_entry, error: leaderboard_error } = await supabase
-      .from('Leaderboard')
-      .insert([{ user: username, score: 0 }])
-      .select();
-
-    if (leaderboard_error) throw leaderboard_error;
-
     req.session.user = {
       username: data[0].id,
       room: 0,
@@ -131,7 +124,7 @@ app.post('/api/login', async (req, res) => {
 
     const { data: game, error: game_error } = await supabase
       .from('progress')
-      .select('username, room')
+      .select('username, room, score')
       .eq('username', user.id)
       .limit(1)
       .single();
@@ -157,9 +150,10 @@ app.post('/api/login', async (req, res) => {
       room: game.room + 1, //ricordiamoci di incrementare la stanza di 1 per mandare l'utente alla stanza giusta
       inventory: inventory ? inventory.notebook : [],
       avatar: user.avatar,
+      score: game.score || 0,
     };
 
-    return res.status(200).json({ message: 'Login effettuato', room: req.session.user.room });
+    return res.status(200).json({ message: 'Login effettuato', room: req.session.user.room, score: game.score || 0 });
   } catch (err) {
     console.error('Errore generico nel login:', err);
     return res.status(500).json({ error: 'Errore interno del server' });
@@ -173,7 +167,8 @@ app.get('/api/me', (req, res) => {
       username: req.session.user.username,
       room: req.session.user.room,
       avatar: req.session.user.avatar,
-      notebook: req.session.user.inventory || []
+      notebook: req.session.user.inventory || [],
+      score: req.session.user.score || 0
     });
   } else {
     res.status(401).json({ error: 'Non loggato' });
@@ -201,9 +196,14 @@ app.post('/api/reset-game', async (req, res) => {
       req.session.user.avatar = nuovoAvatar;
       req.session.user.room = 0;
       req.session.user.inventory = [];
-    }
+      req.session.user.score = 0;
 
-    return res.status(200).json({ message: 'Partita resettata' });
+      req.session.save(() => {
+        return res.status(200).json({ message: 'Partita resettata' });
+      });
+    }else{
+      return res.status(200).json({ message: 'Partita resettata' });
+    }
   } catch (err) {
     console.error('Errore nel reset:', err);
     return res.status(500).json({ error: 'Impossibile resettare la partita' });
@@ -230,6 +230,10 @@ app.put('/api/update-score', async (req, res) => {
       .from('progress')
       .update({ score: newScore })
       .eq('username', username);
+
+    if (req.session.user) {
+        req.session.user.score = newScore;
+    }
     return res.status(200).json({ message: 'Punteggio aggiornato' });
   } catch (err) {
     console.error("Errore nell'aggiornamento del punteggio:", err);
@@ -275,8 +279,12 @@ app.put('/api/leaderboard', async (req, res) => {
   try {
     const { data, error } = await supabase
       .from('Leaderboard')
-      .update({ score: final_score })
-      .eq('user', username);
+      .insert([{ user: username, score: final_score }])
+
+    if (insert_error) {
+      console.error('Errore nel salvataggio del nuovo punteggio:', insert_error);
+      return res.status(500).json({ error: 'Errore interno del server' });
+    }
 
     const { data: leaderboard, error: leaderboard_error } = await supabase
       .from('Leaderboard')
@@ -289,10 +297,33 @@ app.put('/api/leaderboard', async (req, res) => {
       return res.status(500).json({ error: 'Errore interno del server' });
     }
 
-    return res.status(200).json({ message: 'Classifica aggiornata', leaderboard: leaderboard });
+    return res.status(200).json({ message: 'Nuovo punteggio registrato', leaderboard: leaderboard });
   } catch (err) {
     console.error("Errore nell'aggiornamento della classifica:", err);
     return res.status(500).json({ error: 'Errore interno del server' });
+  }
+});
+
+//highest-score per pagina iniziale
+app.get('/api/highest-score', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('Leaderboard')
+      .select('user, score')
+      .order('score', { ascending: false })
+      .limit(1)
+      .single();
+      
+    if ((error && error.code === 'PGRST116') || !data) {
+      return res.status(200).json({ user: 'Nessuno', score: 0 });
+    }
+
+    if (error) throw error;
+    
+    return res.status(200).json(data);
+  } catch (err) {
+    console.error("Errore nel recupero del punteggio più alto: ", err);
+    return res.status(500).json({ error: 'Errore interno' });
   }
 });
 
@@ -300,11 +331,11 @@ app.put('/api/leaderboard', async (req, res) => {
 const wrongRoom = (req, res, next) => {
   if (!req.session || !req.session.user) {
     return res.redirect('/login');
-  }
+  }/*
   const requiredroom = parseInt(req.params.numero, 10);
   if (req.session.user.room !== requiredroom) {
     return res.redirect(`/index/room/${req.session.user.room}`);
-  }
+  }*/
   next();
 };
 

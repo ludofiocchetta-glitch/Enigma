@@ -51,6 +51,7 @@ async function eseguiLogin() {
     if (response.ok) {
       localStorage.setItem('username', username);
       localStorage.setItem('stanzaSalvata', data.room);
+      localStorage.setItem('punteggioFinale', data.score || 0);
 
       if (data.room >= 0 && data.room <= 6) {
         window.avatarVecchio = data.avatar;
@@ -177,6 +178,7 @@ window.onload = async function () {
       localStorage.setItem('stanzaSalvata', data.room);
       localStorage.setItem('username', data.username);
       localStorage.setItem('avatar', data.avatar);
+      localStorage.setItem('punteggioFinale', data.score || 0);
       if (data.notebook) {
         localStorage.setItem('taccuinoAgente', JSON.stringify(data.notebook));
       }
@@ -1993,6 +1995,29 @@ function popolaClassificaReale(leaderboardData, username) {
     tbody.innerHTML += riga;
   })
 }
+
+//highest-score prima pagina
+document.addEventListener('DOMContentLoaded', async function () {
+  const highestScoreText = document.getElementById('highest-score-text');
+  
+  if (highestScoreText) {
+    try {
+      const response = await fetch('/api/highest-score');
+      if (response.ok) {
+        const data = await response.json();
+        
+        if (data.user === 'Nessuno') {
+          highestScoreText.innerText = "Nessun utente registrato. Sii il primo a stabilire un record!";
+        } else {
+          highestScoreText.innerText = `Highest score: ${data.user} - ${data.score} pts`;
+        }
+      }
+    } catch (err) {
+      highestScoreText.innerText = "Highest score: impossibile caricare il punteggio";
+      console.error("Impossibile caricare l'highest score: ", err);
+    }
+  }
+});
 
 // Funzione di Logout
 async function eseguiLogout() {
