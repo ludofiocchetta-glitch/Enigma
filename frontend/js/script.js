@@ -3,6 +3,7 @@
 // 5 final, 6 victory.
 // il database incrementa salva la stanza completata e incrementa il numero per mandarti a 
 // quella che devi fare
+//NON CAMBIATE IL TACCUINO
 
 // login
 async function eseguiLogin() {
