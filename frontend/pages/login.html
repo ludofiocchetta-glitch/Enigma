@@ -61,12 +61,11 @@
     <audio id="bgMusic" loop>
         <source src="/assets/audio/login.mp3" type="audio/mpeg">
     </audio>
-    
-    <button type="button" class="btn-music-gameT" data-bs-toggle="modal" data-bs-target="#volumeModal">
+    <button type="button" class="btn-music-gameF" data-bs-toggle="modal" data-bs-target="#volumeModal">
         <span style="color: #f8fafb;">♫</span>
     </button>
 
-    <div class="modal fade" id="volumeModal" tabindex="-1" aria-labelledby="volumeModalLabel" aria-hidden="true">
+        <div class="modal fade" id="volumeModal" tabindex="-1" aria-labelledby="volumeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered">
             <div class="modal-content modal-enigma bg-dark text-light border-light">
                 <div class="modal-header border-light">
@@ -101,6 +100,7 @@
                 <div class="modal-footer border-light d-flex justify-content-center gap-3">
                     <button type="button" class="btn btn-outline-light btn-lg mt-3" onclick="nuovaPartita()">Nuova Missione</button>
                     <button type="button" class="btn btn btn-outline-light btn-lg mt-3" onclick="continuaPartita()">Continua</button>
+                     <button type="button" class="btn btn btn-outline-light btn-lg mt-3" onclick="eseguiLogout()">Esci</button>
                 </div>
             </div>
         </div>

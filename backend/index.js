@@ -281,7 +281,7 @@ app.put('/api/leaderboard', async (req, res) => {
       .from('Leaderboard')
       .insert([{ user: username, score: final_score }])
 
-    if (insert_error) {
+    if (error) {
       console.error('Errore nel salvataggio del nuovo punteggio:', insert_error);
       return res.status(500).json({ error: 'Errore interno del server' });
     }
@@ -331,11 +331,11 @@ app.get('/api/highest-score', async (req, res) => {
 const wrongRoom = (req, res, next) => {
   if (!req.session || !req.session.user) {
     return res.redirect('/login');
-  }/*
+  }
   const requiredroom = parseInt(req.params.numero, 10);
   if (req.session.user.room !== requiredroom) {
     return res.redirect(`/index/room/${req.session.user.room}`);
-  }*/
+  }
   next();
 };
 

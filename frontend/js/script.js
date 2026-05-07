@@ -231,7 +231,6 @@ window.onload = async function () {
   }
   if (document.getElementById('testoMacchina5')) {
     document.getElementById('testoMacchina5').classList.add('cursore');
-    ripristinaStatoFinal();
     inizioStanzaF();
   }
   if (document.getElementById('avatarid')) {
@@ -1817,7 +1816,6 @@ function controllaMuro() {
     aggiornaPunteggioGlobale(15);
     bootstrap.Modal.getInstance(document.getElementById('FinalModal')).hide();
     enigmiRisoltiF.muro = true;
-    localStorage.setItem('final_muro_risolto', 'true');
     setTimeout(() => {
       mostraMessaggioContinua('Accettato', 'Agente bravissimo, hai capito il modo di ragionare. Ora unisci i frammenti.',mostraCodiceFinale);
     }, 500);
@@ -1839,21 +1837,6 @@ function controllaMuro() {
   }
 }
 
-// salva le risposte nel local storage nel caso di ricaricamento pagina
-function ripristinaStatoFinal() {
-  if (localStorage.getItem('final_muro_risolto') === 'true') {
-    enigmiRisoltiF.muro = true;
-  }
-  if (localStorage.getItem('final_muro2_risolto') === 'true') {
-    enigmiRisoltiF.muro2 = true;
-    const modalEnigma = document.getElementById('muroF');
-    if (modalEnigma) {
-      modalEnigma.style.pointerEvents = 'none';
-      modalEnigma.style.opacity = 0.5;
-    }
-  }
-}
-
 function mostraCodiceFinale() {
   apriModalF('Accesso finale',"Agente, ora c'è bisogno del tuo codice! \n Inserisci il numero che hai ricostruito.",
   'Codice:','Sblocca',controllaCodiceFinale,true);
@@ -1865,19 +1848,17 @@ async function controllaCodiceFinale() {
     aggiornaPunteggioGlobale(25);
     bootstrap.Modal.getInstance(document.getElementById('FinalModal')).hide();
     enigmiRisoltiF.muro2 = true;
-    localStorage.setItem('final_muro2_risolto', 'true');
     mostraMessaggio('Codice Accettato!',"Incredibile Agente ce l'hai fatta! \n Hai completato tutta la missione in modo brillante. \n La porta si sta aprendo...");
     const modalEnigma = document.getElementById('muroF');
     if (modalEnigma) {
       modalEnigma.style.pointerEvents = 'none';
       modalEnigma.style.opacity = 0.5;
     }
-    const username = localStorage.getItem('username');
     try {
       await fetch('/api/room-completed', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: username, newRoom: 5 }),
+        body: JSON.stringify({ newRoom: 5 }),
       });
       setTimeout(() => {
         window.location.href = '/index/room/6';
@@ -2009,7 +1990,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         if (data.user === 'Nessuno') {
           highestScoreText.innerText = "Nessun utente registrato. Sii il primo a stabilire un record!";
         } else {
-          highestScoreText.innerText = `Highest score: ${data.user} - ${data.score} pts`;
+          highestScoreText.innerText = `Record assoluto: ${data.score} pts - Agente ${data.user}`;
         }
       }
     } catch (err) {
@@ -2074,7 +2055,7 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener('DOMContentLoaded', function () {
   const bgMusic = document.getElementById('bgMusic');
   const volumeSlider = document.getElementById('volumeSlider');
-  const musicBtn = document.querySelector('.btn-music-gameT');
+  const musicBtn = document.querySelector('.btn-music-gameT') || document.querySelector('.btn-music-gameF');
   if (bgMusic && volumeSlider && musicBtn) {
     bgMusic.volume = volumeSlider.value;
     volumeSlider.addEventListener('input', function () {
