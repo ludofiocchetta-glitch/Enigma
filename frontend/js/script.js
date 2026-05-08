@@ -8,10 +8,7 @@
 async function eseguiLogin() {
   const inputname = document.getElementById('inputname');
   const inputpassword = document.getElementById('inputpassword');
-  const avatarSelezionato = document.querySelector(
-    'input[name="avatar"]:checked',
-  ).value;
-
+  const avatarSelezionato = document.querySelector('input[name="avatar"]:checked').value;
   const username = inputname.value.trim();
   const password = inputpassword.value.trim();
 
@@ -57,9 +54,7 @@ async function eseguiLogin() {
         window.avatarVecchio = data.avatar;
         window.avatarNuovo = avatarSelezionato;
         document.getElementById('modal-nome-agente').innerText = username;
-        const modalScelta = new bootstrap.Modal(
-          document.getElementById('sceltaPartitaModal'),
-        );
+        const modalScelta = new bootstrap.Modal(document.getElementById('sceltaPartitaModal'));
         modalScelta.show();
       } else {
         window.avatarNuovo = avatarSelezionato;
@@ -68,30 +63,23 @@ async function eseguiLogin() {
     } else if (response.status === 404) {
       //utente non trovato
       const modal = new bootstrap.Modal(
-        document.getElementById('modalUtenteInesistente'),
-      );
+        document.getElementById('modalUtenteInesistente'));
       modal.show();
     } else if (response.status === 401) {
       //password errata
       inputpassword.value = '';
-      const modal = new bootstrap.Modal(
-        document.getElementById('modalPasswordErrata'),
-      );
+      const modal = new bootstrap.Modal(document.getElementById('modalPasswordErrata'));
       modal.show();
     } else {
       //altri errori
       inputname.value = '';
-      const modalErrore = new bootstrap.Modal(
-        document.getElementById('erroreServerModal'),
-      );
+      const modalErrore = new bootstrap.Modal(document.getElementById('erroreServerModal'));
       modalErrore.show();
     }
   } catch (err) {
     //errore di rete o connessione
     console.error('Errore di connessione: ', err);
-    const modalErrore = new bootstrap.Modal(
-      document.getElementById('erroreServerModal'),
-    );
+    const modalErrore = new bootstrap.Modal(document.getElementById('erroreServerModal'));
     modalErrore.show();
   }
 }
@@ -147,24 +135,18 @@ async function eseguiRegistrazione() {
       window.location.href = '/index/room/0';
     } else {
       if (data.error && data.error.includes('Username già esistente')) {
-        const modal = new bootstrap.Modal(
-          document.getElementById('modalUtenteGiaEsistente'),
-        );
+        const modal = new bootstrap.Modal(document.getElementById('modalUtenteGiaEsistente'));
         modal.show();
       } else {
         inputname.value = '';
         inputpassword.value = '';
-        const modalErrore = new bootstrap.Modal(
-          document.getElementById('erroreServerModal'),
-        );
+        const modalErrore = new bootstrap.Modal(document.getElementById('erroreServerModal'));
         modalErrore.show();
       }
     }
   } catch (err) {
     console.error('Errore di connessione: ', err);
-    const modalErrore = new bootstrap.Modal(
-      document.getElementById('erroreServerModal'),
-    );
+    const modalErrore = new bootstrap.Modal(document.getElementById('erroreServerModal'));
     modalErrore.show();
   }
 }
@@ -185,16 +167,11 @@ window.onload = async function () {
       const userform = document.querySelector('.userform');
       if (userform) {
         if (data.room >= 0 && data.room <= 6) {
-          const avatarRadio = document.querySelector(
-            'input[name="avatar"]:checked',
-          );
+          const avatarRadio = document.querySelector('input[name="avatar"]:checked');
           window.avatarVecchio = data.avatar;
           window.avatarNuovo = avatarRadio ? avatarRadio.value : data.avatar;
-          document.getElementById('modal-nome-agente').innerText =
-            data.username;
-          const modalScelta = new bootstrap.Modal(
-            document.getElementById('sceltaPartitaModal'),
-          );
+          document.getElementById('modal-nome-agente').innerText = data.username;
+          const modalScelta = new bootstrap.Modal(document.getElementById('sceltaPartitaModal'));
           modalScelta.show();
         } else {
           window.avatarVecchio = data.avatar;
@@ -265,6 +242,7 @@ function continuaPartita() {
 }
 
 async function nuovaPartita() {
+  localStorage.removeItem('recordId');
   const username = localStorage.getItem('username');
   const avatar = window.avatarNuovo;
   try {
@@ -420,8 +398,7 @@ function apriTaccuino() {
   let testo = '';
 
   if (taccuino.length == 0) {
-    testo =
-      'Agente, questo è il tuo taccuino personale. Risolvi gli enigmi per raccogliere indizi.';
+    testo = 'Agente, questo è il tuo taccuino personale. Risolvi gli enigmi per raccogliere indizi.';
   } else {
     taccuino.forEach((nota) => {
       if (nota.tipo === 'finale') {
@@ -529,14 +506,14 @@ let countTelefono = 0;
 let enigmiRisolti = {
   lavagna: false,
   telefono: false,
-  macchina: false,
+  macchina: false
 };
 
 let oggettiEsplorati = {
   mappamondo: false,
   serranda: false,
   cappello: false,
-  scatoloni: false,
+  scatoloni: false
 };
 
 // indizi
@@ -689,7 +666,7 @@ async function controllaEnigma() {
   const soluzioneCorretta = 'bombe';
 
   if (rispostaUtente === soluzioneCorretta) {
-    aggiornaPunteggioGlobale(20);
+    await aggiornaPunteggioGlobale(20);
     bootstrap.Modal.getInstance(document.getElementById('enigmaModal')).hide();
     mostraMessaggio('Codice accettato!','Bravo Agente! La porta si è sbloccata. Preparati a scappare...');
     enigmiRisolti.macchina = true;
@@ -831,13 +808,13 @@ let countPozioni = 0;
 let oggettiEsploratiC = {
   scaffale: false,
   foglio: false,
-  tavolo: false,
+  tavolo: false
 };
 
 let enigmiRisoltiC = {
   bilancia: false,
   pozioni: false,
-  lavagna: false,
+  lavagna: false
 };
 
 // indizi
@@ -981,7 +958,7 @@ async function controllaEquazione() {
   const rispostaUtente = document.getElementById('CurieSoluzione').value.trim();
   const soluzioneCorretta = '3,4,1,4';
   if (rispostaUtente === soluzioneCorretta) {
-    aggiornaPunteggioGlobale(20);
+    await aggiornaPunteggioGlobale(20);
     bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
     mostraMessaggio('Equazione Bilanciata!','Ottimo lavoro, Agente! La porta si sta aprendo. Sei pronto per la prossima missione...');
     enigmiRisoltiC.lavagna = true;
@@ -1131,13 +1108,13 @@ let oggettiEsploratiE = {
   ritratto: false,
   tavolo: false,
   cassetti: false,
-  luna: false,
+  luna: false
 };
 
 let enigmiRisoltiE = {
   mappamondo: false,
   mobile: false,
-  lavagna: false,
+  lavagna: false
 };
 
 let countMobile = 0;
@@ -1287,7 +1264,7 @@ async function controllaEinstein() {
   const rispostaUtente = document.getElementById('EinsteinSoluzione').value.trim().toLowerCase();
   const soluzioneCorretta = 'e=mc^2';
   if (rispostaUtente === soluzioneCorretta) {
-    aggiornaPunteggioGlobale(20);
+    await aggiornaPunteggioGlobale(20);
     bootstrap.Modal.getInstance(document.getElementById('EinsteinModal')).hide();
     mostraMessaggio('Formula corretta!','Bravissimo Agente! \n Il passaggio segreto si sta aprendo, puoi continuare la tua missione...');
     localStorage.setItem('einstein_enigma_risolto', 'true');
@@ -1431,7 +1408,7 @@ let countLibri = 0;
 let enigmiRisoltiL = {
   orologio: false,
   libri: false,
-  enigma: false,
+  enigma: false
 };
 
 let oggettiEsploratiL = {
@@ -1439,7 +1416,7 @@ let oggettiEsploratiL = {
   libreria: false,
   quadro: false,
   lampada: false,
-  camino: false,
+  camino: false
 };
 
 // indizi
@@ -1593,9 +1570,8 @@ async function controllaLovelace() {
   const rispostaUtente = document.getElementById('LovelaceSoluzione').value.trim().toLowerCase();
   const soluzioneCorretta = 'v4,v6';
   if (rispostaUtente === soluzioneCorretta) {
-    aggiornaPunteggioGlobale(20);
-    bootstrap.Modal.getInstance(
-      document.getElementById('LovelaceModal')).hide();
+    await aggiornaPunteggioGlobale(20);
+    bootstrap.Modal.getInstance(document.getElementById('LovelaceModal')).hide();
     mostraMessaggio('Risoluzione accettata!','Bravissimo Agente! sei pronto per la missione finale...');
     enigmiRisoltiL.enigma = true;
     localStorage.setItem('lovelace_enigma_risolto', 'true');
@@ -1745,7 +1721,7 @@ let oggettiEsploratiF = {
 
 let enigmiRisoltiF = {
   muro: false,
-  muro2: false,
+  muro2: false
 };
 
 let countMuro = 0;
@@ -1808,10 +1784,7 @@ function mostraMuro() {
 }
 
 function controllaMuro() {
-  const risposta = document
-    .getElementById('FinalSoluzione')
-    .value.trim()
-    .toLowerCase();
+  const risposta = document.getElementById('FinalSoluzione').value.trim().toLowerCase();
   if (risposta === 'logica') {
     aggiornaPunteggioGlobale(15);
     bootstrap.Modal.getInstance(document.getElementById('FinalModal')).hide();
@@ -1844,27 +1817,36 @@ function mostraCodiceFinale() {
 
 async function controllaCodiceFinale() {
   const risposta = document.getElementById('FinalSoluzione').value.trim();
-  if (risposta === '203414246') {
-    aggiornaPunteggioGlobale(25);
+  const soluzioneCorretta = '203414246';
+  if (risposta === soluzioneCorretta) {
+    await aggiornaPunteggioGlobale(25);
     bootstrap.Modal.getInstance(document.getElementById('FinalModal')).hide();
-    enigmiRisoltiF.muro2 = true;
     mostraMessaggio('Codice Accettato!',"Incredibile Agente ce l'hai fatta! \n Hai completato tutta la missione in modo brillante. \n La porta si sta aprendo...");
+    enigmiRisoltiF.muro2 = true;
+    localStorage.setItem('final_enigma_risolto', 'true');
     const modalEnigma = document.getElementById('muroF');
     if (modalEnigma) {
       modalEnigma.style.pointerEvents = 'none';
       modalEnigma.style.opacity = 0.5;
     }
+    const taccuinoDaSalvare = JSON.parse(localStorage.getItem('taccuinoAgente')) || [];
     try {
-      await fetch('/api/room-completed', {
+      const response = await fetch('/api/room-completed', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ newRoom: 5 }),
-      });
+        body: JSON.stringify({ 
+        newRoom: 5, 
+        notebook: taccuinoDaSalvare 
+      }),
+    });
+    if (response.ok) {
+      localStorage.setItem('devoSalvareInClassifica', 'true');
       setTimeout(() => {
         window.location.href = '/index/room/6';
       }, 2500);
+    }
     } catch (err) {
-      console.error('Impossibile aggiornare la stanza nel database:', err);
+      console.error("Errore nel salvataggio progressi: ", err);
     }
   } else {
     countMuro2++;
@@ -1939,35 +1921,61 @@ function scriviTestoV(testo, indice) {
 async function mostraClassifica() {
   document.getElementById('introV').classList.add('d-none');
   document.getElementById('leaderboard-container').classList.remove('d-none');
-  const scoreFinale = localStorage.getItem('punteggioFinale') || 0;
-  document.getElementById('punteggio-giocatore').innerText = scoreFinale;
   
+  const scoreFinale = localStorage.getItem('punteggioFinale') || 0;
   const username = localStorage.getItem('username');
+  const devoSalvare = localStorage.getItem('devoSalvareInClassifica') === 'true';
 
-  try{
-    const response = await fetch('/api/leaderboard',{
+  try {
+    const response = await fetch('/api/leaderboard', {
       method: 'PUT',
       headers: { 'Content-type' : 'application/json' },
-      body: JSON.stringify({ username: username, final_score: scoreFinale })
+      body: JSON.stringify({ 
+          username: username, 
+          final_score: scoreFinale,
+          salva: devoSalvare 
+      })
     });
 
-    if(response.ok){
+    if (response.ok) {
       const data = await response.json();
-      popolaClassificaReale(data.leaderboard, username);
-    }else{
-      console.error("Errore del server nel caricamento della classifica");
+      if (devoSalvare) {
+          localStorage.removeItem('devoSalvareInClassifica'); 
+          if (data.insertedId) {
+              localStorage.setItem('recordId', data.insertedId); 
+          }
+      }
+      document.getElementById('punteggio-giocatore').innerText = data.punteggioReale;
+      document.getElementById('posizione-giocatore').innerText = data.currentRank;
+      const recordId = localStorage.getItem('recordId');
+      popolaClassificaReale(data.leaderboard, recordId, username, data.punteggioReale);
     }
-  } catch(err){
-    console.error("Errore contattare il server per la classifica", err);
+  } catch(err) {
+    console.error("Errore classifica", err);
   }
 }
 
-function popolaClassificaReale(leaderboardData, username) {
+// Funzione intelligente per evidenziare la riga giusta
+function popolaClassificaReale(leaderboardData, recordId, username, punteggioReale) {
   const tbody = document.getElementById('leaderboard-body');
   tbody.innerHTML = '';
+  let giaEvidenziato = false;
 
   leaderboardData.forEach((player, index) => {
-    let rigaClasse = player.user === username ? 'class="giocatore-corrente fw-bold text-warning"' : '';
+    let rigaClasse = '';
+
+    if (recordId) {
+        if (player.id == recordId) {
+            rigaClasse = 'class="giocatore-corrente fw-bold"';
+        }
+    } else {
+        // Se entra solo per vedere la classifica evidenzia il punteggio più alto
+        if (player.user === username && player.score == punteggioReale && !giaEvidenziato) {
+            rigaClasse = 'class="giocatore-corrente fw-bold"';
+            giaEvidenziato = true;
+        }
+    }
+
     let riga = `<tr ${rigaClasse}>
             <td>#${index + 1}</td>
             <td>${player.user}</td>
@@ -2010,9 +2018,7 @@ async function eseguiLogout() {
     if (response.ok) {
       console.log('Logout dal server completato con successo.');
     } else {
-      console.warn(
-        "Il server ha risposto con un errore, ma forzo comunque l'uscita locale.",
-      );
+      console.warn("Il server ha risposto con un errore, ma forzo comunque l'uscita locale.");
     }
   } catch (err) {
     console.error('Impossibile contattare il server', err);
