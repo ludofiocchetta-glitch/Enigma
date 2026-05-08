@@ -275,32 +275,61 @@ app.put('/api/room-completed', async (req, res) => {
 // aggiornamento e rivelazione classifica
 app.put('/api/leaderboard', async (req, res) => {
   const username = req.session.user.username;
-  const { final_score } = req.body;
-  try {
-    const { data, error } = await supabase
-      .from('Leaderboard')
-      .insert([{ user: username, score: final_score }])
+  const { final_score, salva } = req.body; 
 
-    if (error) {
-      console.error('Errore nel salvataggio del nuovo punteggio:', insert_error);
-      return res.status(500).json({ error: 'Errore interno del server' });
+  let insertedId = null;
+  let scorePerClassifica = final_score; 
+
+  try {
+    if (salva) {
+      // salvo punteggio se appena finito il gioco
+      const { data: insertedData, error: insert_error } = await supabase
+        .from('Leaderboard')
+        .insert([{ user: username, score: final_score }])
+        .select(); 
+
+      if (insert_error) throw insert_error;
+      insertedId = insertedData[0].id;
+    } else {
+      // se sta solo guardando metto il record dell'utente
+      const { data: bestScoreData } = await supabase
+        .from('Leaderboard')
+        .select('score')
+        .eq('user', username)
+        .order('score', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (bestScoreData) {
+        scorePerClassifica = bestScoreData.score; 
+      }
     }
 
+    const { count, error: count_error } = await supabase
+      .from('Leaderboard')
+      .select('*', { count: 'exact', head: true })
+      .gt('score', scorePerClassifica);
+
+    const currentRank = (count || 0) + 1;
+    
     const { data: leaderboard, error: leaderboard_error } = await supabase
       .from('Leaderboard')
-      .select('*')
+      .select('id, user, score') 
       .order('score', { ascending: false })
       .limit(5);
 
-    if (leaderboard_error) {
-      console.error('Errore nel recupero della classifica:', leaderboard_error);
-      return res.status(500).json({ error: 'Errore interno del server' });
-    }
+    if (leaderboard_error) throw leaderboard_error;
 
-    return res.status(200).json({ message: 'Nuovo punteggio registrato', leaderboard: leaderboard });
+    return res.status(200).json({ 
+        message: salva ? 'Nuovo punteggio salvato' : 'Classifica caricata', 
+        leaderboard: leaderboard, 
+        currentRank: currentRank,
+        insertedId: insertedId,
+        punteggioReale: scorePerClassifica 
+    });
   } catch (err) {
-    console.error("Errore nell'aggiornamento della classifica:", err);
-    return res.status(500).json({ error: 'Errore interno del server' });
+    console.error("Errore classifica:", err);
+    return res.status(500).json({ error: 'Errore interno' });
   }
 });
 
