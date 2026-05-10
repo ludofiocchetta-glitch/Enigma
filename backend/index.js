@@ -279,6 +279,7 @@ app.put('/api/leaderboard', async (req, res) => {
 
   let insertedId = null;
   let scorePerClassifica = final_score; 
+  let idPerClassifica = null; //per lo spareggio
 
   try {
     if (salva) {
@@ -290,11 +291,12 @@ app.put('/api/leaderboard', async (req, res) => {
 
       if (insert_error) throw insert_error;
       insertedId = insertedData[0].id;
+      idPerClassifica = insertedId; 
     } else {
       // se sta solo guardando metto il record dell'utente
       const { data: bestScoreData } = await supabase
         .from('Leaderboard')
-        .select('score')
+        .select('id, score') 
         .eq('user', username)
         .order('score', { ascending: false })
         .limit(1)
@@ -302,20 +304,32 @@ app.put('/api/leaderboard', async (req, res) => {
 
       if (bestScoreData) {
         scorePerClassifica = bestScoreData.score; 
+        idPerClassifica = bestScoreData.id;
       }
     }
-
-    const { count, error: count_error } = await supabase
-      .from('Leaderboard')
-      .select('*', { count: 'exact', head: true })
-      .gt('score', scorePerClassifica);
-
-    const currentRank = (count || 0) + 1;
+    // calcolo posizione con spareggio
+    let currentRank = 1;
+    if (idPerClassifica) {
+        const { count, error: count_error } = await supabase
+          .from('Leaderboard')
+          .select('*', { count: 'exact', head: true })
+          .or(`score.gt.${scorePerClassifica},and(score.eq.${scorePerClassifica},id.lt.${idPerClassifica})`);
+        
+        currentRank = (count || 0) + 1;
+    } else {
+        // Fallback nel caso in cui sta testando con 0 punti senza aver mai giocato
+        const { count } = await supabase
+          .from('Leaderboard')
+          .select('*', { count: 'exact', head: true })
+          .gt('score', scorePerClassifica);
+        currentRank = (count || 0) + 1;
+    }
     
     const { data: leaderboard, error: leaderboard_error } = await supabase
       .from('Leaderboard')
       .select('id, user, score') 
       .order('score', { ascending: false })
+      .order('id', { ascending: true }) 
       .limit(5);
 
     if (leaderboard_error) throw leaderboard_error;

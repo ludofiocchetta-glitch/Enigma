@@ -1,3 +1,5 @@
+// PAGINA LOGIN
+// funzione per accedere
 async function eseguiLogin() {
     const inputname = document.getElementById('inputname');
     const inputpassword = document.getElementById('inputpassword');
@@ -75,7 +77,7 @@ async function eseguiLogin() {
         modalErrore.show();
     }
 }
-//registrazione
+// funzione per registrarsi
 async function eseguiRegistrazione() {
     const inputname = document.getElementById('inputname');
     const inputpassword = document.getElementById('inputpassword');
@@ -143,7 +145,7 @@ async function eseguiRegistrazione() {
     }
 }
 
-//punteggio
+// aggiornare punteggio giocatore
 async function aggiornaPunteggioGlobale(pti) {
     let punteggioAttuale = parseInt(localStorage.getItem('punteggioFinale')) || 0;
     punteggioAttuale += pti;
@@ -163,7 +165,7 @@ async function aggiornaPunteggioGlobale(pti) {
     }
 }
 
-//inizio nuova partita
+// inizio nuova partita e reset vecchia se utente che ha già giocato
 async function nuovaPartita() {
     localStorage.removeItem('recordId');
     const username = localStorage.getItem('username');
@@ -185,7 +187,7 @@ async function nuovaPartita() {
         console.error('Impossibile contattare il server per il reset:', err);
     }
 }
-
+// inizio gioco
 async function iniziaEscapeRoom() {
     const username = localStorage.getItem('username');
     try {
@@ -207,7 +209,7 @@ async function iniziaEscapeRoom() {
     }
 }
 
-//Logout
+// Logout
 async function eseguiLogout() {
     try {
         const response = await fetch('/api/logout', {
@@ -226,7 +228,7 @@ async function eseguiLogout() {
         window.location.href = '/';
     }
 }
-
+// classifica
 async function mostraClassifica() {
     document.getElementById('introV').classList.add('d-none');
     document.getElementById('leaderboard-container').classList.remove('d-none');
@@ -264,7 +266,8 @@ async function mostraClassifica() {
     }
 }
 
-//controllo degli enigmi
+// controllo degli enigmi finali
+// STANZA TURING
 async function controllaEnigma() {
     const rispostaUtente = document.getElementById('codiceSoluzione').value.trim().toLowerCase();
     const soluzioneCorretta = 'bombe';
@@ -310,7 +313,7 @@ async function controllaEnigma() {
         document.getElementById('codiceSoluzione').placeholder ='Non è il nome che stiamo cercando. Riprova!';
     }
 }
-
+// STANZA CURIE
 async function controllaEquazione() {
     const rispostaUtente = document.getElementById('CurieSoluzione').value.trim();
     const soluzioneCorretta = '3,4,1,4';
@@ -355,7 +358,7 @@ async function controllaEquazione() {
         document.getElementById('CurieSoluzione').placeholder = 'Non sono i coefficienti giusti,riprova!';
     }
 }
-
+// STANZA EINSTEIN
 async function controllaEinstein() {
     const rispostaUtente = document.getElementById('EinsteinSoluzione').value.trim().toLowerCase();
     const soluzioneCorretta = 'e=mc^2';
@@ -400,7 +403,7 @@ async function controllaEinstein() {
         document.getElementById('EinsteinSoluzione').placeholder ='Non è questa la formula che cerchiamo,riprova!';
     }
 }
-
+// STANZA LOVELACE
 async function controllaLovelace() {
     const rispostaUtente = document.getElementById('LovelaceSoluzione').value.trim().toLowerCase();
     const soluzioneCorretta = 'v4,v6';
@@ -446,7 +449,7 @@ async function controllaLovelace() {
         document.getElementById('LovelaceSoluzione').placeholder ='Non sono le variabili che cerchiamo. Riprova!';
     }
 }
-
+// STANZA FINALE
 async function controllaCodiceFinale() {
     const risposta = document.getElementById('FinalSoluzione').value.trim();
     const soluzioneCorretta = '203414246';

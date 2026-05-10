@@ -1,4 +1,4 @@
-// inizio stanze
+//Inizio stanze
 window.onload = async function () {
     try {
         const response = await fetch('/api/me');
@@ -65,6 +65,30 @@ window.onload = async function () {
     }
 };
 
+//Funzione per continuare la sessione
+function continuaPartita() {
+    localStorage.setItem('avatar', window.avatarVecchio);
+    const stanza = parseInt(localStorage.getItem('stanzaSalvata')) || 0;
+
+    if (stanza === 0) {
+        window.location.href = '/index/room/0';
+    } else if (stanza === 1) {
+        window.location.href = '/index/room/1';
+    } else if (stanza === 2) {
+        window.location.href = '/index/room/2';
+    } else if (stanza === 3) {
+        window.location.href = '/index/room/3';
+    } else if (stanza === 4) {
+        window.location.href = '/index/room/4';
+    } else if (stanza === 5) {
+        window.location.href = '/index/room/5';
+    } else if (stanza === 6) {
+        window.location.href = '/index/room/6';
+    } else {
+        window.location.href = '/index/room/0';
+    }
+}
+
 //highest-score prima pagina
 document.addEventListener('DOMContentLoaded', async function () {
     const highestScoreText = document.getElementById('highest-score-text');
@@ -88,7 +112,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 });
 
-//Mostra/nascondi password
+// Mostra/nascondi password
 document.addEventListener('DOMContentLoaded', function () {
     const togglePassword = document.getElementById('togglePassword');
     const passwordInput = document.getElementById('inputpassword');
@@ -183,3 +207,64 @@ document.addEventListener('keydown', function (event) {
         }
     }
 });
+
+//Avatar in alto alla pagina
+function caricaAvatarInAngolo() {
+    const avatarname = localStorage.getItem('avatar');
+    let imgAvatar = '';
+    if (avatarname === 'detective1') {
+        imgAvatar = '/assets/images/Alan Turing.png';
+    } else if (avatarname === 'detective2') {
+        imgAvatar = '/assets/images/Marie Curie.png';
+    } else if (avatarname === 'detective3') {
+        imgAvatar = '/assets/images/Albert Einstein.png';
+    } else if (avatarname === 'detective4') {
+        imgAvatar = '/assets/images/Ada Lovelace.png';
+    }
+    const targetImg = document.getElementById('avatarid');
+    if (targetImg && imgAvatar !== '') {
+        targetImg.src = imgAvatar;
+    }
+}
+// funzione per mostrare gli indizi
+function mostraMessaggio(titolo, testo) {
+    document.getElementById('infoTitolo').innerText = titolo;
+    document.getElementById('infoTesto').innerText = testo;
+    var mioModalInfo = bootstrap.Modal.getOrCreateInstance(
+        document.getElementById('infoModal'),
+    );
+    mioModalInfo.show();
+}
+
+//funzioni per il taccuino
+//aggiunge le scoperte al taccuino
+function aggiungiAlTaccuino(stanza, oggetto, contenuto, tipo) {
+    let taccuino = JSON.parse(localStorage.getItem('taccuinoAgente')) || [];
+    taccuino.push({stanza: stanza,oggetto: oggetto,contenuto: contenuto,tipo: tipo});
+    localStorage.setItem('taccuinoAgente', JSON.stringify(taccuino));
+}
+//elimina le scoperte temporanee
+function pulisciTaccuino() {
+    let taccuino = JSON.parse(localStorage.getItem('taccuinoAgente')) || [];
+    // Filtra e mantieni solo gli elementi che hanno tipo "finale"
+    taccuino = taccuino.filter((nota) => nota.tipo === 'finale');
+    localStorage.setItem('taccuinoAgente', JSON.stringify(taccuino));
+}
+//apre il taccuino
+function apriTaccuino() {
+    let taccuino = JSON.parse(localStorage.getItem('taccuinoAgente')) || [];
+    let testo = '';
+
+    if (taccuino.length == 0) {
+        testo = 'Agente, questo è il tuo taccuino personale. Risolvi gli enigmi per raccogliere indizi.';
+    } else {
+        taccuino.forEach((nota) => {
+            if (nota.tipo === 'finale') {
+                testo += `${nota.stanza} - ${nota.contenuto}\n\n`;
+            } else {
+                testo += `${nota.stanza}-${nota.oggetto}: ${nota.contenuto}\n\n`;
+            }
+        });
+    }
+    mostraMessaggio('Taccuino agente', testo);
+}
