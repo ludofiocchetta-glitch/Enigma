@@ -174,8 +174,8 @@ function controllaOrologio() {
         mostraMessaggio('Accettato','Geniale! hai decifrato la sequenza. \n Puoi continuare a cercare.');
         const modalEnigma = document.getElementById('orologioL');
         if (modalEnigma) {
-        modalEnigma.style.pointerEvents = 'none';
-        modalEnigma.style.opacity = 0.5;
+            modalEnigma.style.pointerEvents = 'none';
+            modalEnigma.style.opacity = 0.5;
         }
         aggiungiAlTaccuino('room4','orologio','La sequenza di Fibonacci continua con 13,21,34','provvisorio');
         const avatar = document.getElementById('avatarid');
@@ -186,17 +186,17 @@ function controllaOrologio() {
     } else {
         countOrologio++;
         if (countOrologio == 2) {
-        aggiornaPunteggioGlobale(-5);
-        document.getElementById('LovelaceSoluzione').value = '';
-        document.getElementById('LovelaceSoluzione').placeholder ='Indizio: Fibonacci';
+            aggiornaPunteggioGlobale(-5);
+            document.getElementById('LovelaceSoluzione').value = '';
+            document.getElementById('LovelaceSoluzione').placeholder ='Indizio: Fibonacci';
         } else if (countOrologio >= 3) {
-        aggiornaPunteggioGlobale(-3);
-        document.getElementById('LovelaceSoluzione').value = '';
-        document.getElementById('LovelaceSoluzione').placeholder ='Indizio: somma gli ultimi due numeri';
+            aggiornaPunteggioGlobale(-3);
+            document.getElementById('LovelaceSoluzione').value = '';
+            document.getElementById('LovelaceSoluzione').placeholder ='Indizio: somma gli ultimi due numeri';
         } else {
-        aggiornaPunteggioGlobale(-5);
-        document.getElementById('LovelaceSoluzione').value = '';
-        document.getElementById('LovelaceSoluzione').placeholder = 'Riprova';
+            aggiornaPunteggioGlobale(-5);
+            document.getElementById('LovelaceSoluzione').value = '';
+            document.getElementById('LovelaceSoluzione').placeholder = 'Riprova';
         }
     }
 }
@@ -212,8 +212,8 @@ function controllaLibri() {
         mostraMessaggio('Accettato','Perfetto! hai capito il libro. \n Continua la tua esplorazione.');
         const modalEnigma = document.getElementById('libriL');
         if (modalEnigma) {
-        modalEnigma.style.pointerEvents = 'none';
-        modalEnigma.style.opacity = 0.5;
+            modalEnigma.style.pointerEvents = 'none';
+            modalEnigma.style.opacity = 0.5;
         }
         aggiungiAlTaccuino('room4','libri',"L'algoritmo è una sequenza di istruzioni ordinate",'provvisorio');
         const avatar = document.getElementById('avatarid');
@@ -224,45 +224,40 @@ function controllaLibri() {
     } else {
         countLibri++;
         if (countLibri == 2) {
-        aggiornaPunteggioGlobale(-5);
-        document.getElementById('LovelaceSoluzione').value = '';
-        document.getElementById('LovelaceSoluzione').placeholder ='Indizio: ricetta';
+            aggiornaPunteggioGlobale(-5);
+            document.getElementById('LovelaceSoluzione').value = '';
+            document.getElementById('LovelaceSoluzione').placeholder ='Indizio: ricetta';
         } else if (countLibri >= 3) {
-        aggiornaPunteggioGlobale(-3);
-        document.getElementById('LovelaceSoluzione').value = '';
-        document.getElementById('LovelaceSoluzione').placeholder ='Indizio: lo è quello di Fibonacci';
+            aggiornaPunteggioGlobale(-3);
+            document.getElementById('LovelaceSoluzione').value = '';
+            document.getElementById('LovelaceSoluzione').placeholder ='Indizio: lo è quello di Fibonacci';
         } else {
-        aggiornaPunteggioGlobale(-5);
-        document.getElementById('LovelaceSoluzione').value = '';
-        document.getElementById('LovelaceSoluzione').placeholder = 'Riprova';
+            aggiornaPunteggioGlobale(-5);
+            document.getElementById('LovelaceSoluzione').value = '';
+            document.getElementById('LovelaceSoluzione').placeholder = 'Riprova';
         }
     }
 }
 
-// funzione per salvare enigmi intermedi nel local storage se ricarichi la pagina
+// funzione per salvare enigmi intermedi e le noti provvisorie nel local storage se ricarichi 
+// la pagina
 function ripristinaStatoLovelace() {
     if (localStorage.getItem('lovelace_orologio_risolto') === 'true') {
         enigmiRisoltiL.orologio = true;
         const modalEnigma = document.getElementById('orologioL');
         if (modalEnigma) {
-        modalEnigma.style.pointerEvents = 'none';
-        modalEnigma.style.opacity = 0.5;
+            modalEnigma.style.pointerEvents = 'none';
+            modalEnigma.style.opacity = 0.5;
         }
+        aggiungiAlTaccuino('room4','orologio','La sequenza di Fibonacci continua con 13,21,34','provvisorio');
     }
     if (localStorage.getItem('lovelace_libri_risolti') === 'true') {
         enigmiRisoltiL.libri = true;
         const modalEnigma = document.getElementById('libriL');
         if (modalEnigma) {
-        modalEnigma.style.pointerEvents = 'none';
-        modalEnigma.style.opacity = 0.5;
+            modalEnigma.style.pointerEvents = 'none';
+            modalEnigma.style.opacity = 0.5;
         }
-    }
-    if (localStorage.getItem('lovelace_enigma_risolto') === 'true') {
-        enigmiRisoltiL.enigma = true;
-        const modalEnigma = document.getElementById('appuntiL');
-        if (modalEnigma) {
-        modalEnigma.style.pointerEvents = 'none';
-        modalEnigma.style.opacity = 0.5;
-        }
+        aggiungiAlTaccuino('room4','libri',"L'algoritmo è una sequenza di istruzioni ordinate",'provvisorio');
     }
 }

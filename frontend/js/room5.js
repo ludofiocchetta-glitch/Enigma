@@ -167,17 +167,17 @@ function controllaMuro() {
     } else {
         countMuro++;
         if (countMuro == 2) {
-        aggiornaPunteggioGlobale(-5);
-        document.getElementById('FinalSoluzione').value = '';
-        document.getElementById('FinalSoluzione').placeholder ="Fondamentale per l'AI";
+            aggiornaPunteggioGlobale(-5);
+            document.getElementById('FinalSoluzione').value = '';
+            document.getElementById('FinalSoluzione').placeholder ="Fondamentale per l'AI";
         } else if (countMuro >= 3) {
-        aggiornaPunteggioGlobale(-3);
-        document.getElementById('FinalSoluzione').value = '';
-        document.getElementById('FinalSoluzione').placeholder ='Lo è quella del primo ordine';
+            aggiornaPunteggioGlobale(-3);
+            document.getElementById('FinalSoluzione').value = '';
+            document.getElementById('FinalSoluzione').placeholder ='Lo è quella del primo ordine';
         } else {
-        aggiornaPunteggioGlobale(-5);
-        document.getElementById('FinalSoluzione').value = '';
-        document.getElementById('FinalSoluzione').placeholder ='Pensaci bene, è un linguaggio formale';
+            aggiornaPunteggioGlobale(-5);
+            document.getElementById('FinalSoluzione').value = '';
+            document.getElementById('FinalSoluzione').placeholder ='Pensaci bene, è un linguaggio formale';
         }
     }
 }

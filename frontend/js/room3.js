@@ -130,9 +130,7 @@ function apriModalE(titolo,descrizione,richiesta,testoBottone,funzioneControllo,
     btnConferma.innerText = testoBottone;
     btnConferma.onclick = funzioneControllo;
 
-    var mioModal = bootstrap.Modal.getOrCreateInstance(
-        document.getElementById('EinsteinModal'),
-    );
+    var mioModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('EinsteinModal'));
     mioModal.show();
 }
 
@@ -173,8 +171,8 @@ function controllaMobile() {
         mostraMessaggio('Accettato','Fortissimo! hai capito quali sono le grandezze. \n Puoi continuare la tua ricerca.');
         const modalEnigma = document.getElementById('mobileE');
         if (modalEnigma) {
-        modalEnigma.style.pointerEvents = 'none';
-        modalEnigma.style.opacity = 0.5;
+            modalEnigma.style.pointerEvents = 'none';
+            modalEnigma.style.opacity = 0.5;
         }
         aggiungiAlTaccuino('room3','mobile','Lo spazio e il tempo sono relativi','provvisorio');
         const avatar = document.getElementById('avatarid');
@@ -185,17 +183,17 @@ function controllaMobile() {
     } else {
         countMobile++;
         if (countMobile == 2) {
-        aggiornaPunteggioGlobale(-5);
-        document.getElementById('EinsteinSoluzione').value = '';
-        document.getElementById('EinsteinSoluzione').placeholder ='Indizio: formano un unico concetto';
+            aggiornaPunteggioGlobale(-5);
+            document.getElementById('EinsteinSoluzione').value = '';
+            document.getElementById('EinsteinSoluzione').placeholder ='Indizio: formano un unico concetto';
         } else if (countMobile >= 3) {
-        aggiornaPunteggioGlobale(-3);
-        document.getElementById('EinsteinSoluzione').value = '';
-        document.getElementById('EinsteinSoluzione').placeholder ='Indizio: sono legate alla velocità';
+            aggiornaPunteggioGlobale(-3);
+            document.getElementById('EinsteinSoluzione').value = '';
+            document.getElementById('EinsteinSoluzione').placeholder ='Indizio: sono legate alla velocità';
         } else {
-        aggiornaPunteggioGlobale(-5);
-        document.getElementById('EinsteinSoluzione').value = '';
-        document.getElementById('EinsteinSoluzione').placeholder = 'Riprova';
+            aggiornaPunteggioGlobale(-5);
+            document.getElementById('EinsteinSoluzione').value = '';
+            document.getElementById('EinsteinSoluzione').placeholder = 'Riprova';
         }
     }
 }
@@ -211,8 +209,8 @@ function controllaMappamondoE() {
         mostraMessaggio('Accettato','Perfetto, sai tutto sui sistemi di riferimento! \n Continua ad esplorare.');
         const modalEnigma = document.getElementById('mappamondoE');
         if (modalEnigma) {
-        modalEnigma.style.pointerEvents = 'none';
-        modalEnigma.style.opacity = 0.5;
+            modalEnigma.style.pointerEvents = 'none';
+            modalEnigma.style.opacity = 0.5;
         }
         aggiungiAlTaccuino('room3','mappamondo','Il punto da cui osservi in fisica è il punto di riferimento','provvisorio');
         const avatar = document.getElementById('avatarid');
@@ -223,45 +221,40 @@ function controllaMappamondoE() {
     } else {
         countMappamondo++;
         if (countMappamondo == 2) {
-        aggiornaPunteggioGlobale(-5);
-        document.getElementById('EinsteinSoluzione').value = '';
-        document.getElementById('EinsteinSoluzione').placeholder ='Indizio: un esempio classico è il treno';
+            aggiornaPunteggioGlobale(-5);
+            document.getElementById('EinsteinSoluzione').value = '';
+            document.getElementById('EinsteinSoluzione').placeholder ='Indizio: un esempio classico è il treno';
         } else if (countMappamondo >= 3) {
-        aggiornaPunteggioGlobale(-3);
-        document.getElementById('EinsteinSoluzione').value = '';
-        document.getElementById('EinsteinSoluzione').placeholder ='Indizio: sistema di...';
+            aggiornaPunteggioGlobale(-3);
+            document.getElementById('EinsteinSoluzione').value = '';
+            document.getElementById('EinsteinSoluzione').placeholder ='Indizio: sistema di...';
         } else {
-        aggiornaPunteggioGlobale(-5);
-        document.getElementById('EinsteinSoluzione').value = '';
-        document.getElementById('EinsteinSoluzione').placeholder = 'Riprova';
+            aggiornaPunteggioGlobale(-5);
+            document.getElementById('EinsteinSoluzione').value = '';
+            document.getElementById('EinsteinSoluzione').placeholder = 'Riprova';
         }
     }
 }
 
-// funzione per salvare enigmi intermedi nel local storage se ricarichi la pagina
+// funzione per salvare enigmi intermedi e le note provvisorie nel local storage se ricarichi 
+// la pagina
 function ripristinaStatoEinsetin() {
     if (localStorage.getItem('einstein_mobile_risolto') === 'true') {
         enigmiRisoltiE.mobile = true;
         const modalEnigma = document.getElementById('mobileE');
         if (modalEnigma) {
-        modalEnigma.style.pointerEvents = 'none';
-        modalEnigma.style.opacity = 0.5;
+            modalEnigma.style.pointerEvents = 'none';
+            modalEnigma.style.opacity = 0.5;
         }
+        aggiungiAlTaccuino('room3','mobile','Lo spazio e il tempo sono relativi','provvisorio');
     }
     if (localStorage.getItem('einstein_mappamondo_risolto') === 'true') {
         enigmiRisoltiE.mappamondo = true;
         const modalEnigma = document.getElementById('mappamondoE');
         if (modalEnigma) {
-        modalEnigma.style.pointerEvents = 'none';
-        modalEnigma.style.opacity = 0.5;
+            modalEnigma.style.pointerEvents = 'none';
+            modalEnigma.style.opacity = 0.5;
         }
-    }
-    if (localStorage.getItem('einstein_enigma_risolto') === 'true') {
-        enigmiRisoltiE.lavagna = true;
-        const modalEnigma = document.getElementById('lavagnaE');
-        if (modalEnigma) {
-        modalEnigma.style.pointerEvents = 'none';
-        modalEnigma.style.opacity = 0.5;
-        }
+        aggiungiAlTaccuino('room3','mappamondo','Il punto da cui osservi in fisica è il punto di riferimento','provvisorio');
     }
 }

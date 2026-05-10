@@ -163,8 +163,8 @@ function controllaBilancia() {
         mostraMessaggio('Accettato','Ottimo! hai capito le equazioni chimiche. \n Puoi continuare a cercare.');
         const modalEnigma = document.getElementById('bilanciaC');
         if (modalEnigma) {
-        modalEnigma.style.pointerEvents = 'none';
-        modalEnigma.style.opacity = 0.5;
+            modalEnigma.style.pointerEvents = 'none';
+            modalEnigma.style.opacity = 0.5;
         }
         aggiungiAlTaccuino('room2','bilancia',"Un'equazione chimica va bilanciata",'provvisorio');
         const avatar = document.getElementById('avatarid');
@@ -175,17 +175,17 @@ function controllaBilancia() {
     } else {
         countBilancia++;
         if (countBilancia >= 3) {
-        aggiornaPunteggioGlobale(-3);
-        document.getElementById('CurieSoluzione').value = '';
-        document.getElementById('CurieSoluzione').placeholder ='i due lati devono avere lo stesso numero di atomi';
+            aggiornaPunteggioGlobale(-3);
+            document.getElementById('CurieSoluzione').value = '';
+            document.getElementById('CurieSoluzione').placeholder ='i due lati devono avere lo stesso numero di atomi';
         } else if (countBilancia == 2) {
-        aggiornaPunteggioGlobale(-5);
-        document.getElementById('CurieSoluzione').value = '';
-        document.getElementById('CurieSoluzione').placeholder ='Indizio: modificare i numeri davanti le formule';
+            aggiornaPunteggioGlobale(-5);
+            document.getElementById('CurieSoluzione').value = '';
+            document.getElementById('CurieSoluzione').placeholder ='Indizio: modificare i numeri davanti le formule';
         } else {
-        aggiornaPunteggioGlobale(-5);
-        document.getElementById('CurieSoluzione').value = '';
-        document.getElementById('CurieSoluzione').placeholder = 'Riprova';
+            aggiornaPunteggioGlobale(-5);
+            document.getElementById('CurieSoluzione').value = '';
+            document.getElementById('CurieSoluzione').placeholder = 'Riprova';
         }
     }
 }
@@ -200,8 +200,8 @@ function controllaPozioni() {
         mostraMessaggio('Accettato','Bravissimo! hai decifrato il principio. \n Continua la tua missione.');
         const modalEnigma = document.getElementById('pozioniC');
         if (modalEnigma) {
-        modalEnigma.style.pointerEvents = 'none';
-        modalEnigma.style.opacity = 0.5;
+            modalEnigma.style.pointerEvents = 'none';
+            modalEnigma.style.opacity = 0.5;
         }
         aggiungiAlTaccuino('room2','pozioni','La legge di Lavoisier afferma che la materia non si crea nè si distrugge','provvisorio');
         const avatar = document.getElementById('avatarid');
@@ -212,46 +212,41 @@ function controllaPozioni() {
     } else {
         countPozioni++;
         if (countPozioni == 2) {
-        aggiornaPunteggioGlobale(-5);
-        document.getElementById('CurieSoluzione').value = '';
-        document.getElementById('CurieSoluzione').placeholder ='Indizio: nome di uno scienziato francese';
+            aggiornaPunteggioGlobale(-5);
+            document.getElementById('CurieSoluzione').value = '';
+            document.getElementById('CurieSoluzione').placeholder ='Indizio: nome di uno scienziato francese';
         } else if (countPozioni >= 3) {
-        aggiornaPunteggioGlobale(-3);
-        document.getElementById('CurieSoluzione').value = '';
-        document.getElementById('CurieSoluzione').placeholder ='Indizio: Lavo...';
+            aggiornaPunteggioGlobale(-3);
+            document.getElementById('CurieSoluzione').value = '';
+            document.getElementById('CurieSoluzione').placeholder ='Indizio: Lavo...';
         } else {
-        aggiornaPunteggioGlobale(-5);
-        document.getElementById('CurieSoluzione').value = '';
-        document.getElementById('CurieSoluzione').placeholder = 'Riprova';
+            aggiornaPunteggioGlobale(-5);
+            document.getElementById('CurieSoluzione').value = '';
+            document.getElementById('CurieSoluzione').placeholder = 'Riprova';
         }
     }
 }
 
-// funzione per salvare enigmi intermedi nel local storage se ricarichi la pagina
+// funzione per salvare enigmi intermedi e le note provvisorie nel local storage se ricarichi 
+// la pagina
 function ripristinaStatoCurie() {
     if (localStorage.getItem('curie_bilancia_risolta') === 'true') {
         enigmiRisoltiC.bilancia = true;
         const modalEnigma = document.getElementById('bilanciaC');
         if (modalEnigma) {
-        modalEnigma.style.pointerEvents = 'none';
-        modalEnigma.style.opacity = 0.5;
+            modalEnigma.style.pointerEvents = 'none';
+            modalEnigma.style.opacity = 0.5;
         }
+        aggiungiAlTaccuino('room2','bilancia',"Un'equazione chimica va bilanciata",'provvisorio');
     }
     if (localStorage.getItem('curie_pozioni_risolte') === 'true') {
         enigmiRisoltiC.pozioni = true;
         const modalEnigma = document.getElementById('pozioniC');
         if (modalEnigma) {
-        modalEnigma.style.pointerEvents = 'none';
-        modalEnigma.style.opacity = 0.5;
+            modalEnigma.style.pointerEvents = 'none';
+            modalEnigma.style.opacity = 0.5;
         }
-    }
-    if (localStorage.getItem('curie_enigma_risolto') === 'true') {
-        enigmiRisoltiC.lavagna = true;
-        const modalEnigma = document.getElementById('lavagnaC');
-        if (modalEnigma) {
-        modalEnigma.style.pointerEvents = 'none';
-        modalEnigma.style.opacity = 0.5;
-        }
+        aggiungiAlTaccuino('room2','pozioni','La legge di Lavoisier afferma che la materia non si crea nè si distrugge','provvisorio');
     }
 }
 

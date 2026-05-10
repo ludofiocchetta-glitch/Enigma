@@ -240,9 +240,14 @@ function mostraMessaggio(titolo, testo) {
 //aggiunge le scoperte al taccuino
 function aggiungiAlTaccuino(stanza, oggetto, contenuto, tipo) {
     let taccuino = JSON.parse(localStorage.getItem('taccuinoAgente')) || [];
-    taccuino.push({stanza: stanza,oggetto: oggetto,contenuto: contenuto,tipo: tipo});
-    localStorage.setItem('taccuinoAgente', JSON.stringify(taccuino));
+    //controlla se la nota esiste già
+    const esiste = taccuino.some(nota => nota.stanza === stanza && nota.oggetto === oggetto);
+    if (!esiste) {
+        taccuino.push({stanza: stanza,oggetto: oggetto,contenuto: contenuto,tipo: tipo});
+        localStorage.setItem('taccuinoAgente', JSON.stringify(taccuino));
+    }
 }
+
 //elimina le scoperte temporanee
 function pulisciTaccuino() {
     let taccuino = JSON.parse(localStorage.getItem('taccuinoAgente')) || [];

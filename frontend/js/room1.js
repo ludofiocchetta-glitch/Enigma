@@ -181,17 +181,17 @@ function controllaLavagna() {
     } else {
         countLavagna++;
         if (countLavagna == 2) {
-        aggiornaPunteggioGlobale(-5);
-        document.getElementById('codiceSoluzione').value = '';
-        document.getElementById('codiceSoluzione').placeholder = "Indizio: spostati nell'alfabeto";
+            aggiornaPunteggioGlobale(-5);
+            document.getElementById('codiceSoluzione').value = '';
+            document.getElementById('codiceSoluzione').placeholder = "Indizio: spostati nell'alfabeto";
         } else if (countLavagna >= 3) {
-        aggiornaPunteggioGlobale(-3);
-        document.getElementById('codiceSoluzione').value = '';
-        document.getElementById('codiceSoluzione').placeholder ='Indizio: shift=2';
+            aggiornaPunteggioGlobale(-3);
+            document.getElementById('codiceSoluzione').value = '';
+            document.getElementById('codiceSoluzione').placeholder ='Indizio: shift=2';
         } else {
-        aggiornaPunteggioGlobale(-5);
-        document.getElementById('codiceSoluzione').value = '';
-        document.getElementById('codiceSoluzione').placeholder = 'Riprova';
+            aggiornaPunteggioGlobale(-5);
+            document.getElementById('codiceSoluzione').value = '';
+            document.getElementById('codiceSoluzione').placeholder = 'Riprova';
         }
     }
 }
@@ -206,8 +206,8 @@ function controllaTelefono() {
         mostraMessaggio('Accettato','Fantastico! hai capito il significato nascosto del numero. \n Continua la tua esplorazione.');
         const modalEnigma = document.getElementById('telefonoT');
         if (modalEnigma) {
-        modalEnigma.style.pointerEvents = 'none';
-        modalEnigma.style.opacity = 0.5;
+            modalEnigma.style.pointerEvents = 'none';
+            modalEnigma.style.opacity = 0.5;
         }
         aggiungiAlTaccuino('room1','telefono','20-21-18-9-14-7 corrisponde a Turing','provvisorio');
         const avatar = document.getElementById('avatarid');
@@ -218,46 +218,41 @@ function controllaTelefono() {
     } else {
         countTelefono++;
         if (countTelefono == 2) {
-        aggiornaPunteggioGlobale(-5);
-        document.getElementById('codiceSoluzione').value = '';
-        document.getElementById('codiceSoluzione').placeholder ='Indizio: ogni lettera ha un posto';
+            aggiornaPunteggioGlobale(-5);
+            document.getElementById('codiceSoluzione').value = '';
+            document.getElementById('codiceSoluzione').placeholder ='Indizio: ogni lettera ha un posto';
         } else if (countTelefono >= 3) {
-        aggiornaPunteggioGlobale(-3);
-        document.getElementById('codiceSoluzione').value = '';
-        document.getElementById('codiceSoluzione').placeholder ='Indizio: A=1,B=2...';
+            aggiornaPunteggioGlobale(-3);
+            document.getElementById('codiceSoluzione').value = '';
+            document.getElementById('codiceSoluzione').placeholder ='Indizio: A=1,B=2...';
         } else {
-        aggiornaPunteggioGlobale(-5);
-        document.getElementById('codiceSoluzione').value = '';
-        document.getElementById('codiceSoluzione').placeholder = 'Riprova';
+            aggiornaPunteggioGlobale(-5);
+            document.getElementById('codiceSoluzione').value = '';
+            document.getElementById('codiceSoluzione').placeholder = 'Riprova';
         }
     }
 }
 
-// funzione per salvare enigmi intermedi nel local storage se ricarichi la pagina
+// funzione per salvare enigmi intermedi e le note provvisorie nel local storage se ricarichi 
+// la pagina
 function ripristinaStatoTuring() {
     if (localStorage.getItem('turing_lavagna_risolta') === 'true') {
         enigmiRisolti.lavagna = true;
         const modalEnigma = document.getElementById('lavagnaT');
         if (modalEnigma) {
-        modalEnigma.style.pointerEvents = 'none';
-        modalEnigma.style.opacity = 0.5;
+            modalEnigma.style.pointerEvents = 'none';
+            modalEnigma.style.opacity = 0.5;
         }
+        aggiungiAlTaccuino('room1', 'lavagna', 'GPKIOC corrisponde a enigma', 'provvisorio');
     }
     if (localStorage.getItem('turing_telefono_risolto') === 'true') {
         enigmiRisolti.telefono = true;
         const modalEnigma = document.getElementById('telefonoT');
         if (modalEnigma) {
-        modalEnigma.style.pointerEvents = 'none';
-        modalEnigma.style.opacity = 0.5;
+            modalEnigma.style.pointerEvents = 'none';
+            modalEnigma.style.opacity = 0.5;
         }
-    }
-    if (localStorage.getItem('turing_enigma_risolto') === 'true') {
-        enigmiRisolti.macchina = true;
-        const modalEnigma = document.getElementById('macchinaT');
-        if (modalEnigma) {
-        modalEnigma.style.pointerEvents = 'none';
-        modalEnigma.style.opacity = 0.5;
-        }
+        aggiungiAlTaccuino('room1', 'telefono', '20-21-18-9-14-7 corrisponde a Turing', 'provvisorio');
     }
 }
 

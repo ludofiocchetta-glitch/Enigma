@@ -278,7 +278,6 @@ async function controllaEnigma() {
         bootstrap.Modal.getInstance(document.getElementById('enigmaModal')).hide();
         mostraMessaggio('Codice accettato!','Bravo Agente! La porta si è sbloccata. Preparati a scappare...');
         enigmiRisolti.macchina = true;
-        localStorage.setItem('turing_enigma_risolto', 'true');
 
         const modalEnigma = document.getElementById('macchinaT');
         if (modalEnigma) {
@@ -313,6 +312,7 @@ async function controllaEnigma() {
         document.getElementById('codiceSoluzione').placeholder ='Non è il nome che stiamo cercando. Riprova!';
     }
 }
+
 // STANZA CURIE
 async function controllaEquazione() {
     const rispostaUtente = document.getElementById('CurieSoluzione').value.trim();
@@ -323,7 +323,6 @@ async function controllaEquazione() {
         bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
         mostraMessaggio('Equazione Bilanciata!','Ottimo lavoro, Agente! La porta si sta aprendo. Sei pronto per la prossima missione...');
         enigmiRisoltiC.lavagna = true;
-        localStorage.setItem('curie_enigma_risolto', 'true');
 
         const modalEnigma = document.getElementById('lavagnaC');
         if (modalEnigma) {
@@ -358,6 +357,7 @@ async function controllaEquazione() {
         document.getElementById('CurieSoluzione').placeholder = 'Non sono i coefficienti giusti,riprova!';
     }
 }
+
 // STANZA EINSTEIN
 async function controllaEinstein() {
     const rispostaUtente = document.getElementById('EinsteinSoluzione').value.trim().toLowerCase();
@@ -368,8 +368,7 @@ async function controllaEinstein() {
 
         bootstrap.Modal.getInstance(document.getElementById('EinsteinModal')).hide();
         mostraMessaggio('Formula corretta!','Bravissimo Agente! \n Il passaggio segreto si sta aprendo, puoi continuare la tua missione...');
-        localStorage.setItem('einstein_enigma_risolto', 'true');
-
+        
         const modalEnigma = document.getElementById('lavagnaE');
         if (modalEnigma) {
             modalEnigma.style.pointerEvents = 'none';
@@ -403,6 +402,7 @@ async function controllaEinstein() {
         document.getElementById('EinsteinSoluzione').placeholder ='Non è questa la formula che cerchiamo,riprova!';
     }
 }
+
 // STANZA LOVELACE
 async function controllaLovelace() {
     const rispostaUtente = document.getElementById('LovelaceSoluzione').value.trim().toLowerCase();
@@ -449,6 +449,7 @@ async function controllaLovelace() {
         document.getElementById('LovelaceSoluzione').placeholder ='Non sono le variabili che cerchiamo. Riprova!';
     }
 }
+
 // STANZA FINALE
 async function controllaCodiceFinale() {
     const risposta = document.getElementById('FinalSoluzione').value.trim();
