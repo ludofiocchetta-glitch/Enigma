@@ -142,7 +142,7 @@ function mostraMobile() {
 }
 
 function mostraMappamondoE() {
-    apriModalE('Mobile','Come si chiama il punto di vista da cui osservi un fenomeno?','Inserisci la risposta: ',
+    apriModalE('Mobile','Come si chiama il sistema da cui osservi un fenomeno?','Inserisci la risposta: ',
     'Controlla',controllaMappamondoE,false);
     document.getElementById('EinsteinSoluzione').placeholder = '???????????';
 }

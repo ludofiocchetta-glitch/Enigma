@@ -19,13 +19,7 @@ const supabaseApi = 'https://xuiutjpjlidhoprcntbk.supabase.co';
 const supabaseApiKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseApi, supabaseApiKey);
 
-// IMPORTANTE
-// numeri stanze: start e login niente, 0 mission, 1 turing, 2 curie, 3 einstein, 4 lovelace,
-// 5 final, 6 victory.
-// il database incrementa salva la stanza completata e incrementa il numero per mandarti a
-// quella che devi fare
-
-// SESSIONI
+// Sessioni
 const pgPool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
@@ -49,7 +43,7 @@ app.use(
 
 app.use(express.json());
 
-// REGISTRAZIONE
+// registrazione
 app.post('/api/register', async (req, res) => {
   const { username, password, avatar } = req.body;
 
@@ -104,7 +98,7 @@ app.post('/api/register', async (req, res) => {
   }
 });
 
-// LOGIN
+// login
 app.post('/api/login', async (req, res) => {
   const { username, password, avatar } = req.body;
   try {
@@ -160,7 +154,7 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-// CONTROLLO SESSIONE
+// controllo sessione
 app.get('/api/me', (req, res) => {
   if (req.session.user) {
     res.json({
@@ -175,7 +169,7 @@ app.get('/api/me', (req, res) => {
   }
 });
 
-// RESET PARTITA
+// reset partita
 app.post('/api/reset-game', async (req, res) => {
   const { username, nuovoAvatar } = req.body;
   try {
@@ -210,7 +204,7 @@ app.post('/api/reset-game', async (req, res) => {
   }
 });
 
-// LOGOUT
+// logout
 app.post('/api/logout', (req, res) => {
   req.session.destroy((err) => {
     if (err) {
@@ -222,7 +216,7 @@ app.post('/api/logout', (req, res) => {
   });
 });
 
-// UPDATE SCORE
+// aggiorna lo score
 app.put('/api/update-score', async (req, res) => {
   const { username, newScore } = req.body;
   try {
@@ -241,7 +235,7 @@ app.put('/api/update-score', async (req, res) => {
   }
 });
 
-//salva stanza e taccuino
+// salva stanza e taccuino
 app.put('/api/room-completed', async (req, res) => {
   if (!req.session || !req.session.user) {
     return res.status(401).json({ error: 'Non autorizzato' });
@@ -317,7 +311,7 @@ app.put('/api/leaderboard', async (req, res) => {
         
         currentRank = (count || 0) + 1;
     } else {
-        // Fallback nel caso in cui sta testando con 0 punti senza aver mai giocato
+        // fallback nel caso in cui sta testando con 0 punti senza aver mai giocato
         const { count } = await supabase
           .from('Leaderboard')
           .select('*', { count: 'exact', head: true })
@@ -347,7 +341,7 @@ app.put('/api/leaderboard', async (req, res) => {
   }
 });
 
-//highest-score per pagina iniziale
+// highest-score per pagina iniziale
 app.get('/api/highest-score', async (req, res) => {
   try {
     const { data, error } = await supabase
@@ -370,7 +364,7 @@ app.get('/api/highest-score', async (req, res) => {
   }
 });
 
-//middleware per utente che bara o non loggato
+// middleware per utente che bara o non loggato
 const wrongRoom = (req, res, next) => {
   if (!req.session || !req.session.user) {
     return res.redirect('/login');
@@ -394,13 +388,13 @@ app.get('/index/room/:numero', wrongRoom, (req, res) => {
   res.sendFile(path.join(root, 'pages', `room${numeroStanza}.html`));
 });
 
-//rotta base: mostra la pagina di inizio
+// rotta base: mostra la pagina di inizio
 app.get('/', (req, res) => {
   res.sendFile(path.join(root, 'index.html'));
 });
 
 
-// AVVIO SERVER
+// avvio server
 app.listen(port, host, () => {
   console.log(`Server in esecuzione su http://localhost:${port}`);
 });

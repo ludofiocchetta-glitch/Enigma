@@ -6,30 +6,51 @@ async function eseguiLogin() {
     const avatarSelezionato = document.querySelector('input[name="avatar"]:checked').value;
     const username = inputname.value.trim();
     const password = inputpassword.value.trim();
+    const errorDiv = document.getElementById('passwordError');
+    const nameErrorDiv = document.getElementById('nameError');
 
     inputname.classList.remove('is-invalid');
     inputpassword.classList.remove('is-invalid');
 
+    if (errorDiv) {
+        errorDiv.innerText = '';
+        errorDiv.classList.remove('d-block');
+    }
+
+    if (nameErrorDiv) {
+        nameErrorDiv.innerText = '';
+        nameErrorDiv.classList.remove('d-block');
+    }
+
     if (username === '') {
         inputname.classList.add('is-invalid');
-        inputname.placeholder = 'Campo obbligatorio!';
+        if (nameErrorDiv) {
+            nameErrorDiv.innerText = 'Campo obbligatorio!';
+            nameErrorDiv.classList.add('d-block');
+        }
         return;
     }
     const specialCharRegex = /[!@#$%&*.?_]/;
     if (password === '') {
         inputpassword.classList.add('is-invalid');
-        inputpassword.value = '';
-        inputpassword.placeholder = 'Campo obbligatorio!';
+        if (errorDiv) {
+            errorDiv.innerText = 'Campo obbligatorio!';
+            errorDiv.classList.add('d-block');
+        }
         return;
     } else if (password.length < 8) {
         inputpassword.classList.add('is-invalid');
-        inputpassword.value = '';
-        inputpassword.placeholder = 'Minimo 8 caratteri';
+        if (errorDiv) {
+            errorDiv.innerText = 'Minimo 8 caratteri';
+            errorDiv.classList.add('d-block');
+        }
         return;
     } else if (!specialCharRegex.test(password)) {
         inputpassword.classList.add('is-invalid');
-        inputpassword.value = '';
-        inputpassword.placeholder = 'Minimo 1 carattere speciale !@#$%&*.?_';
+        if (errorDiv) {
+            errorDiv.innerText = 'Minimo un carattere speciale (!@#$%&*.?_)';
+            errorDiv.classList.add('d-block');
+        }
         return;
     }
     try {
@@ -84,30 +105,51 @@ async function eseguiRegistrazione() {
     const avatar = document.querySelector('input[name="avatar"]:checked').value;
     const username = inputname.value.trim();
     const password = inputpassword.value.trim();
+    const errorDiv = document.getElementById('passwordError');
+    const nameErrorDiv = document.getElementById('nameError');
 
     inputname.classList.remove('is-invalid');
     inputpassword.classList.remove('is-invalid');
 
+    if (errorDiv) {
+        errorDiv.innerText = '';
+        errorDiv.classList.remove('d-block');
+    }
+
+    if (nameErrorDiv) {
+        nameErrorDiv.innerText = '';
+        nameErrorDiv.classList.remove('d-block');
+    }
+
     if (username === '') {
         inputname.classList.add('is-invalid');
-        inputname.placeholder = 'Campo obbligatorio!';
+        if (nameErrorDiv) {
+            nameErrorDiv.innerText = 'Campo obbligatorio!';
+            nameErrorDiv.classList.add('d-block');
+        }
         return;
     }
     const specialCharRegex = /[!@#$%&*.?_]/;
     if (password === '') {
         inputpassword.classList.add('is-invalid');
-        inputpassword.value = '';
-        inputpassword.placeholder = 'Campo obbligatorio!';
+        if (errorDiv) {
+            errorDiv.innerText = 'Campo obbligatorio!';
+            errorDiv.classList.add('d-block');
+        }
         return;
     } else if (password.length < 8) {
         inputpassword.classList.add('is-invalid');
-        inputpassword.value = '';
-        inputpassword.placeholder = 'Minimo 8 caratteri';
+        if (errorDiv) {
+            errorDiv.innerText = 'Minimo 8 caratteri';
+            errorDiv.classList.add('d-block');
+        }
         return;
     } else if (!specialCharRegex.test(password)) {
         inputpassword.classList.add('is-invalid');
-        inputpassword.value = '';
-        inputpassword.placeholder = 'Minimo 1 carattere speciale !@#$%&*.?_';
+        if (errorDiv) {
+            errorDiv.innerText = 'Minimo un carattere speciale (!@#$%&*.?_)';
+            errorDiv.classList.add('d-block');
+        }
         return;
     }
     try {
