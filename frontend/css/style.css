@@ -376,10 +376,36 @@ input[type="radio"]:checked + .avatar-img {
     50% { transform: scale(1.15); box-shadow: 0 0 15px rgba(255, 255, 255, 0.8); }
     100% { transform: scale(1); box-shadow: 0 0 0px rgba(255, 255, 255, 0); }
 }
-
 .taccuino-aggiornato {
     animation: notifica-taccuino 1.5s ease-in-out 1; 
 }
+/* icona notifica per indizio trovato */
+.badge-notifica {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: var(--badge-color);;
+    color: white;
+    font-family: 'Special Elite', cursive;
+    font-size: 1.5rem;
+    width: 29px;
+    height: 29px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px var(--badge-color);;
+    pointer-events: none; /* lascia che il click passi attraverso e colpisca l'avatar sotto */
+    z-index: 105;
+    animation: pulse-badge 2s infinite; /* pulsa finché non viene letto */
+}
+
+@keyframes pulse-badge {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); box-shadow: 0 0 15px var(--badge-color);; }
+    100% { transform: scale(1); }
+}
+
 /* pulsante musica */
 .btn-music-gameT {
     position: absolute;
@@ -1244,10 +1270,17 @@ input[type="radio"]:checked + .avatar-img {
         line-height: 1.4 !important;
         margin-bottom: 10px !important;
     }
-
+    /* icona notifica per tutte le stanze */
+    .badge-notifica {
+        width: 20px;
+        height: 20px;
+        font-size: 1rem;
+        top: 0px; 
+        right: 0px; 
+    }
     /* --- room6 --- */
     /* tasto musica */
-     .btn-music-gameF {
+    .btn-music-gameF {
         width: 45px;
         height: 45px;
         top: 1px;

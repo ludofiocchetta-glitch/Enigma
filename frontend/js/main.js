@@ -237,6 +237,14 @@ function mostraMessaggio(titolo, testo) {
 }
 
 //funzioni per il taccuino
+//colori per l'icona notifica
+const coloriNotifica = {
+    'room1': '#0e291ff1', 
+    'room2': '#200427f0', 
+    'room3': '#241e21e8', 
+    'room4': '#361222ec', 
+    'room5': '#3e0211ec' 
+};
 //aggiunge le scoperte al taccuino
 function aggiungiAlTaccuino(stanza, oggetto, contenuto, tipo) {
     let taccuino = JSON.parse(localStorage.getItem('taccuinoAgente')) || [];
@@ -246,6 +254,13 @@ function aggiungiAlTaccuino(stanza, oggetto, contenuto, tipo) {
         taccuino.push({stanza: stanza,oggetto: oggetto,contenuto: contenuto,tipo: tipo});
         localStorage.setItem('taccuinoAgente', JSON.stringify(taccuino));
     }
+    const badge = document.getElementById('badgeNotifica');
+    if (badge) {
+        badge.classList.remove('d-none');
+    }
+    const coloreScelto = coloriNotifica[stanza];
+    // cambia la var nel css
+    badge.style.setProperty('--badge-color', coloreScelto);
 }
 
 //elimina le scoperte temporanee
@@ -257,6 +272,10 @@ function pulisciTaccuino() {
 }
 //apre il taccuino
 function apriTaccuino() {
+    const badge = document.getElementById('badgeNotifica');
+    if (badge) {
+        badge.classList.add('d-none');
+    }
     let taccuino = JSON.parse(localStorage.getItem('taccuinoAgente')) || [];
     let testo = '';
 
@@ -295,9 +314,7 @@ function calcolaPunteggioDinamico(punteggioBase) {
 
     const ora = Date.now();
     const tempoPassatoMs = ora - tempoInizioStanza;
-
     const intervalliPassati = Math.floor(tempoPassatoMs / 30000);
-
     let penalita = 0;
 
     // Entro 1 minuto = nessuna penalità
@@ -312,10 +329,8 @@ function calcolaPunteggioDinamico(punteggioBase) {
     else {
         penalita = 18;
     }
-
     //Punteggio finale mai inferiore a 1 punto
     const punteggioCalcolato = Math.max(punteggioBase - penalita, 1);
-    
     return punteggioCalcolato;
 }
 
