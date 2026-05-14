@@ -226,7 +226,7 @@ function caricaAvatarInAngolo() {
         targetImg.src = imgAvatar;
     }
 }
-// funzione per mostrare gli indizi
+//funzione per mostrare gli indizi
 function mostraMessaggio(titolo, testo) {
     document.getElementById('infoTitolo').innerText = titolo;
     document.getElementById('infoTesto').innerText = testo;
@@ -272,4 +272,54 @@ function apriTaccuino() {
         });
     }
     mostraMessaggio('Taccuino agente', testo);
+}
+
+//timer per ogni stanza
+let tempoInizioStanza = 0;
+let timerAttivo = false;
+
+function avviaTimerStanza() {
+    const inizioSalvato = localStorage.getItem('timer_inizio_stanza');
+    
+    if (inizioSalvato) {
+        tempoInizioStanza = parseInt(inizioSalvato);
+    } else {
+        tempoInizioStanza = Date.now();
+        localStorage.setItem('timer_inizio_stanza', tempoInizioStanza);
+    }
+    timerAttivo = true;
+}
+
+function calcolaPunteggioDinamico(punteggioBase) {
+    if (!timerAttivo) return punteggioBase;
+
+    const ora = Date.now();
+    const tempoPassatoMs = ora - tempoInizioStanza;
+
+    const intervalliPassati = Math.floor(tempoPassatoMs / 30000);
+
+    let penalita = 0;
+
+    // Entro 1 minuto = nessuna penalità
+    if (intervalliPassati <= 1) {
+        penalita = 0;
+    }
+    // Da 1 a 5 minuti = -2 punti per ogni 30 secondi extra
+    else if (intervalliPassati > 1 && intervalliPassati <= 10) {
+        penalita = (intervalliPassati-1) * 2;
+    }
+    // Oltre i 5 minuti (tetto massimo di penalità) = -18 punti fissi
+    else {
+        penalita = 18;
+    }
+
+    //Punteggio finale mai inferiore a 1 punto
+    const punteggioCalcolato = Math.max(punteggioBase - penalita, 1);
+    
+    return punteggioCalcolato;
+}
+
+function fermaEresettaTimer() {
+    timerAttivo = false;
+    localStorage.removeItem('timer_inizio_stanza');
 }

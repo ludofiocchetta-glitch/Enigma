@@ -51,6 +51,7 @@ function inizioStanzaE() {
         skipIntro = true;
     };
     scriviTestoE(messaggio, 0);
+    avviaTimerStanza();
 }
 
 function scriviTestoE(testo, indice) {
@@ -98,8 +99,8 @@ function iniziaEsplorazioneE() {
 
 // indizi
 function mostraTavolo() {
-  mostraMessaggio('Tavolo',"Tra gli appunti c'è una frase: “Massa ed energia sono la stessa cosa, in forme diverse.”");
-  oggettiEsploratiE.tavolo = true;
+    mostraMessaggio('Tavolo',"Tra gli appunti c'è una frase: “Massa ed energia sono la stessa cosa, in forme diverse.”");
+    oggettiEsploratiE.tavolo = true;
 }
 
 function mostraAtmosferaEinstein() {
@@ -161,10 +162,12 @@ function apriEnigmaEinstein() {
 }
 
 // funzioni di controllo risposte enigmi intermedi
-function controllaMobile() {
+async function controllaMobile() {
     const risposta = document.getElementById('EinsteinSoluzione').value.trim().toLowerCase();
     if (risposta === 'spazio e tempo' || risposta === 'tempo e spazio') {
-        aggiornaPunteggioGlobale(15);
+        const puntiOttenuti = calcolaPunteggioDinamico(25);
+        await aggiornaPunteggioGlobale(puntiOttenuti);
+
         bootstrap.Modal.getInstance(document.getElementById('EinsteinModal')).hide();
         enigmiRisoltiE.mobile = true;
         localStorage.setItem('einstein_mobile_risolto', 'true');
@@ -183,25 +186,26 @@ function controllaMobile() {
     } else {
         countMobile++;
         if (countMobile == 2) {
-            aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('EinsteinSoluzione').value = '';
             document.getElementById('EinsteinSoluzione').placeholder ='Indizio: formano un unico concetto';
         } else if (countMobile >= 3) {
-            aggiornaPunteggioGlobale(-3);
+            await aggiornaPunteggioGlobale(-3);
             document.getElementById('EinsteinSoluzione').value = '';
             document.getElementById('EinsteinSoluzione').placeholder ='Indizio: sono legate alla velocità';
         } else {
-            aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('EinsteinSoluzione').value = '';
             document.getElementById('EinsteinSoluzione').placeholder = 'Riprova';
         }
     }
 }
 
-function controllaMappamondoE() {
+async function controllaMappamondoE() {
     const risposta = document.getElementById('EinsteinSoluzione').value.trim().toLowerCase();
     if (risposta === 'riferimento' || risposta === 'sistema di riferimento') {
-        aggiornaPunteggioGlobale(15);
+        const puntiOttenuti = calcolaPunteggioDinamico(25);
+        await aggiornaPunteggioGlobale(puntiOttenuti);
         bootstrap.Modal.getInstance(
         document.getElementById('EinsteinModal')).hide();
         enigmiRisoltiE.mappamondo = true;
@@ -221,15 +225,15 @@ function controllaMappamondoE() {
     } else {
         countMappamondo++;
         if (countMappamondo == 2) {
-            aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('EinsteinSoluzione').value = '';
             document.getElementById('EinsteinSoluzione').placeholder ='Indizio: un esempio classico è il treno';
         } else if (countMappamondo >= 3) {
-            aggiornaPunteggioGlobale(-3);
+            await aggiornaPunteggioGlobale(-3);
             document.getElementById('EinsteinSoluzione').value = '';
             document.getElementById('EinsteinSoluzione').placeholder ='Indizio: sistema di...';
         } else {
-            aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('EinsteinSoluzione').value = '';
             document.getElementById('EinsteinSoluzione').placeholder = 'Riprova';
         }

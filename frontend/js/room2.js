@@ -41,6 +41,7 @@ function inizioStanzaC() {
         skipIntro = true;
     };
     scriviTestoC(messaggio, 0);
+    avviaTimerStanza();
 }
 
 function scriviTestoC(testo, indice) {
@@ -104,7 +105,7 @@ function mostraScaffale() {
 
 function mostraTavolo() {
     mostraMessaggio('Tavolo',"Tra gli appunti c'è una frase: “Massa ed energia sono la stessa cosa, in forme diverse.”");
-    oggettiEsploratiE.tavolo = true;
+    oggettiEsploratiC.tavolo = true;
 }
 
 //funzione per aprire gli enigmi
@@ -153,10 +154,12 @@ function risolviEquazioneFinale() {
 }
 
 // funzioni di controllo risposte enigmi intermedi
-function controllaBilancia() {
+async function controllaBilancia() {
     const risposta = document.getElementById('CurieSoluzione').value.trim().toLowerCase();
     if (risposta === 'bilanciare') {
-        aggiornaPunteggioGlobale(15);
+        const puntiOttenuti = calcolaPunteggioDinamico(25);
+        await aggiornaPunteggioGlobale(puntiOttenuti);
+
         bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
         enigmiRisoltiC.bilancia = true;
         localStorage.setItem('curie_bilancia_risolta', 'true');
@@ -175,25 +178,27 @@ function controllaBilancia() {
     } else {
         countBilancia++;
         if (countBilancia >= 3) {
-            aggiornaPunteggioGlobale(-3);
+            await aggiornaPunteggioGlobale(-3);
             document.getElementById('CurieSoluzione').value = '';
             document.getElementById('CurieSoluzione').placeholder ='i due lati devono avere lo stesso numero di atomi';
         } else if (countBilancia == 2) {
-            aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('CurieSoluzione').value = '';
             document.getElementById('CurieSoluzione').placeholder ='Indizio: modificare i numeri davanti le formule';
         } else {
-            aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('CurieSoluzione').value = '';
             document.getElementById('CurieSoluzione').placeholder = 'Riprova';
         }
     }
 }
 
-function controllaPozioni() {
+async function controllaPozioni() {
     const risposta = document.getElementById('CurieSoluzione').value.trim().toLowerCase();
     if (risposta === 'lavoisier' || risposta === 'legge di lavoisier') {
-        aggiornaPunteggioGlobale(15);
+        const puntiOttenuti = calcolaPunteggioDinamico(25);
+        await aggiornaPunteggioGlobale(puntiOttenuti);
+
         bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
         enigmiRisoltiC.pozioni = true;
         localStorage.setItem('curie_pozioni_risolte', 'true');
@@ -212,15 +217,15 @@ function controllaPozioni() {
     } else {
         countPozioni++;
         if (countPozioni == 2) {
-            aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('CurieSoluzione').value = '';
             document.getElementById('CurieSoluzione').placeholder ='Indizio: nome di uno scienziato francese';
         } else if (countPozioni >= 3) {
-            aggiornaPunteggioGlobale(-3);
+            await aggiornaPunteggioGlobale(-3);
             document.getElementById('CurieSoluzione').value = '';
             document.getElementById('CurieSoluzione').placeholder ='Indizio: Lavo...';
         } else {
-            aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('CurieSoluzione').value = '';
             document.getElementById('CurieSoluzione').placeholder = 'Riprova';
         }

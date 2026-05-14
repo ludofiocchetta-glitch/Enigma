@@ -45,6 +45,7 @@ function inizioStanzaT() {
         skipIntro = true;
     };
     scriviTestoT(messaggio, 0);
+    avviaTimerStanza();
 }
 
 function scriviTestoT(testo, indice) {
@@ -157,10 +158,12 @@ function mostraEnigmaFinale() {
 }
 
 // funzioni di controllo risposte enigmi intermedi
-function controllaLavagna() {
+async function controllaLavagna() {
     const risposta = document.getElementById('codiceSoluzione').value.trim().toLowerCase();
     if (risposta === 'enigma') {
-        aggiornaPunteggioGlobale(15);
+        const puntiOttenuti = calcolaPunteggioDinamico(25);
+        await aggiornaPunteggioGlobale(puntiOttenuti);
+
         bootstrap.Modal.getInstance(document.getElementById('enigmaModal')).hide();
         enigmiRisolti.lavagna = true;
         localStorage.setItem('turing_lavagna_risolta', 'true');
@@ -181,25 +184,27 @@ function controllaLavagna() {
     } else {
         countLavagna++;
         if (countLavagna == 2) {
-            aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('codiceSoluzione').value = '';
             document.getElementById('codiceSoluzione').placeholder = "Indizio: spostati nell'alfabeto";
         } else if (countLavagna >= 3) {
-            aggiornaPunteggioGlobale(-3);
+            await aggiornaPunteggioGlobale(-3);
             document.getElementById('codiceSoluzione').value = '';
             document.getElementById('codiceSoluzione').placeholder ='Indizio: shift=2';
         } else {
-            aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('codiceSoluzione').value = '';
             document.getElementById('codiceSoluzione').placeholder = 'Riprova';
         }
     }
 }
 
-function controllaTelefono() {
+async function controllaTelefono() {
     const risposta = document.getElementById('codiceSoluzione').value.trim().toLowerCase();
     if (risposta === 'turing') {
-        aggiornaPunteggioGlobale(15);
+        const puntiOttenuti = calcolaPunteggioDinamico(25);
+        await aggiornaPunteggioGlobale(puntiOttenuti);
+
         bootstrap.Modal.getInstance(document.getElementById('enigmaModal')).hide();
         enigmiRisolti.telefono = true;
         localStorage.setItem('turing_telefono_risolto', 'true');
@@ -218,22 +223,22 @@ function controllaTelefono() {
     } else {
         countTelefono++;
         if (countTelefono == 2) {
-            aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('codiceSoluzione').value = '';
             document.getElementById('codiceSoluzione').placeholder ='Indizio: ogni lettera ha un posto';
         } else if (countTelefono >= 3) {
-            aggiornaPunteggioGlobale(-3);
+            await aggiornaPunteggioGlobale(-3);
             document.getElementById('codiceSoluzione').value = '';
             document.getElementById('codiceSoluzione').placeholder ='Indizio: A=1,B=2...';
         } else {
-            aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('codiceSoluzione').value = '';
             document.getElementById('codiceSoluzione').placeholder = 'Riprova';
         }
     }
 }
 
-// funzione per salvare enigmi intermedi e le note provvisorie nel local storage se ricarichi 
+// funzione per salvare enigmi intermedi e le note provvisorie nel local storage se ricarichi
 // la pagina
 function ripristinaStatoTuring() {
     if (localStorage.getItem('turing_lavagna_risolta') === 'true') {

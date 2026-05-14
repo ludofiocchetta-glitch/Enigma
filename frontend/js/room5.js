@@ -30,12 +30,12 @@ function inizioStanzaF() {
         nomeAvatar = 'Ada Lovelace';
     }
     if (nomeAvatar === 'Alan Turing' || nomeAvatar === 'Albert Einstein') {
-        messaggio = `${nomeAvatar} Sei arrivato all’ultima fase. \nLe quattro stanze non erano casuali, ogni ambiente era un test. Ogni mente -Alan Turing, Marie Curie, Albert Einstein, Ada Lovelace — ti ha fornito gli strumenti necessari. 
+        messaggio = `${nomeAvatar} Sei arrivato all’ultima fase. \nLe quattro stanze non erano casuali, ogni ambiente era un test. Ogni mente -Alan Turing, Marie Curie, Albert Einstein, Ada Lovelace — ti ha fornito gli strumenti necessari.
             Non troverai nuove informazioni qui, solo connessioni. I dati che ti servono li hai già raccolti, ora devi dimostrare di saperli usare.
             Analizza ciò che hai visto, controlla i tuoi appunti, ricostruisci il percorso e individua il codice.
             La missione si conclude qui. \nLa via d’uscita è già nelle tue mani...`;
     } else {
-        messaggio = `${nomeAvatar} Sei arrivata all’ultima fase. \nLe quattro stanze non erano casuali, ogni ambiente era un test. Ogni mente -Alan Turing, Marie Curie, Albert Einstein, Ada Lovelace — ti ha fornito gli strumenti necessari. 
+        messaggio = `${nomeAvatar} Sei arrivata all’ultima fase. \nLe quattro stanze non erano casuali, ogni ambiente era un test. Ogni mente -Alan Turing, Marie Curie, Albert Einstein, Ada Lovelace — ti ha fornito gli strumenti necessari.
             Non troverai nuove informazioni qui, solo connessioni. I dati che ti servono li hai già raccolti, ora devi dimostrare di saperli usare.
             Analizza ciò che hai visto, controlla i tuoi appunti, ricostruisci il percorso e individua il codice.
             La missione si conclude qui. \nLa via d’uscita è già nelle tue mani...`;
@@ -47,6 +47,7 @@ function inizioStanzaF() {
         skipIntro = true;
     };
     scriviTestoF(messaggio, 0);
+    avviaTimerStanza();
 }
 
 function scriviTestoF(testo, indice) {
@@ -155,10 +156,12 @@ function mostraCodiceFinale() {
 }
 
 // funzione di controllo risposta all'enigma intermedio
-function controllaMuro() {
+async function controllaMuro() {
     const risposta = document.getElementById('FinalSoluzione').value.trim().toLowerCase();
     if (risposta === 'logica') {
-        aggiornaPunteggioGlobale(15);
+        const puntiOttenuti = calcolaPunteggioDinamico(25);
+        await aggiornaPunteggioGlobale(puntiOttenuti);
+
         bootstrap.Modal.getInstance(document.getElementById('FinalModal')).hide();
         enigmiRisoltiF.muro = true;
         setTimeout(() => {
@@ -167,15 +170,15 @@ function controllaMuro() {
     } else {
         countMuro++;
         if (countMuro == 2) {
-            aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('FinalSoluzione').value = '';
             document.getElementById('FinalSoluzione').placeholder ="Fondamentale per l'AI";
         } else if (countMuro >= 3) {
-            aggiornaPunteggioGlobale(-3);
+            await aggiornaPunteggioGlobale(-3);
             document.getElementById('FinalSoluzione').value = '';
             document.getElementById('FinalSoluzione').placeholder ='Lo è quella del primo ordine';
         } else {
-            aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('FinalSoluzione').value = '';
             document.getElementById('FinalSoluzione').placeholder ='Pensaci bene, è un linguaggio formale';
         }
