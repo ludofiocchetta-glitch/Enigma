@@ -318,7 +318,7 @@ async function controllaEnigma() {
         const puntiOttenuti = calcolaPunteggioDinamico(30);
         await aggiornaPunteggioGlobale(puntiOttenuti);
 
-        fermaEresettaTimer();
+        resetTimer();
 
         bootstrap.Modal.getInstance(document.getElementById('enigmaModal')).hide();
         mostraMessaggio('Codice accettato!','Bravo Agente! La porta si è sbloccata. Preparati a scappare...');
@@ -366,7 +366,7 @@ async function controllaEquazione() {
         const puntiOttenuti = calcolaPunteggioDinamico(30);
         await aggiornaPunteggioGlobale(puntiOttenuti);
 
-        fermaEresettaTimer();
+        resetTimer();
 
         bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
         mostraMessaggio('Equazione Bilanciata!','Ottimo lavoro, Agente! La porta si sta aprendo. Sei pronto per la prossima missione...');
@@ -415,7 +415,7 @@ async function controllaEinstein() {
         const puntiOttenuti = calcolaPunteggioDinamico(30);
         await aggiornaPunteggioGlobale(puntiOttenuti);
 
-        fermaEresettaTimer();
+        resetTimer();
 
         bootstrap.Modal.getInstance(document.getElementById('EinsteinModal')).hide();
         mostraMessaggio('Formula corretta!','Bravissimo Agente! \n Il passaggio segreto si sta aprendo, puoi continuare la tua missione...');
@@ -463,7 +463,7 @@ async function controllaLovelace() {
         const puntiOttenuti = calcolaPunteggioDinamico(30);
         await aggiornaPunteggioGlobale(puntiOttenuti);
 
-        fermaEresettaTimer();
+        resetTimer();
 
         bootstrap.Modal.getInstance(document.getElementById('LovelaceModal')).hide();
         mostraMessaggio('Risoluzione accettata!','Bravissimo Agente! sei pronto per la missione finale...');
@@ -510,10 +510,10 @@ async function controllaCodiceFinale() {
     const soluzioneCorretta = '203414246';
 
     if (risposta === soluzioneCorretta) {
-        const puntiOttenuti = calcolaPunteggioDinamico(35);
+        const puntiOttenuti = calcolaPunteggioDinamico(45);
         await aggiornaPunteggioGlobale(puntiOttenuti);
 
-        fermaEresettaTimer();
+        resetTimer();
 
         bootstrap.Modal.getInstance(document.getElementById('FinalModal')).hide();
         mostraMessaggio('Codice Accettato!',"Incredibile Agente ce l'hai fatta! \n Hai completato tutta la missione in modo brillante. \n La porta si sta aprendo...");

@@ -159,7 +159,7 @@ function mostraCodiceFinale() {
 async function controllaMuro() {
     const risposta = document.getElementById('FinalSoluzione').value.trim().toLowerCase();
     if (risposta === 'logica') {
-        const puntiOttenuti = calcolaPunteggioDinamico(25);
+        const puntiOttenuti = calcolaPunteggioDinamico(35);
         await aggiornaPunteggioGlobale(puntiOttenuti);
 
         bootstrap.Modal.getInstance(document.getElementById('FinalModal')).hide();

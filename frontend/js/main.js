@@ -294,47 +294,70 @@ function apriTaccuino() {
 }
 
 //timer per ogni stanza
-let tempoInizioStanza = 0;
+let tempoInizioSessione = 0; //tempo specifico sessione
+let tempoAccumulato = 0; //millisecondi giocati nella sessione passata in quella stanza
 let timerAttivo = false;
+let intervalloTimerVisibile;
 
 function avviaTimerStanza() {
-    const inizioSalvato = localStorage.getItem('timer_inizio_stanza');
-    
-    if (inizioSalvato) {
-        tempoInizioStanza = parseInt(inizioSalvato);
+    // recupera tempo sessione precedente
+    const salvato = localStorage.getItem('timer_accumulato_stanza');
+    if (salvato) {
+        tempoAccumulato = parseInt(salvato);
     } else {
-        tempoInizioStanza = Date.now();
-        localStorage.setItem('timer_inizio_stanza', tempoInizioStanza);
+        tempoAccumulato = 0;
     }
+    // cronometro sessione
+    tempoInizioSessione = Date.now();
     timerAttivo = true;
+    intervalloTimerVisibile = setInterval(aggiornaTimer, 1000);
+}
+
+function aggiornaTimer() {
+    if (!timerAttivo) return;
+    
+    //tempo vecchio + tempo sessione attuale
+    const tempoTot = tempoAccumulato + (Date.now() - tempoInizioSessione);
+    // se esce riparte da qui
+    localStorage.setItem('timer_accumulato_stanza', tempoTot.toString());
+
+    const displayElement = document.getElementById('timerVisibile');
+    if (!displayElement) return; //se non c'è non dà errore
+
+    const secondiTotali = Math.floor(tempoTot / 1000);
+    const minuti = Math.floor(secondiTotali / 60);
+    const secondi = secondiTotali % 60;
+    // aggiunge zero davanti a numeri <10
+    const minutiFormat = minuti.toString().padStart(2, '0');
+    const secondiFormat = secondi.toString().padStart(2, '0');
+    // connette all'html
+    displayElement.innerText = `${minutiFormat}:${secondiFormat}`;
 }
 
 function calcolaPunteggioDinamico(punteggioBase) {
     if (!timerAttivo) return punteggioBase;
 
-    const ora = Date.now();
-    const tempoPassatoMs = ora - tempoInizioStanza;
-    const intervalliPassati = Math.floor(tempoPassatoMs / 30000);
+    const tempoTot = tempoAccumulato + (Date.now() - tempoInizioSessione);
+    const intervalliPassati = Math.floor(tempoTot / 30000);
     let penalita = 0;
 
-    // Entro 1 minuto = nessuna penalità
     if (intervalliPassati <= 1) {
         penalita = 0;
-    }
-    // Da 1 a 5 minuti = -2 punti per ogni 30 secondi extra
-    else if (intervalliPassati > 1 && intervalliPassati <= 10) {
-        penalita = (intervalliPassati-1) * 2;
-    }
-    // Oltre i 5 minuti (tetto massimo di penalità) = -18 punti fissi
-    else {
+    // da 1 a 5 minuti penalità di 2 ogni 30s
+    } else if (intervalliPassati > 1 && intervalliPassati <= 10) {
+        penalita = (intervalliPassati - 1) * 2;
+    // per più di 5 minuti penalità fissa di 18
+    } else {
         penalita = 18;
     }
-    //Punteggio finale mai inferiore a 1 punto
-    const punteggioCalcolato = Math.max(punteggioBase - penalita, 1);
-    return punteggioCalcolato;
+    // almeno 1 punto
+    return Math.max(punteggioBase - penalita, 1);
 }
 
-function fermaEresettaTimer() {
+function resetTimer() {
     timerAttivo = false;
-    localStorage.removeItem('timer_inizio_stanza');
+    // pulizia timer grafico
+    clearInterval(intervalloTimerVisibile);
+    localStorage.removeItem('timer_accumulato_stanza');
+    tempoAccumulato = 0; 
 }
