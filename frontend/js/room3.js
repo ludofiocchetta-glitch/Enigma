@@ -165,7 +165,7 @@ function apriEnigmaEinstein() {
 async function controllaMobile() {
     const risposta = document.getElementById('EinsteinSoluzione').value.trim().toLowerCase();
     if (risposta === 'spazio e tempo' || risposta === 'tempo e spazio') {
-        const puntiOttenuti = calcolaPunteggioDinamico(25);
+        const puntiOttenuti = calcolaPunteggioDinamico(30);
         await aggiornaPunteggioGlobale(puntiOttenuti);
 
         bootstrap.Modal.getInstance(document.getElementById('EinsteinModal')).hide();
@@ -186,15 +186,15 @@ async function controllaMobile() {
     } else {
         countMobile++;
         if (countMobile == 2) {
-            await aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-3);
             document.getElementById('EinsteinSoluzione').value = '';
             document.getElementById('EinsteinSoluzione').placeholder ='Indizio: formano un unico concetto';
         } else if (countMobile >= 3) {
-            await aggiornaPunteggioGlobale(-3);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('EinsteinSoluzione').value = '';
             document.getElementById('EinsteinSoluzione').placeholder ='Indizio: sono legate alla velocità';
         } else {
-            await aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-7);
             document.getElementById('EinsteinSoluzione').value = '';
             document.getElementById('EinsteinSoluzione').placeholder = 'Riprova';
         }
@@ -204,7 +204,7 @@ async function controllaMobile() {
 async function controllaMappamondoE() {
     const risposta = document.getElementById('EinsteinSoluzione').value.trim().toLowerCase();
     if (risposta === 'riferimento' || risposta === 'sistema di riferimento') {
-        const puntiOttenuti = calcolaPunteggioDinamico(25);
+        const puntiOttenuti = calcolaPunteggioDinamico(30);
         await aggiornaPunteggioGlobale(puntiOttenuti);
         bootstrap.Modal.getInstance(
         document.getElementById('EinsteinModal')).hide();
@@ -225,15 +225,15 @@ async function controllaMappamondoE() {
     } else {
         countMappamondo++;
         if (countMappamondo == 2) {
-            await aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-3);
             document.getElementById('EinsteinSoluzione').value = '';
             document.getElementById('EinsteinSoluzione').placeholder ='Indizio: un esempio classico è il treno';
         } else if (countMappamondo >= 3) {
-            await aggiornaPunteggioGlobale(-3);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('EinsteinSoluzione').value = '';
             document.getElementById('EinsteinSoluzione').placeholder ='Indizio: sistema di...';
         } else {
-            await aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-7);
             document.getElementById('EinsteinSoluzione').value = '';
             document.getElementById('EinsteinSoluzione').placeholder = 'Riprova';
         }

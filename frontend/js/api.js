@@ -315,7 +315,7 @@ async function controllaEnigma() {
     const soluzioneCorretta = 'bombe';
 
     if (rispostaUtente === soluzioneCorretta) {
-        const puntiOttenuti = calcolaPunteggioDinamico(30);
+        const puntiOttenuti = calcolaPunteggioDinamico(40);
         await aggiornaPunteggioGlobale(puntiOttenuti);
 
         resetTimer();
@@ -352,7 +352,7 @@ async function controllaEnigma() {
             console.error("Errore nel salvataggio progressi: ", err);
         }
     } else {
-        aggiornaPunteggioGlobale(-5);
+        aggiornaPunteggioGlobale(-7);
         document.getElementById('codiceSoluzione').value = '';
         document.getElementById('codiceSoluzione').placeholder ='Non è il nome che stiamo cercando. Riprova!';
     }
@@ -363,7 +363,7 @@ async function controllaEquazione() {
     const rispostaUtente = document.getElementById('CurieSoluzione').value.trim();
     const soluzioneCorretta = '3,4,1,4';
     if (rispostaUtente === soluzioneCorretta) {
-        const puntiOttenuti = calcolaPunteggioDinamico(30);
+        const puntiOttenuti = calcolaPunteggioDinamico(40);
         await aggiornaPunteggioGlobale(puntiOttenuti);
 
         resetTimer();
@@ -400,7 +400,7 @@ async function controllaEquazione() {
             console.error("Errore nel salvataggio progressi: ", err);
         }
     } else {
-        aggiornaPunteggioGlobale(-5);
+        aggiornaPunteggioGlobale(-7);
         document.getElementById('CurieSoluzione').value = '';
         document.getElementById('CurieSoluzione').placeholder = 'Non sono i coefficienti giusti,riprova!';
     }
@@ -412,7 +412,7 @@ async function controllaEinstein() {
     const soluzioneCorretta = 'e=mc^2';
 
     if (rispostaUtente === soluzioneCorretta) {
-        const puntiOttenuti = calcolaPunteggioDinamico(30);
+        const puntiOttenuti = calcolaPunteggioDinamico(40);
         await aggiornaPunteggioGlobale(puntiOttenuti);
 
         resetTimer();
@@ -448,7 +448,7 @@ async function controllaEinstein() {
             console.error("Errore nel salvataggio progressi: ", err);
         }
     } else {
-        aggiornaPunteggioGlobale(-5);
+        aggiornaPunteggioGlobale(-7);
         document.getElementById('EinsteinSoluzione').value = '';
         document.getElementById('EinsteinSoluzione').placeholder ='Non è questa la formula che cerchiamo,riprova!';
     }
@@ -460,7 +460,7 @@ async function controllaLovelace() {
     const soluzioneCorretta = 'v4,v6';
 
     if (rispostaUtente === soluzioneCorretta) {
-        const puntiOttenuti = calcolaPunteggioDinamico(30);
+        const puntiOttenuti = calcolaPunteggioDinamico(40);
         await aggiornaPunteggioGlobale(puntiOttenuti);
 
         resetTimer();
@@ -498,7 +498,7 @@ async function controllaLovelace() {
             console.error("Errore nel salvataggio progressi: ", err);
         }
     } else {
-        aggiornaPunteggioGlobale(-5);
+        aggiornaPunteggioGlobale(-7);
         document.getElementById('LovelaceSoluzione').value = '';
         document.getElementById('LovelaceSoluzione').placeholder ='Non sono le variabili che cerchiamo. Riprova!';
     }
@@ -510,7 +510,7 @@ async function controllaCodiceFinale() {
     const soluzioneCorretta = '203414246';
 
     if (risposta === soluzioneCorretta) {
-        const puntiOttenuti = calcolaPunteggioDinamico(45);
+        const puntiOttenuti = calcolaPunteggioDinamico(50);
         await aggiornaPunteggioGlobale(puntiOttenuti);
 
         resetTimer();
@@ -553,11 +553,11 @@ async function controllaCodiceFinale() {
             document.getElementById('FinalSoluzione').value = '';
             document.getElementById('FinalSoluzione').placeholder ='Leggili attentamente';
         } else if (countMuro2 >= 3) {
-            aggiornaPunteggioGlobale(-5);
+            aggiornaPunteggioGlobale(-7);
             document.getElementById('FinalSoluzione').value = '';
             document.getElementById('FinalSoluzione').placeholder ="Attenzione all'ordine";
         } else {
-            aggiornaPunteggioGlobale(-5);
+            aggiornaPunteggioGlobale(-9);
             document.getElementById('FinalSoluzione').value = '';
             document.getElementById('FinalSoluzione').placeholder = 'Controlla i tuoi appunti';
         }

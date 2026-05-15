@@ -167,7 +167,7 @@ function apriEnigmaLovelace() {
 async function controllaOrologio() {
     const risposta = document.getElementById('LovelaceSoluzione').value.trim();
     if (risposta === '13,21,34') {
-        const puntiOttenuti = calcolaPunteggioDinamico(25);
+        const puntiOttenuti = calcolaPunteggioDinamico(30);
         await aggiornaPunteggioGlobale(puntiOttenuti);
 
         bootstrap.Modal.getInstance(
@@ -189,15 +189,15 @@ async function controllaOrologio() {
     } else {
         countOrologio++;
         if (countOrologio == 2) {
-            await aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-3);
             document.getElementById('LovelaceSoluzione').value = '';
             document.getElementById('LovelaceSoluzione').placeholder ='Indizio: Fibonacci';
         } else if (countOrologio >= 3) {
-            await aggiornaPunteggioGlobale(-3);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('LovelaceSoluzione').value = '';
             document.getElementById('LovelaceSoluzione').placeholder ='Indizio: somma gli ultimi due numeri';
         } else {
-            await aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-7);
             document.getElementById('LovelaceSoluzione').value = '';
             document.getElementById('LovelaceSoluzione').placeholder = 'Riprova';
         }
@@ -207,7 +207,7 @@ async function controllaOrologio() {
 async function controllaLibri() {
     const risposta = document.getElementById('LovelaceSoluzione').value.trim().toLowerCase();
     if (risposta === 'algoritmo') {
-        const puntiOttenuti = calcolaPunteggioDinamico(25);
+        const puntiOttenuti = calcolaPunteggioDinamico(30);
         await aggiornaPunteggioGlobale(puntiOttenuti);
 
         bootstrap.Modal.getInstance(
@@ -229,22 +229,22 @@ async function controllaLibri() {
     } else {
         countLibri++;
         if (countLibri == 2) {
-            await aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-3);
             document.getElementById('LovelaceSoluzione').value = '';
             document.getElementById('LovelaceSoluzione').placeholder ='Indizio: ricetta';
         } else if (countLibri >= 3) {
-            await aggiornaPunteggioGlobale(-3);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('LovelaceSoluzione').value = '';
             document.getElementById('LovelaceSoluzione').placeholder ='Indizio: lo è quello di Fibonacci';
         } else {
-            await aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-7);
             document.getElementById('LovelaceSoluzione').value = '';
             document.getElementById('LovelaceSoluzione').placeholder = 'Riprova';
         }
     }
 }
 
-// funzione per salvare enigmi intermedi e le noti provvisorie nel local storage se ricarichi 
+// funzione per salvare enigmi intermedi e le noti provvisorie nel local storage se ricarichi
 // la pagina
 function ripristinaStatoLovelace() {
     if (localStorage.getItem('lovelace_orologio_risolto') === 'true') {

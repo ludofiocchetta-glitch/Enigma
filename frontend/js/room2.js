@@ -135,7 +135,7 @@ function mostraBilancia() {
 }
 
 function mostraPozioni() {
-    apriModalC('Pozioni','Qual è il nome della legge che afferma che la materia non si crea né si distrugge?',
+    apriModalC('Pozioni','Qual è il nome dello scienziato la cui legge che afferma che la materia non si crea né si distrugge?',
     'Inserisci il nome della legge: ','Controlla',controllaPozioni,false);
     document.getElementById('CurieSoluzione').placeholder = '?????????';
 }
@@ -144,8 +144,8 @@ function mostraPozioni() {
 function risolviEquazioneFinale() {
     if (enigmiRisoltiC.bilancia && enigmiRisoltiC.pozioni && oggettiEsploratiC.foglio
     && oggettiEsploratiC.scaffale && oggettiEsploratiC.tavolo) {
-        apriModalC('Equazione trovata',"Agente, sul tavolo principale c'è un quaderno aperto di Marie. \nL’ultima pagina contiene un’equazione incompleta: \n aFe + bH₂O → cFe₃O₄ + dH₂ \n Sotto è scritto: “Solo chi rispetta la legge potrà aprire il passaggio.”",
-        'Inserisci i coefficienti corretti nella forma a,b,c,d',"Risolvi l'equazione",controllaEquazione,
+        apriModalC('Equazione trovata',"Agente, sul tavolo principale c'è un quaderno aperto di Marie. \nL’ultima pagina contiene un’equazione incompleta: \n aFe + bH₂O → cFe₃O₄ + dH₂ \n Sotto è scritto: “Solo chi rispetta la legge di Lavoisier potrà aprire il passaggio.”",
+        'Inserisci i coefficienti corretti nella forma a,b,c,d',"Bilancia l'equazione",controllaEquazione,
         true);
     } else {
         mostraMessaggio('Accesso Negato','Agente, non sei ancora pronto per la risoluzione finale. Ispeziona e risolvi tutti gli oggetti nella stanza.');
@@ -157,7 +157,7 @@ function risolviEquazioneFinale() {
 async function controllaBilancia() {
     const risposta = document.getElementById('CurieSoluzione').value.trim().toLowerCase();
     if (risposta === 'bilanciare') {
-        const puntiOttenuti = calcolaPunteggioDinamico(25);
+        const puntiOttenuti = calcolaPunteggioDinamico(30);
         await aggiornaPunteggioGlobale(puntiOttenuti);
 
         bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
@@ -186,7 +186,7 @@ async function controllaBilancia() {
             document.getElementById('CurieSoluzione').value = '';
             document.getElementById('CurieSoluzione').placeholder ='Indizio: modificare i numeri davanti le formule';
         } else {
-            await aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-7);
             document.getElementById('CurieSoluzione').value = '';
             document.getElementById('CurieSoluzione').placeholder = 'Riprova';
         }
@@ -195,8 +195,8 @@ async function controllaBilancia() {
 
 async function controllaPozioni() {
     const risposta = document.getElementById('CurieSoluzione').value.trim().toLowerCase();
-    if (risposta === 'lavoisier' || risposta === 'legge di lavoisier') {
-        const puntiOttenuti = calcolaPunteggioDinamico(25);
+    if (risposta === 'lavoisier') {
+        const puntiOttenuti = calcolaPunteggioDinamico(30);
         await aggiornaPunteggioGlobale(puntiOttenuti);
 
         bootstrap.Modal.getInstance(document.getElementById('CurieModal')).hide();
@@ -217,22 +217,22 @@ async function controllaPozioni() {
     } else {
         countPozioni++;
         if (countPozioni == 2) {
-            await aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-3);
             document.getElementById('CurieSoluzione').value = '';
             document.getElementById('CurieSoluzione').placeholder ='Indizio: nome di uno scienziato francese';
         } else if (countPozioni >= 3) {
-            await aggiornaPunteggioGlobale(-3);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('CurieSoluzione').value = '';
             document.getElementById('CurieSoluzione').placeholder ='Indizio: Lavo...';
         } else {
-            await aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-7);
             document.getElementById('CurieSoluzione').value = '';
             document.getElementById('CurieSoluzione').placeholder = 'Riprova';
         }
     }
 }
 
-// funzione per salvare enigmi intermedi e le note provvisorie nel local storage se ricarichi 
+// funzione per salvare enigmi intermedi e le note provvisorie nel local storage se ricarichi
 // la pagina
 function ripristinaStatoCurie() {
     if (localStorage.getItem('curie_bilancia_risolta') === 'true') {
