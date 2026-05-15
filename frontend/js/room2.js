@@ -135,7 +135,7 @@ function mostraBilancia() {
 }
 
 function mostraPozioni() {
-    apriModalC('Pozioni','Qual è il nome dello scienziato la cui legge che afferma che la materia non si crea né si distrugge?',
+    apriModalC('Pozioni','Qual è il nome dello scienziato la cui legge afferma che la materia non si crea né si distrugge?',
     'Inserisci il nome della legge: ','Controlla',controllaPozioni,false);
     document.getElementById('CurieSoluzione').placeholder = '?????????';
 }

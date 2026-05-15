@@ -510,7 +510,7 @@ async function controllaCodiceFinale() {
     const soluzioneCorretta = '203414246';
 
     if (risposta === soluzioneCorretta) {
-        const puntiOttenuti = calcolaPunteggioDinamico(50);
+        const puntiOttenuti = calcolaPunteggioDinamico(60);
         await aggiornaPunteggioGlobale(puntiOttenuti);
 
         resetTimer();
