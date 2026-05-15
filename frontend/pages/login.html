@@ -10,11 +10,13 @@
     <title> Login </title>
 </head>
 <body>
+    <!-- Messaggio rotazione per schermi piccoli -->
     <div id="rotate-message">
         <h2 class="special-elite fs-1"> Attenzione Agente! </h2>
         <p class="playfair mt-3 fs-1">Questo gioco richiede una visione panoramica.</p>
         <p class="special-elite" style="color: #8c9eff; font-size: 2.3rem;">Ruota il tuo dispositivo in orizzontale.</p>
     </div>
+    <!-- Form nome e password -->
     <div id="user" class="userform fade-in">
         <div class="d-flex flex-column align-items-center">
             <div class="row g-3 align-items-center">
@@ -40,6 +42,7 @@
                     <div id="passwordError" class="invalid-feedback" style="font-size: 0.9rem;"></div>                 
                 </div>
             </div>
+            <!-- Scelta avatar -->
             <h3 class="mb-3"> Scegli il tuo profilo scientifico: </h3>
             <div class="d-flex flex-wrap justify-content-center gap-3 gap-md-4 mb-4 avatar-grid-mobile">
                 <label class="avatar-label">
@@ -59,6 +62,7 @@
                 <img src="/assets/images/Ada Lovelace.png" alt="Avatar 4" class="avatar-img">
                 </label>
             </div>
+            <!-- Pulsanti registrati e accedi -->
             <div class="d-flex justify-content-center gap-4 mt-1 mb-1">
                 <button type="button" class="btn btn-outline-light btn-lg mt-3" onclick="eseguiLogin()"> ACCEDI </button>
                 <button type="button" class="btn btn-outline-light btn-lg mt-3" onclick="eseguiRegistrazione()"> REGISTRATI </button>
@@ -72,7 +76,7 @@
     <button type="button" class="btn-music-gameF" data-bs-toggle="modal" data-bs-target="#volumeModal">
         <span style="color: #f8fafb;">♫</span>
     </button>
-
+         <!-- Regola volume -->
         <div class="modal fade" id="volumeModal" tabindex="-1" aria-labelledby="volumeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered">
             <div class="modal-content modal-enigma bg-dark text-light border-light">
@@ -94,7 +98,7 @@
             </div>
         </div>
     </div>
-    <!-- Modal Scelta Partita -->
+    <!-- Modal scelta partita (nuova o vecchia) -->
     <div class="modal fade" id="sceltaPartitaModal" tabindex="-1" aria-labelledby="sceltaPartitaModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content modal-log bg-dark text-light">
@@ -114,7 +118,7 @@
         </div>
     </div>
 
-    <!-- Modal Errore di Connessione -->
+    <!-- Modal errore di connessione -->
     <div class="modal fade" id="erroreServerModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content modal-log bg-dark text-light">
@@ -130,7 +134,7 @@
         </div>
     </div>
 
-    <!-- Modal per Password Errata -->
+    <!-- Modal per password errata -->
     <div class="modal fade" id="modalPasswordErrata" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content modal-log bg-dark text-light">
@@ -148,7 +152,7 @@
         </div>
     </div>
 
-    <!-- Modal per Utente Inesistente / Non Registrato -->
+    <!-- Modal per utente inesistente / non registrato -->
     <div class="modal fade" id="modalUtenteInesistente" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content modal-log bg-dark text-light">
@@ -166,7 +170,7 @@
         </div>
     </div>
 
-    <!-- Modal per Utente Già Esistente (durante Registrazione) -->
+    <!-- Modal per utente già esistente (durante registrazione) -->
     <div class="modal fade" id="modalUtenteGiaEsistente" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content modal-log bg-dark text-light">

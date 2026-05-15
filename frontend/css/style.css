@@ -1207,6 +1207,48 @@ input[type="radio"]:checked + .avatar-img {
         padding: 5px 20px !important;
         font-size: 1rem !important; 
     }
+
+    /* modal impostazioni */
+    #settingsModal .modal-header {
+        padding: 8px !important;
+    }
+
+    #settingsModal .modal-body {
+        padding: 10px !important;
+    }
+
+    #settingsModal .modal-title {
+        font-size: 1.2rem !important;
+    }
+
+    #settingsModal .form-label.fs-5 {
+        font-size: 1.1rem !important;
+        margin-bottom: 7px !important;
+    }
+
+    #settingsModal .bi-volume-up {
+        font-size: 1.5rem !important; 
+    }
+
+    #settingsModal hr.my-3, 
+    #settingsModal hr.my-4 {
+        margin-top: 12px !important;
+        margin-bottom: 12px !important;
+    }
+
+    #settingsModal h5 {
+        font-size: 1.1rem !important;
+        margin-bottom: 0 !important;
+    }
+
+    #settingsModal #timerVisibile {
+        font-size: 1.4rem !important; 
+    }
+
+    #settingsModal .btn-outline-light {
+        padding: 3px 22px !important;
+        font-size: 1.1rem !important;
+    }
    
     /* room0 */
     .missione .dossier-box {

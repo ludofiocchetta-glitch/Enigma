@@ -10,22 +10,26 @@
     <title> Stanza 1 </title>
 </head>
 <body>
+  <!-- Messaggio rotazione per schermi piccoli -->
   <div id="rotate-message">
         <h2 class="special-elite fs-1"> Attenzione Agente! </h2>
         <p class="playfair mt-3 fs-1">Questo gioco richiede una visione panoramica.</p>
         <p class="special-elite" style="color: #8c9eff; font-size: 2.3rem;">Ruota il tuo dispositivo in orizzontale.</p>
     </div>
+    <!-- Avatar in alto con taccuino e icona notifica -->
     <div id="room1" class="turing fade-in-slow blocco-interazione">
       <div id="avatarcontenitore" class="avatar-imm d-none">
         <img id="avatarid" src="" alt="Avatar Giocatore" onclick="apriTaccuino()" style="cursor: pointer;">
         <span id="badgeNotifica" class="badge-notifica" style="--badge-color: #0e291ff1;">!</span>
       </div>
+      <!-- Box introduzione con pulsante esplora-->
       <div id="introT" class="dossier-box text-center p-5 shadow-lg centraT">
         <p id="testoMacchina1" class="special-elite text-light fs-5 text-start"></p>
         <button id="btnEntra" class="btn btn-outline-light btn-lg mt-4 d-none" onclick="iniziaEsplorazioneT()">
           Esplora
         </button>
       </div>
+      <!-- Oggetti cliccabili-->
       <div class="oggetto-cliccabile macchina-da-scrivere" id="macchinaT" onclick="mostraEnigmaFinale()"></div>
       <div class="oggetto-cliccabile mappa-mondo" onclick="mostraAtmosferaTuring()"></div>
       <div class="oggetto-cliccabile serranda" onclick="mostraIndizioTuring()"></div>
@@ -34,6 +38,7 @@
       <div class="oggetto-cliccabile lavagna" id="lavagnaT" onclick="mostraLavagna()"></div>
       <div class="oggetto-cliccabile telefono" id="telefonoT" onclick="mostraTelefono()"></div>
     </div>
+    <!-- Modal enigmi -->
     <div class="modal fade" id="enigmaModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content modal-enigma bg-dark text-light border-light">
@@ -53,6 +58,7 @@
         </div>
       </div>
     </div>
+    <!-- Modal indizi -->
     <div class="modal fade" id="infoModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content modal-enigma border-light text-light">
@@ -69,7 +75,7 @@
         </div>
       </div>
     </div>
-  <!-- Pulsante impostazioni -->
+  <!-- Pulsante e modal impostazioni -->
     <audio id="bgMusic" loop>
         <source src="/assets/audio/room1.mp3" type="audio/mpeg">
     </audio>
@@ -83,12 +89,14 @@
                 <h5 class="modal-title special-elite" id="settingsModalLabel">Impostazioni</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <!-- Regola volume -->
             <div class="modal-body text-center playfair">
                 <label for="volumeSlider" class="form-label mb-2 fs-5">Regola audio</label>
                 <div class="d-flex align-items-center justify-content-center gap-3">
                     <i class="bi bi-volume-up" style="font-size: 1.8rem; color: #F8F8FF;"></i>
                     <input type="range" class="form-range" id="volumeSlider" min="0" max="1" step="0.01" value="0.3" style="width: 70%;">
                 </div>
+                <!-- Cronometro visibile -->
                 <hr class="border-light my-3">
                 <div class="text-center mb-3">
                   <h5>Tempo stanza</h5>

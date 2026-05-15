@@ -10,11 +10,13 @@
     <title> Missione </title>
 </head>
 <body>
+    <!-- Messaggio rotazione per schermi piccoli -->
     <div id="rotate-message">
         <h2 class="special-elite fs-1"> Attenzione Agente! </h2>
         <p class="playfair mt-3 fs-1">Questo gioco richiede una visione panoramica.</p>
         <p class="special-elite" style="color: #8c9eff; font-size: 2.3rem;">Ruota il tuo dispositivo in orizzontale.</p>
     </div>
+    <!-- Box introduzione con pulsante inizia missione -->
     <div id="mission" class="missione fade-in-slow d-flex justify-content-center align-items-center">
         <div class="dossier-box text-center p-5 shadow-lg">
             <img id="avatarScelto" src="" alt="Profilo Agente" class="avatar-mission mb-4">
@@ -24,7 +26,7 @@
             </button>
         </div>
     </div>
-    <!-- Pulsante impostazioni -->
+    <!-- Pulsante e modal impostazioni -->
     <audio id="bgMusic" loop>
         <source src="/assets/audio/room0.mp3" type="audio/mpeg">
     </audio>
@@ -50,7 +52,7 @@
         </div>
     </div>
 </div>
-
+    <!-- Regola volume -->
     <div class="modal fade" id="volumeModal" tabindex="-1" aria-labelledby="volumeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered">
             <div class="modal-content modal-enigma bg-dark text-light border-light">
