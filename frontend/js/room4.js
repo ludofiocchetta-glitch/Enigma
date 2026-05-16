@@ -129,6 +129,7 @@ function apriModalL(titolo,descrizione,richiesta,testoBottone,funzioneControllo,
     let btnConferma = document.getElementById('btnConfermaL');
     btnConferma.innerText = testoBottone;
     btnConferma.onclick = funzioneControllo;
+    btnConferma.disabled = false;
 
     var mioModal = bootstrap.Modal.getOrCreateInstance(
         document.getElementById('LovelaceModal'),
@@ -165,6 +166,7 @@ function apriEnigmaLovelace() {
 
 // funzioni di controllo risposte enigmi intermedi
 async function controllaOrologio() {
+    document.getElementById('btnConfermaL').disabled = true;
     const risposta = document.getElementById('LovelaceSoluzione').value.trim();
     if (risposta === '13,21,34') {
         const puntiOttenuti = calcolaPunteggioDinamico(30);
@@ -201,10 +203,12 @@ async function controllaOrologio() {
             document.getElementById('LovelaceSoluzione').value = '';
             document.getElementById('LovelaceSoluzione').placeholder = 'Riprova';
         }
+        document.getElementById('btnConfermaL').disabled = false;
     }
 }
 
 async function controllaLibri() {
+    document.getElementById('btnConfermaL').disabled = true;
     const risposta = document.getElementById('LovelaceSoluzione').value.trim().toLowerCase();
     if (risposta === 'algoritmo') {
         const puntiOttenuti = calcolaPunteggioDinamico(30);
@@ -241,6 +245,7 @@ async function controllaLibri() {
             document.getElementById('LovelaceSoluzione').value = '';
             document.getElementById('LovelaceSoluzione').placeholder = 'Riprova';
         }
+        document.getElementById('btnConfermaL').disabled = false;
     }
 }
 

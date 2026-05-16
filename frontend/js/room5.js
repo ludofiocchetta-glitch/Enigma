@@ -111,6 +111,7 @@ function apriModalF(titolo,descrizione,richiesta,testoBottone,funzioneControllo,
     let btnConferma = document.getElementById('btnConfermaF');
     btnConferma.innerText = testoBottone;
     btnConferma.onclick = funzioneControllo;
+    btnConferma.disabled = false;
 
     var mioModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('FinalModal'));
     mioModal.show();
@@ -157,6 +158,7 @@ function mostraCodiceFinale() {
 
 // funzione di controllo risposta all'enigma intermedio
 async function controllaMuro() {
+    document.getElementById('btnConfermaF').disabled = true;
     const risposta = document.getElementById('FinalSoluzione').value.trim().toLowerCase();
     if (risposta === 'logica') {
         const puntiOttenuti = calcolaPunteggioDinamico(40);
@@ -173,14 +175,17 @@ async function controllaMuro() {
             await aggiornaPunteggioGlobale(-3);
             document.getElementById('FinalSoluzione').value = '';
             document.getElementById('FinalSoluzione').placeholder ="Fondamentale per l'AI";
+            document.getElementById('btnConfermaF').disabled = false;
         } else if (countMuro >= 3) {
             await aggiornaPunteggioGlobale(-5);
             document.getElementById('FinalSoluzione').value = '';
             document.getElementById('FinalSoluzione').placeholder ='Lo è quella del primo ordine';
+            document.getElementById('btnConfermaF').disabled = false;
         } else {
             await aggiornaPunteggioGlobale(-7);
             document.getElementById('FinalSoluzione').value = '';
             document.getElementById('FinalSoluzione').placeholder ='Pensaci bene, è un linguaggio formale';
+            document.getElementById('btnConfermaF').disabled = false;
         }
     }
 }

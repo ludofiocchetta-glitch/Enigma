@@ -311,6 +311,7 @@ async function mostraClassifica() {
 // controllo degli enigmi finali
 // STANZA TURING
 async function controllaEnigma() {
+    document.getElementById('btnConferma').disabled = true;
     const rispostaUtente = document.getElementById('codiceSoluzione').value.trim().toLowerCase();
     const soluzioneCorretta = 'bombe';
 
@@ -348,18 +349,25 @@ async function controllaEnigma() {
                 window.location.href = '/index/room/2';
                 }, 2500);
             }
+            else {
+                const errorData = await response.json(); // o response.text() se non è JSON
+                console.error("IL SERVER HA RIFIUTATO I DATI:", response.status, errorData);
+                alert("Errore dal server: controlla la console!");
+            }
         } catch (err) {
             console.error("Errore nel salvataggio progressi: ", err);
         }
     } else {
-        aggiornaPunteggioGlobale(-7);
+        await aggiornaPunteggioGlobale(-7);
         document.getElementById('codiceSoluzione').value = '';
         document.getElementById('codiceSoluzione').placeholder ='Non è il nome che stiamo cercando. Riprova!';
+        document.getElementById('btnConferma').disabled = false;
     }
 }
 
 // STANZA CURIE
 async function controllaEquazione() {
+    document.getElementById('btnConfermaC').disabled = true;
     const rispostaUtente = document.getElementById('CurieSoluzione').value.trim();
     const soluzioneCorretta = '3,4,1,4';
     if (rispostaUtente === soluzioneCorretta) {
@@ -400,14 +408,16 @@ async function controllaEquazione() {
             console.error("Errore nel salvataggio progressi: ", err);
         }
     } else {
-        aggiornaPunteggioGlobale(-7);
+        await aggiornaPunteggioGlobale(-7);
         document.getElementById('CurieSoluzione').value = '';
         document.getElementById('CurieSoluzione').placeholder = 'Non sono i coefficienti giusti,riprova!';
+        document.getElementById('btnConfermaC').disabled = false;
     }
 }
 
 // STANZA EINSTEIN
 async function controllaEinstein() {
+    document.getElementById('btnConfermaE').disabled = true;
     const rispostaUtente = document.getElementById('EinsteinSoluzione').value.trim().toLowerCase();
     const soluzioneCorretta = 'e=mc^2';
 
@@ -448,14 +458,16 @@ async function controllaEinstein() {
             console.error("Errore nel salvataggio progressi: ", err);
         }
     } else {
-        aggiornaPunteggioGlobale(-7);
+        await aggiornaPunteggioGlobale(-7);
         document.getElementById('EinsteinSoluzione').value = '';
         document.getElementById('EinsteinSoluzione').placeholder ='Non è questa la formula che cerchiamo,riprova!';
+        document.getElementById('btnConfermaE').disabled = false;
     }
 }
 
 // STANZA LOVELACE
 async function controllaLovelace() {
+    document.getElementById('btnConfermaL').disabled = true;
     const rispostaUtente = document.getElementById('LovelaceSoluzione').value.trim().toLowerCase();
     const soluzioneCorretta = 'v4,v6';
 
@@ -498,14 +510,16 @@ async function controllaLovelace() {
             console.error("Errore nel salvataggio progressi: ", err);
         }
     } else {
-        aggiornaPunteggioGlobale(-7);
+        await aggiornaPunteggioGlobale(-7);
         document.getElementById('LovelaceSoluzione').value = '';
         document.getElementById('LovelaceSoluzione').placeholder ='Non sono le variabili che cerchiamo. Riprova!';
+        document.getElementById('btnConfermaL').disabled = false;
     }
 }
 
 // STANZA FINALE
 async function controllaCodiceFinale() {
+    document.getElementById('btnConfermaF').disabled = true;
     const risposta = document.getElementById('FinalSoluzione').value.trim();
     const soluzioneCorretta = '203414246';
 
@@ -552,14 +566,17 @@ async function controllaCodiceFinale() {
             aggiornaPunteggioGlobale(-5);
             document.getElementById('FinalSoluzione').value = '';
             document.getElementById('FinalSoluzione').placeholder ='Leggili attentamente';
+            document.getElementById('btnConfermaF').disabled = false;
         } else if (countMuro2 >= 3) {
             aggiornaPunteggioGlobale(-7);
             document.getElementById('FinalSoluzione').value = '';
             document.getElementById('FinalSoluzione').placeholder ="Attenzione all'ordine";
+            document.getElementById('btnConfermaF').disabled = false;
         } else {
-            aggiornaPunteggioGlobale(-9);
+            await aggiornaPunteggioGlobale(-9);
             document.getElementById('FinalSoluzione').value = '';
             document.getElementById('FinalSoluzione').placeholder = 'Controlla i tuoi appunti';
+            document.getElementById('btnConfermaF').disabled = false;
         }
     }
 }

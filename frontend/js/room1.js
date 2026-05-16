@@ -126,10 +126,9 @@ function apriModal(titolo,descrizione,richiesta,testoBottone,funzioneControllo,u
     let btnConferma = document.getElementById('btnConferma');
     btnConferma.innerText = testoBottone;
     btnConferma.onclick = funzioneControllo;
+    btnConferma.disabled = false;
 
-    var mioModal = bootstrap.Modal.getOrCreateInstance(
-        document.getElementById('enigmaModal'),
-    );
+    var mioModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('enigmaModal'));
     mioModal.show();
 }
 
@@ -159,6 +158,7 @@ function mostraEnigmaFinale() {
 
 // funzioni di controllo risposte enigmi intermedi
 async function controllaLavagna() {
+    document.getElementById('btnConferma').disabled = true;
     const risposta = document.getElementById('codiceSoluzione').value.trim().toLowerCase();
     if (risposta === 'enigma') {
         const puntiOttenuti = calcolaPunteggioDinamico(30);
@@ -196,10 +196,12 @@ async function controllaLavagna() {
             document.getElementById('codiceSoluzione').value = '';
             document.getElementById('codiceSoluzione').placeholder = 'Riprova';
         }
+        document.getElementById('btnConferma').disabled = false;
     }
 }
 
 async function controllaTelefono() {
+    document.getElementById('btnConferma').disabled = true;
     const risposta = document.getElementById('codiceSoluzione').value.trim().toLowerCase();
     if (risposta === 'turing') {
         const puntiOttenuti = calcolaPunteggioDinamico(30);
@@ -235,6 +237,7 @@ async function controllaTelefono() {
             document.getElementById('codiceSoluzione').value = '';
             document.getElementById('codiceSoluzione').placeholder = 'Riprova';
         }
+        document.getElementById('btnConferma').disabled = false;
     }
 }
 

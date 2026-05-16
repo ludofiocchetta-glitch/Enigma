@@ -120,6 +120,7 @@ function apriModalC(titolo,descrizione,richiesta,testoBottone,funzioneControllo,
     let btnConferma = document.getElementById('btnConfermaC');
     btnConferma.innerText = testoBottone;
     btnConferma.onclick = funzioneControllo;
+    btnConferma.disabled = false;
 
     var mioModal = bootstrap.Modal.getOrCreateInstance(
         document.getElementById('CurieModal'),
@@ -155,6 +156,7 @@ function risolviEquazioneFinale() {
 
 // funzioni di controllo risposte enigmi intermedi
 async function controllaBilancia() {
+    document.getElementById('btnConfermaC').disabled = true;
     const risposta = document.getElementById('CurieSoluzione').value.trim().toLowerCase();
     if (risposta === 'bilanciare') {
         const puntiOttenuti = calcolaPunteggioDinamico(30);
@@ -190,10 +192,12 @@ async function controllaBilancia() {
             document.getElementById('CurieSoluzione').value = '';
             document.getElementById('CurieSoluzione').placeholder = 'Riprova';
         }
+        document.getElementById('btnConfermaC').disabled = false;
     }
 }
 
 async function controllaPozioni() {
+    document.getElementById('btnConfermaC').disabled = true;
     const risposta = document.getElementById('CurieSoluzione').value.trim().toLowerCase();
     if (risposta === 'lavoisier') {
         const puntiOttenuti = calcolaPunteggioDinamico(30);
@@ -229,6 +233,7 @@ async function controllaPozioni() {
             document.getElementById('CurieSoluzione').value = '';
             document.getElementById('CurieSoluzione').placeholder = 'Riprova';
         }
+        document.getElementById('btnConfermaC').disabled = false;
     }
 }
 

@@ -130,6 +130,7 @@ function apriModalE(titolo,descrizione,richiesta,testoBottone,funzioneControllo,
     let btnConferma = document.getElementById('btnConfermaE');
     btnConferma.innerText = testoBottone;
     btnConferma.onclick = funzioneControllo;
+    btnConferma.disabled = false;
 
     var mioModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('EinsteinModal'));
     mioModal.show();
@@ -151,8 +152,7 @@ function mostraMappamondoE() {
 //enigma finale
 function apriEnigmaEinstein() {
     if (enigmiRisoltiE.mappamondo && enigmiRisoltiE.mobile && oggettiEsploratiE.cassetti &&
-    oggettiEsploratiE.tavolo && oggettiEsploratiE.ritratto && oggettiEsploratiE.luna
-    ) {
+    oggettiEsploratiE.tavolo && oggettiEsploratiE.ritratto && oggettiEsploratiE.luna) {
         apriModalE('Formula trovata',"Agente, sulla lavagna un po' cancellata è scritta la formula scoperta da Einstein che ha rivoluzionato la fisica. \n Completala tu per aprire il passaggio. \n E=...",
         'Inserisci la formula completa',"Risolvi l'equazione",controllaEinstein,true);
     } else {
@@ -163,6 +163,7 @@ function apriEnigmaEinstein() {
 
 // funzioni di controllo risposte enigmi intermedi
 async function controllaMobile() {
+    document.getElementById('btnConfermaE').disabled = true;
     const risposta = document.getElementById('EinsteinSoluzione').value.trim().toLowerCase();
     if (risposta === 'spazio e tempo' || risposta === 'tempo e spazio') {
         const puntiOttenuti = calcolaPunteggioDinamico(30);
@@ -198,10 +199,12 @@ async function controllaMobile() {
             document.getElementById('EinsteinSoluzione').value = '';
             document.getElementById('EinsteinSoluzione').placeholder = 'Riprova';
         }
+        document.getElementById('btnConfermaL').disabled = false;
     }
 }
 
 async function controllaMappamondoE() {
+    document.getElementById('btnConfermaE').disabled = true;
     const risposta = document.getElementById('EinsteinSoluzione').value.trim().toLowerCase();
     if (risposta === 'riferimento' || risposta === 'sistema di riferimento') {
         const puntiOttenuti = calcolaPunteggioDinamico(30);
@@ -237,6 +240,7 @@ async function controllaMappamondoE() {
             document.getElementById('EinsteinSoluzione').value = '';
             document.getElementById('EinsteinSoluzione').placeholder = 'Riprova';
         }
+        document.getElementById('btnConfermaL').disabled = false;
     }
 }
 
