@@ -23,7 +23,7 @@ The project follows a decoupled client-server architecture:
 * **UI Framework:** [Bootstrap 5](https://getbootstrap.com/) (Modals, Buttons)
 * **Backend:** [Node.js](https://nodejs.org/), Express
 * **Database:** [Supabase](https://supabase.com/) (PostgreSQL)
-* 
+  
 ## Project Structure
 
 The repository is divided into two main sections: `Backend` and `Frontend`.
