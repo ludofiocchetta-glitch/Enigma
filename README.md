@@ -1,21 +1,21 @@
-# Enigma - Web Escape Room
+# Enigma - web escape room
 
 > A logic, math, computer science and science focused arcade web escape room experience.
 
-## About The Project
+## About the project
 
 **Enigma** is an interactive web-based escape room composed of five challenging levels. Players must explore their surroundings, find hidden clues, and solve complex puzzles to unlock the door to the next room. 
 
 The core of the game is deeply rooted in logic, mathematics, computer science and science. The first four rooms are inspired by the brilliance of four famous historical scientists—**Alan Turing, Marie Curie, Albert Einstein, and Ada Lovelace**—each corresponding to a playable avatar. The fifth and final room serves as the ultimate test, where players must combine all the knowledge and clues gathered throughout their journey to escape.
 
-## Key Features
+## Key features
 * **Point & Click Exploration:** Interactive environments with hidden items, notes, and interactive modals on clickable objects.
 * **Themed Puzzles:** Cryptography, chemistry, physics, and algorithm-based challenges.
 * **Dynamic Scoring System:** A competitive leaderboard based on both correct answers and time efficiency.
 * **Interactive Notebook:** A built-in digital notebook that automatically saves crucial clues for the final challenge.
 * **Responsive:** Fully optimized for desktop, tablet, and mobile devices using custom CSS media queries. It includes a specific viewport lock that forces smartphones into landscape orientation to guarantee an immersive experience.
 
-## Built With 
+## Built with 
 
 The project follows a decoupled client-server architecture:
 
@@ -24,7 +24,7 @@ The project follows a decoupled client-server architecture:
 * **Backend:** [Node.js](https://nodejs.org/), Express
 * **Database:** [Supabase](https://supabase.com/) (PostgreSQL)
   
-## Project Structure
+## Project structure
 
 The repository is divided into two main sections: `Backend` and `Frontend`.
 
