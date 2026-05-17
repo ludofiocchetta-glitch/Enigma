@@ -134,11 +134,18 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener('DOMContentLoaded', function () {
     const bgMusic = document.getElementById('bgMusic');
     const volumeSlider = document.getElementById('volumeSlider');
-    const musicBtn = document.querySelector('.btn-music-game');
+    const musicBtn = document.querySelector('.btn-music-game') || 
+                    document.querySelector('.btn-music-gameT') || 
+                    document.querySelector('.btn-music-gameF');
     if (bgMusic && volumeSlider && musicBtn) {
+        const volumeSalvato = localStorage.getItem('volumeGioco');
+        if (volumeSalvato !== null) {
+            volumeSlider.value = volumeSalvato;
+        }
         bgMusic.volume = volumeSlider.value;
         volumeSlider.addEventListener('input', function () {
-        bgMusic.volume = this.value;
+            bgMusic.volume = this.value;
+            localStorage.setItem('volumeGioco', this.value);
         });
         const startMusic = () => {
             if (bgMusic.paused) {
@@ -153,35 +160,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.log('Autoplay bloccato, in attesa di interazione:', error);
                 });
             }
-        };
-        startMusic();
-        document.addEventListener('click', startMusic);
-        document.addEventListener('keydown', startMusic);
-    }
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-    const bgMusic = document.getElementById('bgMusic');
-    const volumeSlider = document.getElementById('volumeSlider');
-    const musicBtn = document.querySelector('.btn-music-gameT') || document.querySelector('.btn-music-gameF');
-    if (bgMusic && volumeSlider && musicBtn) {
-        bgMusic.volume = volumeSlider.value;
-        volumeSlider.addEventListener('input', function () {
-        bgMusic.volume = this.value;
-        });
-        const startMusic = () => {
-        if (bgMusic.paused) {
-            bgMusic
-            .play()
-            .then(() => {
-                console.log('Musica avviata con successo!');
-                document.removeEventListener('click', startMusic);
-                document.removeEventListener('keydown', startMusic);
-            })
-            .catch((error) => {
-                console.log('Autoplay bloccato, in attesa di interazione:', error);
-            });
-        }
         };
         startMusic();
         document.addEventListener('click', startMusic);
