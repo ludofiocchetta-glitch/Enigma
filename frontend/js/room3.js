@@ -184,7 +184,22 @@ async function controllaMobile() {
         setTimeout(() => {
         avatar.classList.remove('taccuino-aggiornato');
         }, 1200);
-    } else {
+    }
+    //  INIZIO TRUCCO "SKIP" (DA CANCELLARE PRIMA DELLA CONSEGNA) 👇
+    else if (risposta === 'skip') {
+        const taccuinoDaSalvare = JSON.parse(localStorage.getItem('taccuinoAgente')) || [];
+        await fetch('/api/room-completed', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                newRoom: 3, 
+                notebook: taccuinoDaSalvare 
+            })
+        });
+        window.location.href = '/index/room/4'; 
+    }
+    // FINE TRUCCO "SKIP" 👆
+    else {
         countMobile++;
         if (countMobile == 2) {
             await aggiornaPunteggioGlobale(-3);
@@ -199,7 +214,7 @@ async function controllaMobile() {
             document.getElementById('EinsteinSoluzione').value = '';
             document.getElementById('EinsteinSoluzione').placeholder = 'Riprova';
         }
-        document.getElementById('btnConfermaL').disabled = false;
+        document.getElementById('btnConfermaE').disabled = false;
     }
 }
 
@@ -240,7 +255,7 @@ async function controllaMappamondoE() {
             document.getElementById('EinsteinSoluzione').value = '';
             document.getElementById('EinsteinSoluzione').placeholder = 'Riprova';
         }
-        document.getElementById('btnConfermaL').disabled = false;
+        document.getElementById('btnConfermaE').disabled = false;
     }
 }
 
