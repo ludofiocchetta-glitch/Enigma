@@ -1,10 +1,10 @@
 # Enigma - web escape room
 
-> A logic, math, computer science and science focused arcade web escape room experience.
+> A logic, math, computer science and science focused web arcade escape room experience.
 
 ## About the project
 
-**Enigma** is an interactive web-based escape room composed of five challenging levels. Players must explore their surroundings, find hidden clues, and solve complex puzzles to unlock the door to the next room. 
+**Enigma** is an interactive web-based arcade escape room composed of five challenging levels. Players must explore their surroundings, find hidden clues, and solve complex puzzles to unlock the door to the next room. 
 
 The core of the game is deeply rooted in logic, mathematics, computer science and science. The first four rooms are inspired by the brilliance of four famous historical scientists—**Alan Turing, Marie Curie, Albert Einstein, and Ada Lovelace**—each corresponding to a playable avatar. The fifth and final room serves as the ultimate test, where players must combine all the knowledge and clues gathered throughout their journey to escape.
 
@@ -13,7 +13,7 @@ The core of the game is deeply rooted in logic, mathematics, computer science an
 * **Themed Puzzles:** Cryptography, chemistry, physics, and algorithm-based challenges.
 * **Dynamic Scoring System:** A competitive leaderboard based on both correct answers and time efficiency.
 * **Interactive Notebook:** A built-in digital notebook that automatically saves crucial clues for the final challenge.
-* **Responsive:** Fully optimized for desktop, tablet, and mobile devices using custom CSS media queries. It includes a specific viewport lock that forces smartphones into landscape orientation to guarantee an immersive experience.
+* **Responsiveness:** Fully optimized for desktop, tablet, and mobile devices using custom CSS media queries. It includes a specific viewport lock that forces smartphones into landscape orientation to guarantee an immersive experience.
 
 ## Built with 
 
@@ -63,12 +63,15 @@ Clone the repository:
 git clone [https://github.com/ludofiocchetta-glitch/Enigma](https://github.com/ludofiocchetta-glitch/Enigma)
 
 Navigate to the backend directory and install dependencies
+```text
 cd Backend
 npm install
-
+```
 Set up your environment variables (e.g. Supabase URL and API keys) in a .env file.
 
 Start the server:
+```text
 node index.js
+```
 
 Open the application in your browser (on http://localhost:3000)
