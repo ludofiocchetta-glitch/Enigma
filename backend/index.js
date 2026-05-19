@@ -19,13 +19,7 @@ const supabaseApi = 'https://xuiutjpjlidhoprcntbk.supabase.co';
 const supabaseApiKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supabaseApi, supabaseApiKey);
 
-// IMPORTANTE
-// numeri stanze: start e login niente, 0 mission, 1 turing, 2 curie, 3 einstein, 4 lovelace,
-// 5 final, 6 victory.
-// il database incrementa salva la stanza completata e incrementa il numero per mandarti a
-// quella che devi fare
-
-// SESSIONI
+// Sessioni
 const pgPool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
@@ -49,7 +43,7 @@ app.use(
 
 app.use(express.json());
 
-// REGISTRAZIONE
+// registrazione
 app.post('/api/register', async (req, res) => {
   const { username, password, avatar } = req.body;
 
@@ -94,13 +88,6 @@ app.post('/api/register', async (req, res) => {
 
     if (inventory_error) throw inventory_error;
 
-    const { data: leaderboard_entry, error: leaderboard_error } = await supabase
-      .from('Leaderboard')
-      .insert([{ user: username, score: 0 }])
-      .select();
-
-    if (leaderboard_error) throw leaderboard_error;
-
     req.session.user = {
       username: data[0].id,
       room: 0,
@@ -117,7 +104,7 @@ app.post('/api/register', async (req, res) => {
   }
 });
 
-// LOGIN
+// login
 app.post('/api/login', async (req, res) => {
   const { username, password, avatar } = req.body;
   try {
@@ -137,7 +124,7 @@ app.post('/api/login', async (req, res) => {
 
     const { data: game, error: game_error } = await supabase
       .from('progress')
-      .select('username, room')
+      .select('username, room, score')
       .eq('username', user.id)
       .limit(1)
       .single();
@@ -163,31 +150,38 @@ app.post('/api/login', async (req, res) => {
       room: game.room + 1, //ricordiamoci di incrementare la stanza di 1 per mandare l'utente alla stanza giusta
       inventory: inventory ? inventory.notebook : [],
       avatar: user.avatar,
+      score: game.score || 0,
     };
 
     return res
       .status(200)
-      .json({ message: 'Login effettuato', room: req.session.user.room });
+      .json({
+        message: 'Login effettuato',
+        room: req.session.user.room,
+        score: game.score || 0,
+      });
   } catch (err) {
     console.error('Errore generico nel login:', err);
     return res.status(500).json({ error: 'Errore interno del server' });
   }
 });
 
-// CONTROLLO SESSIONE
+// controllo sessione
 app.get('/api/me', (req, res) => {
   if (req.session.user) {
     res.json({
       username: req.session.user.username,
       room: req.session.user.room,
       avatar: req.session.user.avatar,
+      notebook: req.session.user.inventory || [],
+      score: req.session.user.score || 0,
     });
   } else {
     res.status(401).json({ error: 'Non loggato' });
   }
 });
 
-// RESET PARTITA
+// reset partita
 app.post('/api/reset-game', async (req, res) => {
   const { username, nuovoAvatar } = req.body;
   try {
@@ -208,16 +202,21 @@ app.post('/api/reset-game', async (req, res) => {
       req.session.user.avatar = nuovoAvatar;
       req.session.user.room = 0;
       req.session.user.inventory = [];
-    }
+      req.session.user.score = 0;
 
-    return res.status(200).json({ message: 'Partita resettata' });
+      req.session.save(() => {
+        return res.status(200).json({ message: 'Partita resettata' });
+      });
+    } else {
+      return res.status(200).json({ message: 'Partita resettata' });
+    }
   } catch (err) {
     console.error('Errore nel reset:', err);
     return res.status(500).json({ error: 'Impossibile resettare la partita' });
   }
 });
 
-// LOGOUT
+// logout
 app.post('/api/logout', (req, res) => {
   req.session.destroy((err) => {
     if (err) {
@@ -229,7 +228,7 @@ app.post('/api/logout', (req, res) => {
   });
 });
 
-// UPDATE SCORE
+// aggiorna lo score
 app.put('/api/update-score', async (req, res) => {
   const { username, newScore } = req.body;
   try {
@@ -237,6 +236,10 @@ app.put('/api/update-score', async (req, res) => {
       .from('progress')
       .update({ score: newScore })
       .eq('username', username);
+
+    if (req.session.user) {
+      req.session.user.score = newScore;
+    }
     return res.status(200).json({ message: 'Punteggio aggiornato' });
   } catch (err) {
     console.error("Errore nell'aggiornamento del punteggio:", err);
@@ -244,53 +247,35 @@ app.put('/api/update-score', async (req, res) => {
   }
 });
 
-//
-
-//Enigma risolto e taccuino aggiornato
+// salva stanza e taccuino
 app.put('/api/room-completed', async (req, res) => {
+  if (!req.session || !req.session.user) {
+    return res.status(401).json({ error: 'Non autorizzato' });
+  }
+
   const username = req.session.user.username;
-  const { newRoom, notebook, note_id } = req.body;
+  const { newRoom, notebook } = req.body;
+
   try {
-    const { data: data_room, error: room_error } = await supabase
+    await supabase
       .from('progress')
       .update({ room: newRoom })
       .eq('username', username);
 
-    if (room_error) {
-      console.error('Errore aggiornamento della stanza:', room_error);
-      return res.status(500).json({ error: 'Errore interno del server' });
-    }
+    if (notebook) {
+      await supabase
+        .from('inventory')
+        .update({ notebook: notebook })
+        .eq('id', username);
 
+      req.session.user.inventory = notebook;
+    }
     req.session.user.room = newRoom + 1;
-
-    const { data: text, error: text_error } = await supabase
-      .from('notes')
-      .select('text')
-      .eq('id', note_id)
-      .single();
-
-    if (text_error) {
-      console.error('Errore nel recupero della nota:', text_error);
-      return res.status(500).json({ error: 'Errore interno del server' });
-    }
-
-    const NewNotebook = [...notebook, { stanza: newRoom, testo: text }]; //aggiungere le altre cose nel caso
-    const { data, error } = await supabase
-      .from('inventory')
-      .update({ notebook: NewNotebook })
-      .eq('id', username);
-    if (error) {
-      console.error('Errore aggiornamento taccuino:', error);
-      return res.status(500).json({ error: 'Errore interno del server' });
-    }
-
-    res.status(200).json({
-      message: 'Stanza e taccuino aggiornati',
-      newRoom: newRoom + 1,
-      notebook: NewNotebook,
-    });
+    res
+      .status(200)
+      .json({ message: 'Progresso salvato', newRoom: newRoom + 1 });
   } catch (err) {
-    console.error("Errore nell'aggiornamento della stanza:", err);
+    console.error("Errore nell'aggiornamento:", err);
     return res.status(500).json({ error: 'Errore interno del server' });
   }
 });
@@ -298,34 +283,104 @@ app.put('/api/room-completed', async (req, res) => {
 // aggiornamento e rivelazione classifica
 app.put('/api/leaderboard', async (req, res) => {
   const username = req.session.user.username;
-  const { final_score } = req.body;
+  const { final_score, salva } = req.body;
+
+  let insertedId = null;
+  let scorePerClassifica = final_score;
+  let idPerClassifica = null; //per lo spareggio
+
   try {
-    const { data, error } = await supabase
-      .from('Leaderboard')
-      .update({ score: final_score })
-      .eq('user', username);
+    if (salva) {
+      // salvo punteggio se appena finito il gioco
+      const { data: insertedData, error: insert_error } = await supabase
+        .from('Leaderboard')
+        .insert([{ user: username, score: final_score }])
+        .select();
+
+      if (insert_error) throw insert_error;
+      insertedId = insertedData[0].id;
+      idPerClassifica = insertedId;
+    } else {
+      // se sta solo guardando metto il record dell'utente
+      const { data: bestScoreData } = await supabase
+        .from('Leaderboard')
+        .select('id, score')
+        .eq('user', username)
+        .order('score', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (bestScoreData) {
+        scorePerClassifica = bestScoreData.score;
+        idPerClassifica = bestScoreData.id;
+      }
+    }
+    // calcolo posizione con spareggio
+    let currentRank = 1;
+    if (idPerClassifica) {
+      const { count, error: count_error } = await supabase
+        .from('Leaderboard')
+        .select('*', { count: 'exact', head: true })
+        .or(
+          `score.gt.${scorePerClassifica},and(score.eq.${scorePerClassifica},id.lt.${idPerClassifica})`,
+        );
+
+      currentRank = (count || 0) + 1;
+    } else {
+      // fallback nel caso in cui sta testando con 0 punti senza aver mai giocato
+      const { count } = await supabase
+        .from('Leaderboard')
+        .select('*', { count: 'exact', head: true })
+        .gt('score', scorePerClassifica);
+      currentRank = (count || 0) + 1;
+    }
 
     const { data: leaderboard, error: leaderboard_error } = await supabase
       .from('Leaderboard')
-      .select('*')
+      .select('id, user, score')
       .order('score', { ascending: false })
+      .order('id', { ascending: true })
       .limit(5);
 
-    if (leaderboard_error) {
-      console.error('Errore nel recupero della classifica:', leaderboard_error);
-      return res.status(500).json({ error: 'Errore interno del server' });
-    }
+    if (leaderboard_error) throw leaderboard_error;
 
-    return res
-      .status(200)
-      .json({ message: 'Classifica aggiornata', leaderboard: leaderboard });
+    return res.status(200).json({
+      message: salva ? 'Nuovo punteggio salvato' : 'Classifica caricata',
+      leaderboard: leaderboard,
+      currentRank: currentRank,
+      insertedId: insertedId,
+      punteggioReale: scorePerClassifica,
+    });
   } catch (err) {
-    console.error("Errore nell'aggiornamento della classifica:", err);
-    return res.status(500).json({ error: 'Errore interno del server' });
+    console.error('Errore classifica:', err);
+    return res.status(500).json({ error: 'Errore interno' });
   }
 });
 
-//middleware per utente che bara o non loggato
+// highest-score per pagina iniziale
+app.get('/api/highest-score', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('Leaderboard')
+      .select('user, score')
+      .order('score', { ascending: false })
+      .limit(1)
+      .single();
+
+    if ((error && error.code === 'PGRST116') || !data) {
+      return res.status(200).json({ user: 'Nessuno', score: 0 });
+    }
+
+    if (error) throw error;
+
+    return res.status(200).json(data);
+  } catch (err) {
+    console.error('Errore nel recupero del punteggio più alto: ', err);
+    return res.status(500).json({ error: 'Errore interno' });
+  }
+});
+
+// middleware per utente che bara o non loggato
 const wrongRoom = (req, res, next) => {
   if (!req.session || !req.session.user) {
     return res.redirect('/login');
@@ -349,20 +404,12 @@ app.get('/index/room/:numero', wrongRoom, (req, res) => {
   res.sendFile(path.join(root, 'pages', `room${numeroStanza}.html`));
 });
 
-//rotta base: mostra la pagina di inizio
+// rotta base: mostra la pagina di inizio
 app.get('/', (req, res) => {
   res.sendFile(path.join(root, 'index.html'));
 });
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// IMPORTANTE
-// DA FARE
-//taccuino da capire
-//mette nel campo del db lo score che gli dà il frontend fatto
-// aggiornare numero stanza dopo che l'utente risponde all'enigma finale
-//classifica (primi 5 utenti con punteggio più alto) fatto
-
-// AVVIO SERVER
+// avvio server
 app.listen(port, host, () => {
   console.log(`Server in esecuzione su http://localhost:${port}`);
 });

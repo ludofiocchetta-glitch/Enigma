@@ -5,15 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/bootstrap.css">
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,900&family=Special+Elite&display=swap" rel="stylesheet">
     <title> Login </title>
 </head>
 <body>
+    <!-- Messaggio rotazione per schermi piccoli -->
     <div id="rotate-message">
         <h2 class="special-elite fs-1"> Attenzione Agente! </h2>
         <p class="playfair mt-3 fs-1">Questo gioco richiede una visione panoramica.</p>
         <p class="special-elite" style="color: #8c9eff; font-size: 2.3rem;">Ruota il tuo dispositivo in orizzontale.</p>
     </div>
+    <!-- Form nome e password -->
     <div id="user" class="userform fade-in">
         <div class="d-flex flex-column align-items-center">
             <div class="row g-3 align-items-center">
@@ -22,6 +25,7 @@
                 </div>
                 <div class="col-auto">
                     <input type="text" id="inputname" class="form-control" placeholder="Inserisci nome">
+                    <div id="nameError" class="invalid-feedback" style="font-size: 0.9rem;"></div>
                 </div>
             </div>
             <div class="row g-3 align-items-center">
@@ -29,9 +33,16 @@
                     <label for="inputpassword" class="col-form-label"> Password: </label>
                 </div>
                 <div class="col-auto">
-                    <input type="password" id="inputpassword" class="form-control" placeholder="Inserisci password" required>
+                    <div class="input-group">
+                        <input type="password" id="inputpassword" class="form-control" placeholder="Inserisci password" required>
+                        <button class="btn btn-light" type="button" id="togglePassword" style="border-color: #dee2e6;">
+                            <i class="bi bi-eye" id="eyeIcon"></i>
+                        </button>
+                    </div>
+                    <div id="passwordError" class="invalid-feedback" style="font-size: 0.9rem;"></div>                 
                 </div>
             </div>
+            <!-- Scelta avatar -->
             <h3 class="mb-3"> Scegli il tuo profilo scientifico: </h3>
             <div class="d-flex flex-wrap justify-content-center gap-3 gap-md-4 mb-4 avatar-grid-mobile">
                 <label class="avatar-label">
@@ -51,6 +62,7 @@
                 <img src="/assets/images/Ada Lovelace.png" alt="Avatar 4" class="avatar-img">
                 </label>
             </div>
+            <!-- Pulsanti registrati e accedi -->
             <div class="d-flex justify-content-center gap-4 mt-1 mb-1">
                 <button type="button" class="btn btn-outline-light btn-lg mt-3" onclick="eseguiLogin()"> ACCEDI </button>
                 <button type="button" class="btn btn-outline-light btn-lg mt-3" onclick="eseguiRegistrazione()"> REGISTRATI </button>
@@ -61,12 +73,11 @@
     <audio id="bgMusic" loop>
         <source src="/assets/audio/login.mp3" type="audio/mpeg">
     </audio>
-    
-    <button type="button" class="btn-music-gameT" data-bs-toggle="modal" data-bs-target="#volumeModal">
+    <button type="button" class="btn-music-gameF" data-bs-toggle="modal" data-bs-target="#volumeModal">
         <span style="color: #f8fafb;">♫</span>
     </button>
-
-    <div class="modal fade" id="volumeModal" tabindex="-1" aria-labelledby="volumeModalLabel" aria-hidden="true">
+         <!-- Regola volume -->
+        <div class="modal fade" id="volumeModal" tabindex="-1" aria-labelledby="volumeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered">
             <div class="modal-content modal-enigma bg-dark text-light border-light">
                 <div class="modal-header border-light">
@@ -75,19 +86,15 @@
                 </div>
                 <div class="modal-body text-center playfair">
                 <label for="volumeSlider" class="form-label mb-3 fs-5">Regola audio</label>
-    
                 <div class="d-flex align-items-center justify-content-center gap-3">
-        
                 <i class="bi bi-volume-up" style="font-size: 1.8rem; color: #F8F8FF;"></i>
-        
                 <input type="range" class="form-range" id="volumeSlider" min="0" max="1" step="0.01" value="0.3" style="width: 70%;">
-        
                 </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Modal Scelta Partita -->
+    <!-- Modal scelta partita (nuova o vecchia) -->
     <div class="modal fade" id="sceltaPartitaModal" tabindex="-1" aria-labelledby="sceltaPartitaModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content modal-log bg-dark text-light">
@@ -101,12 +108,13 @@
                 <div class="modal-footer border-light d-flex justify-content-center gap-3">
                     <button type="button" class="btn btn-outline-light btn-lg mt-3" onclick="nuovaPartita()">Nuova Missione</button>
                     <button type="button" class="btn btn btn-outline-light btn-lg mt-3" onclick="continuaPartita()">Continua</button>
+                    <button type="button" class="btn btn btn-outline-light btn-lg mt-3" onclick="eseguiLogout()">Esci</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Errore di Connessione -->
+    <!-- Modal errore di connessione -->
     <div class="modal fade" id="erroreServerModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content modal-log bg-dark text-light">
@@ -122,7 +130,7 @@
         </div>
     </div>
 
-    <!-- Modal per Password Errata -->
+    <!-- Modal per password errata -->
     <div class="modal fade" id="modalPasswordErrata" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content modal-log bg-dark text-light">
@@ -133,14 +141,14 @@
                     <p>La password inserita non è corretta.</p>
                     <p>Riprova.</p>
                 </div>
-                <div class="modal-footer border-danger d-flex justify-content-center">
+                <div class="modal-footer border-light d-flex justify-content-center">
                     <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Chiudi</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal per Utente Inesistente / Non Registrato -->
+    <!-- Modal per utente inesistente / non registrato -->
     <div class="modal fade" id="modalUtenteInesistente" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content modal-log bg-dark text-light">
@@ -158,7 +166,7 @@
         </div>
     </div>
 
-    <!-- Modal per Utente Già Esistente (durante Registrazione) -->
+    <!-- Modal per utente già esistente (durante registrazione) -->
     <div class="modal fade" id="modalUtenteGiaEsistente" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content modal-log bg-dark text-light">
@@ -177,6 +185,7 @@
         </div>
     </div>
 </body>
-<script src="/js/script.js"> </script>
+<script src="/js/api.js"></script>
+<script src="/js/main.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </html>
