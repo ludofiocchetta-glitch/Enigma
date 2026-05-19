@@ -141,7 +141,7 @@ app.post('/api/login', async (req, res) => {
 
     req.session.user = {
       username: user.id,
-      room: game.room + 1, //ricordiamoci di incrementare la stanza di 1 per mandare l'utente alla stanza giusta
+      room: game.room + 1, //incremento di 1 per mandare l'utente alla stanza dopo quella che ha completato
       inventory: inventory ? inventory.notebook : [],
       avatar: user.avatar,
       score: game.score || 0,
@@ -210,7 +210,6 @@ app.post('/api/logout', (req, res) => {
     if (err) {
       return res.status(500).json({ error: 'Impossibile eseguire il logout' });
     }
-
     res.clearCookie('connect.sid');
     return res.status(200).json({ message: 'Logout eseguito correttamente' });
   });
