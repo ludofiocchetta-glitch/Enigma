@@ -168,7 +168,7 @@ function apriEnigmaLovelace() {
 async function controllaOrologio() {
     document.getElementById('btnConfermaL').disabled = true;
     const risposta = document.getElementById('LovelaceSoluzione').value.trim();
-    if (risposta === '13,21,34') {
+    if (risposta === '13,21,34' || risposta==='13 21 34' || risposta==='13-21-34' || risposta==='132134') {
         const puntiOttenuti = calcolaPunteggioDinamico(30);
         await aggiornaPunteggioGlobale(puntiOttenuti);
 

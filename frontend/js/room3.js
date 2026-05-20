@@ -221,7 +221,7 @@ async function controllaMobile() {
 async function controllaMappamondoE() {
     document.getElementById('btnConfermaE').disabled = true;
     const risposta = document.getElementById('EinsteinSoluzione').value.trim().toLowerCase();
-    if (risposta === 'riferimento' || risposta === 'sistema di riferimento') {
+    if (risposta === 'riferimento' || risposta === 'sistema di riferimento' || risposta==='di riferimento') {
         const puntiOttenuti = calcolaPunteggioDinamico(30);
         await aggiornaPunteggioGlobale(puntiOttenuti);
         bootstrap.Modal.getInstance(

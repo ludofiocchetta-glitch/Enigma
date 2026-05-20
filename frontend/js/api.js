@@ -369,8 +369,7 @@ async function controllaEnigma() {
 async function controllaEquazione() {
     document.getElementById('btnConfermaC').disabled = true;
     const rispostaUtente = document.getElementById('CurieSoluzione').value.trim();
-    const soluzioneCorretta = '3,4,1,4';
-    if (rispostaUtente === soluzioneCorretta) {
+    if (rispostaUtente === '3,4,1,4' || rispostaUtente==='3414' || rispostaUtente==='3-4-1-4' || rispostaUtente==='3 4 1 4') {
         const puntiOttenuti = calcolaPunteggioDinamico(40);
         await aggiornaPunteggioGlobale(puntiOttenuti);
 
@@ -469,9 +468,8 @@ async function controllaEinstein() {
 async function controllaLovelace() {
     document.getElementById('btnConfermaL').disabled = true;
     const rispostaUtente = document.getElementById('LovelaceSoluzione').value.trim().toLowerCase();
-    const soluzioneCorretta = 'v4,v6';
 
-    if (rispostaUtente === soluzioneCorretta) {
+    if (rispostaUtente === 'v4,v6'|| rispostaUtente==='v4 v6' || rispostaUtente==='v4v6' || rispostaUtente==='v4-v6') {
         const puntiOttenuti = calcolaPunteggioDinamico(40);
         await aggiornaPunteggioGlobale(puntiOttenuti);
 
@@ -521,9 +519,8 @@ async function controllaLovelace() {
 async function controllaCodiceFinale() {
     document.getElementById('btnConfermaF').disabled = true;
     const risposta = document.getElementById('FinalSoluzione').value.trim();
-    const soluzioneCorretta = '203414246';
-
-    if (risposta === soluzioneCorretta) {
+   
+    if (risposta === '203414246' || risposta==='20-3414-2-46' || risposta==='20 3414 2 46' || risposta==='20,3414,2,46') {
         const puntiOttenuti = calcolaPunteggioDinamico(60);
         await aggiornaPunteggioGlobale(puntiOttenuti);
 
