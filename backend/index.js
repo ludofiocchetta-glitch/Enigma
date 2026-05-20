@@ -27,7 +27,7 @@ const pgPool = new Pool({
 // Setup sessione
 app.use(
   session({
-      store: new pgSession({
+    store: new pgSession({
       pool: pgPool,
       tableName: 'session',
     }),
@@ -51,7 +51,9 @@ app.post('/api/register', async (req, res) => {
     return res.status(400).json({ error: `Tutti i campi sono obbligatori` });
   }
   if (password.length < 8) {
-    return res.status(400).json({ error: `La password deve avere almeno 8 caratteri` });
+    return res
+      .status(400)
+      .json({ error: `La password deve avere almeno 8 caratteri` });
   }
 
   const salt = 10;
@@ -65,7 +67,9 @@ app.post('/api/register', async (req, res) => {
 
     if (error) {
       if (error.code == '23505') {
-        return res.status(400).json({error: 'Username già esistente, inserire un altro username!'});
+        return res.status(400).json({
+          error: 'Username già esistente, inserire un altro username!',
+        });
       }
       throw error;
     }
@@ -91,7 +95,9 @@ app.post('/api/register', async (req, res) => {
       avatar: avatar,
     };
 
-    return res.status(201).json({ message: 'Utente creato con successo', data: req.session.user });
+    return res
+      .status(201)
+      .json({ message: 'Utente creato con successo', data: req.session.user });
   } catch (err) {
     console.error('Errore nella registrazione: ', err);
     return res.status(500).json({ errore: 'Errore interno del server' });
@@ -147,7 +153,13 @@ app.post('/api/login', async (req, res) => {
       score: game.score || 0,
     };
 
-    return res.status(200).json({ message: 'Login effettuato', room: req.session.user.room, score: game.score || 0 });
+    return res
+      .status(200)
+      .json({
+        message: 'Login effettuato',
+        room: req.session.user.room,
+        score: game.score || 0,
+      });
   } catch (err) {
     console.error('Errore generico nel login:', err);
     return res.status(500).json({ error: 'Errore interno del server' });
@@ -162,7 +174,7 @@ app.get('/api/me', (req, res) => {
       room: req.session.user.room,
       avatar: req.session.user.avatar,
       notebook: req.session.user.inventory || [],
-      score: req.session.user.score || 0
+      score: req.session.user.score || 0,
     });
   } else {
     res.status(401).json({ error: 'Non loggato' });
@@ -195,7 +207,7 @@ app.post('/api/reset-game', async (req, res) => {
       req.session.save(() => {
         return res.status(200).json({ message: 'Partita resettata' });
       });
-    }else{
+    } else {
       return res.status(200).json({ message: 'Partita resettata' });
     }
   } catch (err) {
@@ -225,7 +237,7 @@ app.put('/api/update-score', async (req, res) => {
       .eq('username', username);
 
     if (req.session.user) {
-        req.session.user.score = newScore;
+      req.session.user.score = newScore;
     }
     return res.status(200).json({ message: 'Punteggio aggiornato' });
   } catch (err) {
@@ -241,8 +253,8 @@ app.put('/api/room-completed', async (req, res) => {
   }
 
   const username = req.session.user.username;
-  const { newRoom, notebook } = req.body; 
-  
+  const { newRoom, notebook } = req.body;
+
   try {
     await supabase
       .from('progress')
@@ -254,11 +266,13 @@ app.put('/api/room-completed', async (req, res) => {
         .from('inventory')
         .update({ notebook: notebook })
         .eq('id', username);
-        
-      req.session.user.inventory = notebook; 
+
+      req.session.user.inventory = notebook;
     }
     req.session.user.room = newRoom + 1;
-    res.status(200).json({ message: 'Progresso salvato', newRoom: newRoom + 1 });
+    res
+      .status(200)
+      .json({ message: 'Progresso salvato', newRoom: newRoom + 1 });
   } catch (err) {
     console.error("Errore nell'aggiornamento:", err);
     return res.status(500).json({ error: 'Errore interno del server' });
@@ -268,10 +282,10 @@ app.put('/api/room-completed', async (req, res) => {
 // aggiornamento e rivelazione classifica
 app.put('/api/leaderboard', async (req, res) => {
   const username = req.session.user.username;
-  const { final_score, salva } = req.body; 
+  const { final_score, salva } = req.body;
 
   let insertedId = null;
-  let scorePerClassifica = final_score; 
+  let scorePerClassifica = final_score;
   let idPerClassifica = null; //per lo spareggio
 
   try {
@@ -280,62 +294,64 @@ app.put('/api/leaderboard', async (req, res) => {
       const { data: insertedData, error: insert_error } = await supabase
         .from('Leaderboard')
         .insert([{ user: username, score: final_score }])
-        .select(); 
+        .select();
 
       if (insert_error) throw insert_error;
       insertedId = insertedData[0].id;
-      idPerClassifica = insertedId; 
+      idPerClassifica = insertedId;
     } else {
       // se sta solo guardando metto il record dell'utente
       const { data: bestScoreData } = await supabase
         .from('Leaderboard')
-        .select('id, score') 
+        .select('id, score')
         .eq('user', username)
         .order('score', { ascending: false })
         .limit(1)
         .single();
 
       if (bestScoreData) {
-        scorePerClassifica = bestScoreData.score; 
+        scorePerClassifica = bestScoreData.score;
         idPerClassifica = bestScoreData.id;
       }
     }
     // calcolo posizione con spareggio
     let currentRank = 1;
     if (idPerClassifica) {
-        const { count, error: count_error } = await supabase
-          .from('Leaderboard')
-          .select('*', { count: 'exact', head: true })
-          .or(`score.gt.${scorePerClassifica},and(score.eq.${scorePerClassifica},id.lt.${idPerClassifica})`);
-        
-        currentRank = (count || 0) + 1;
+      const { count, error: count_error } = await supabase
+        .from('Leaderboard')
+        .select('*', { count: 'exact', head: true })
+        .or(
+          `score.gt.${scorePerClassifica},and(score.eq.${scorePerClassifica},id.lt.${idPerClassifica})`,
+        );
+
+      currentRank = (count || 0) + 1;
     } else {
-        // fallback nel caso in cui sta testando con 0 punti senza aver mai giocato
-        const { count } = await supabase
-          .from('Leaderboard')
-          .select('*', { count: 'exact', head: true })
-          .gt('score', scorePerClassifica);
-        currentRank = (count || 0) + 1;
+      // fallback nel caso in cui sta testando con 0 punti senza aver mai giocato
+      const { count } = await supabase
+        .from('Leaderboard')
+        .select('*', { count: 'exact', head: true })
+        .gt('score', scorePerClassifica);
+      currentRank = (count || 0) + 1;
     }
-    
+
     const { data: leaderboard, error: leaderboard_error } = await supabase
       .from('Leaderboard')
-      .select('id, user, score') 
+      .select('id, user, score')
       .order('score', { ascending: false })
-      .order('id', { ascending: true }) 
+      .order('id', { ascending: true })
       .limit(5);
 
     if (leaderboard_error) throw leaderboard_error;
 
-    return res.status(200).json({ 
-        message: salva ? 'Nuovo punteggio salvato' : 'Classifica caricata', 
-        leaderboard: leaderboard, 
-        currentRank: currentRank,
-        insertedId: insertedId,
-        punteggioReale: scorePerClassifica 
+    return res.status(200).json({
+      message: salva ? 'Nuovo punteggio salvato' : 'Classifica caricata',
+      leaderboard: leaderboard,
+      currentRank: currentRank,
+      insertedId: insertedId,
+      punteggioReale: scorePerClassifica,
     });
   } catch (err) {
-    console.error("Errore classifica:", err);
+    console.error('Errore classifica:', err);
     return res.status(500).json({ error: 'Errore interno' });
   }
 });
@@ -349,16 +365,16 @@ app.get('/api/highest-score', async (req, res) => {
       .order('score', { ascending: false })
       .limit(1)
       .single();
-      
+
     if ((error && error.code === 'PGRST116') || !data) {
       return res.status(200).json({ user: 'Nessuno', score: 0 });
     }
 
     if (error) throw error;
-    
+
     return res.status(200).json(data);
   } catch (err) {
-    console.error("Errore nel recupero del punteggio più alto: ", err);
+    console.error('Errore nel recupero del punteggio più alto: ', err);
     return res.status(500).json({ error: 'Errore interno' });
   }
 });
@@ -391,7 +407,6 @@ app.get('/index/room/:numero', wrongRoom, (req, res) => {
 app.get('/', (req, res) => {
   res.sendFile(path.join(root, 'index.html'));
 });
-
 
 // avvio server
 app.listen(port, host, () => {
