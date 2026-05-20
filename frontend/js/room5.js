@@ -30,15 +30,15 @@ function inizioStanzaF() {
         nomeAvatar = 'Ada Lovelace';
     }
     if (nomeAvatar === 'Alan Turing' || nomeAvatar === 'Albert Einstein') {
-        messaggio = `${nomeAvatar} Sei arrivato all’ultima fase. \nLe quattro stanze non erano casuali, ogni ambiente era un test. Ogni mente -Alan Turing, Marie Curie, Albert Einstein, Ada Lovelace — ti ha fornito gli strumenti necessari.
+        messaggio = `${nomeAvatar} sei arrivato all’ultima fase. \nLe quattro stanze non erano casuali, ogni ambiente era un test. Ogni mente -Alan Turing, Marie Curie, Albert Einstein, Ada Lovelace — ti ha fornito gli strumenti necessari.
             Non troverai nuove informazioni qui, solo connessioni. I dati che ti servono li hai già raccolti, ora devi dimostrare di saperli usare.
             Analizza ciò che hai visto, controlla i tuoi appunti, ricostruisci il percorso e individua il codice.
-            La missione si conclude qui. \nLa via d’uscita è già nelle tue mani...`;
+            La missione si conclude qui. \nLa via d’uscita è già nelle tue mani...\n è ora di risolvere l'Enigma finale.`;
     } else {
-        messaggio = `${nomeAvatar} Sei arrivata all’ultima fase. \nLe quattro stanze non erano casuali, ogni ambiente era un test. Ogni mente -Alan Turing, Marie Curie, Albert Einstein, Ada Lovelace — ti ha fornito gli strumenti necessari.
+        messaggio = `${nomeAvatar} sei arrivata all’ultima fase. \nLe quattro stanze non erano casuali, ogni ambiente era un test. Ogni mente -Alan Turing, Marie Curie, Albert Einstein, Ada Lovelace — ti ha fornito gli strumenti necessari.
             Non troverai nuove informazioni qui, solo connessioni. I dati che ti servono li hai già raccolti, ora devi dimostrare di saperli usare.
             Analizza ciò che hai visto, controlla i tuoi appunti, ricostruisci il percorso e individua il codice.
-            La missione si conclude qui. \nLa via d’uscita è già nelle tue mani...`;
+            La missione si conclude qui. \nLa via d’uscita è già nelle tue mani...\n è ora di risolvere l'Enigma finale.`;
     }
     // digitazione automatica
     const boxtesto = document.getElementById('testoMacchina5');
@@ -95,7 +95,7 @@ function iniziaEsplorazioneF() {
 
 // indizio
 function mostraIndizioUomo() {
-    mostraMessaggio('Mandante',"Finalmente, sapevo che ce l'avresti fatta ad arrivare fin qui!\n Hai attraversato grandi menti… ma non hai ancora finito, la conoscenza non serve a nulla se non sai collegarla.\n Hai dimostrato di saper osservare, analizzare, dedurre, ora non ti resta che un ultimo passo. \nIl codice che cerci non è nascosto qui, è dentro ciò che hai già fatto.\nSolo chi comprende l’insieme può andare oltre.");
+    mostraMessaggio('Dottor Aura',"Finalmente, sapevo che ce l'avresti fatta ad arrivare fin qui!\n Hai attraversato grandi menti… ma non hai ancora finito, la conoscenza non è nulla se non sai collegarla.\n Hai dimostrato di saper osservare, analizzare, dedurre, ora non ti resta che un ultimo passo. \nIl codice che cerci non è nascosto qui, è dentro ciò che hai già fatto.\nSolo chi comprende l’insieme può andare oltre.");
     oggettiEsploratiF.uomo = true;
 }
 
@@ -126,7 +126,7 @@ function mostraMuro() {
     } else if (oggettiEsploratiF.uomo && enigmiRisoltiF.muro) {
         mostraCodiceFinale();
     } else {
-        mostraMessaggio('Accesso Negato','Agente, corri a parlare con il tuo mandante prima. \n Poi torna qui.');
+        mostraMessaggio('Accesso Negato','Agente, corri a parlare con il Dottor Aura prima. \n Poi torna qui.');
         return;
     }
 }
