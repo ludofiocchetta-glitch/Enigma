@@ -95,7 +95,7 @@ function iniziaEsplorazioneF() {
 
 // indizio
 function mostraIndizioUomo() {
-    mostraMessaggio('Dottor Aura',"Finalmente, sapevo che ce l'avresti fatta ad arrivare fin qui!\n Hai attraversato grandi menti… ma non hai ancora finito, la conoscenza non è nulla se non sai collegarla.\n Hai dimostrato di saper osservare, analizzare, dedurre, ora non ti resta che un ultimo passo. \nIl codice che cerci non è nascosto qui, è dentro ciò che hai già fatto.\nSolo chi comprende l’insieme può andare oltre.");
+    mostraMessaggio('Dottor Brown',"Finalmente, sapevo che ce l'avresti fatta ad arrivare fin qui!\n Hai attraversato grandi menti… ma non hai ancora finito, la conoscenza non è nulla se non sai collegarla.\n Hai dimostrato di saper osservare, analizzare, dedurre, ora non ti resta che un ultimo passo. \nIl codice che cerci non è nascosto qui, è dentro ciò che hai già fatto.\nSolo chi comprende l’insieme può andare oltre.");
     oggettiEsploratiF.uomo = true;
 }
 
@@ -126,7 +126,7 @@ function mostraMuro() {
     } else if (oggettiEsploratiF.uomo && enigmiRisoltiF.muro) {
         mostraCodiceFinale();
     } else {
-        mostraMessaggio('Accesso Negato','Agente, corri a parlare con il Dottor Aura prima. \n Poi torna qui.');
+        mostraMessaggio('Accesso Negato','Agente, corri a parlare con il Dottor Brown prima. \n Poi torna qui.');
         return;
     }
 }
