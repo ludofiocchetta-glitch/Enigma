@@ -122,9 +122,7 @@ function apriModalC(titolo,descrizione,richiesta,testoBottone,funzioneControllo,
     btnConferma.onclick = funzioneControllo;
     btnConferma.disabled = false;
 
-    var mioModal = bootstrap.Modal.getOrCreateInstance(
-        document.getElementById('CurieModal'),
-    );
+    var mioModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('CurieModal'));
     mioModal.show();
 }
 
@@ -195,7 +193,7 @@ async function controllaBilancia() {
     else {
         countBilancia++;
         if (countBilancia >= 3) {
-            await aggiornaPunteggioGlobale(-3);
+            await aggiornaPunteggioGlobale(-7);
             document.getElementById('CurieSoluzione').value = '';
             document.getElementById('CurieSoluzione').placeholder ='i due lati devono avere lo stesso numero di atomi';
         } else if (countBilancia == 2) {
@@ -203,7 +201,7 @@ async function controllaBilancia() {
             document.getElementById('CurieSoluzione').value = '';
             document.getElementById('CurieSoluzione').placeholder ='Indizio: modificare i numeri davanti le formule';
         } else {
-            await aggiornaPunteggioGlobale(-7);
+            await aggiornaPunteggioGlobale(-3);
             document.getElementById('CurieSoluzione').value = '';
             document.getElementById('CurieSoluzione').placeholder = 'Riprova';
         }
@@ -236,15 +234,15 @@ async function controllaPozioni() {
     } else {
         countPozioni++;
         if (countPozioni == 2) {
-            await aggiornaPunteggioGlobale(-3);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('CurieSoluzione').value = '';
             document.getElementById('CurieSoluzione').placeholder ='Indizio: nome di uno scienziato francese';
         } else if (countPozioni >= 3) {
-            await aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-7);
             document.getElementById('CurieSoluzione').value = '';
             document.getElementById('CurieSoluzione').placeholder ='Indizio: Lavo...';
         } else {
-            await aggiornaPunteggioGlobale(-7);
+            await aggiornaPunteggioGlobale(-3);
             document.getElementById('CurieSoluzione').value = '';
             document.getElementById('CurieSoluzione').placeholder = 'Riprova';
         }

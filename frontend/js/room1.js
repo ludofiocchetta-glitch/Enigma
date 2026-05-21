@@ -174,7 +174,6 @@ async function controllaLavagna() {
         modalEnigma.style.opacity = 0.5;
         }
         aggiungiAlTaccuino('room1','lavagna','GPKIOC corrisponde a enigma','provvisorio');
-        // Aggiungi la classe per far partire l'animazione
         /* animazione taccuino */
         const avatar = document.getElementById('avatarid');
         avatar.classList.add('taccuino-aggiornato');
@@ -184,15 +183,15 @@ async function controllaLavagna() {
     } else {
         countLavagna++;
         if (countLavagna == 2) {
-            await aggiornaPunteggioGlobale(-3);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('codiceSoluzione').value = '';
             document.getElementById('codiceSoluzione').placeholder = "Indizio: spostati nell'alfabeto";
         } else if (countLavagna >= 3) {
-            await aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-7);
             document.getElementById('codiceSoluzione').value = '';
             document.getElementById('codiceSoluzione').placeholder ='Indizio: shift=2';
         } else {
-            await aggiornaPunteggioGlobale(-7);
+            await aggiornaPunteggioGlobale(-3);
             document.getElementById('codiceSoluzione').value = '';
             document.getElementById('codiceSoluzione').placeholder = 'Riprova';
         }
@@ -225,15 +224,15 @@ async function controllaTelefono() {
     } else {
         countTelefono++;
         if (countTelefono == 2) {
-            await aggiornaPunteggioGlobale(-3);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('codiceSoluzione').value = '';
             document.getElementById('codiceSoluzione').placeholder ='Indizio: ogni lettera ha un posto';
         } else if (countTelefono >= 3) {
-            await aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-7);
             document.getElementById('codiceSoluzione').value = '';
             document.getElementById('codiceSoluzione').placeholder ='Indizio: A=1,B=2...';
         } else {
-            await aggiornaPunteggioGlobale(-7);
+            await aggiornaPunteggioGlobale(-3);
             document.getElementById('codiceSoluzione').value = '';
             document.getElementById('codiceSoluzione').placeholder = 'Riprova';
         }

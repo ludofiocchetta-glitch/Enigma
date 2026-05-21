@@ -202,15 +202,15 @@ async function controllaMobile() {
     else {
         countMobile++;
         if (countMobile == 2) {
-            await aggiornaPunteggioGlobale(-3);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('EinsteinSoluzione').value = '';
             document.getElementById('EinsteinSoluzione').placeholder ='Indizio: formano un unico concetto';
         } else if (countMobile >= 3) {
-            await aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-7);
             document.getElementById('EinsteinSoluzione').value = '';
             document.getElementById('EinsteinSoluzione').placeholder ='Indizio: sono legate alla velocità';
         } else {
-            await aggiornaPunteggioGlobale(-7);
+            await aggiornaPunteggioGlobale(-3);
             document.getElementById('EinsteinSoluzione').value = '';
             document.getElementById('EinsteinSoluzione').placeholder = 'Riprova';
         }
@@ -224,8 +224,7 @@ async function controllaMappamondoE() {
     if (risposta === 'riferimento' || risposta === 'sistema di riferimento' || risposta==='di riferimento') {
         const puntiOttenuti = calcolaPunteggioDinamico(30);
         await aggiornaPunteggioGlobale(puntiOttenuti);
-        bootstrap.Modal.getInstance(
-        document.getElementById('EinsteinModal')).hide();
+        bootstrap.Modal.getInstance(document.getElementById('EinsteinModal')).hide();
         enigmiRisoltiE.mappamondo = true;
         localStorage.setItem('einstein_mappamondo_risolto', 'true');
         mostraMessaggio('Accettato','Perfetto, sai tutto sui sistemi di riferimento! \n Continua ad esplorare.');
@@ -243,15 +242,15 @@ async function controllaMappamondoE() {
     } else {
         countMappamondo++;
         if (countMappamondo == 2) {
-            await aggiornaPunteggioGlobale(-3);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('EinsteinSoluzione').value = '';
             document.getElementById('EinsteinSoluzione').placeholder ='Indizio: un esempio classico è il treno';
         } else if (countMappamondo >= 3) {
-            await aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-7);
             document.getElementById('EinsteinSoluzione').value = '';
             document.getElementById('EinsteinSoluzione').placeholder ='Indizio: sistema di...';
         } else {
-            await aggiornaPunteggioGlobale(-7);
+            await aggiornaPunteggioGlobale(-3);
             document.getElementById('EinsteinSoluzione').value = '';
             document.getElementById('EinsteinSoluzione').placeholder = 'Riprova';
         }

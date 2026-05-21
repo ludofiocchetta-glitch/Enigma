@@ -172,17 +172,17 @@ async function controllaMuro() {
     } else {
         countMuro++;
         if (countMuro == 2) {
-            await aggiornaPunteggioGlobale(-3);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('FinalSoluzione').value = '';
             document.getElementById('FinalSoluzione').placeholder ="Fondamentale per l'AI";
             document.getElementById('btnConfermaF').disabled = false;
         } else if (countMuro >= 3) {
-            await aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-7);
             document.getElementById('FinalSoluzione').value = '';
             document.getElementById('FinalSoluzione').placeholder ='Lo è quella del primo ordine';
             document.getElementById('btnConfermaF').disabled = false;
         } else {
-            await aggiornaPunteggioGlobale(-7);
+            await aggiornaPunteggioGlobale(-3);
             document.getElementById('FinalSoluzione').value = '';
             document.getElementById('FinalSoluzione').placeholder ='Pensaci bene, è un linguaggio formale';
             document.getElementById('btnConfermaF').disabled = false;

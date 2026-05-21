@@ -172,8 +172,7 @@ async function controllaOrologio() {
         const puntiOttenuti = calcolaPunteggioDinamico(30);
         await aggiornaPunteggioGlobale(puntiOttenuti);
 
-        bootstrap.Modal.getInstance(
-        document.getElementById('LovelaceModal')).hide();
+        bootstrap.Modal.getInstance(document.getElementById('LovelaceModal')).hide();
         enigmiRisoltiL.orologio = true;
         localStorage.setItem('lovelace_orologio_risolto', 'true');
         mostraMessaggio('Accettato','Geniale! hai decifrato la sequenza. \n Puoi continuare a cercare.');
@@ -191,15 +190,15 @@ async function controllaOrologio() {
     } else {
         countOrologio++;
         if (countOrologio == 2) {
-            await aggiornaPunteggioGlobale(-3);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('LovelaceSoluzione').value = '';
             document.getElementById('LovelaceSoluzione').placeholder ='Indizio: Fibonacci';
         } else if (countOrologio >= 3) {
-            await aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-7);
             document.getElementById('LovelaceSoluzione').value = '';
             document.getElementById('LovelaceSoluzione').placeholder ='Indizio: somma gli ultimi due numeri';
         } else {
-            await aggiornaPunteggioGlobale(-7);
+            await aggiornaPunteggioGlobale(-3);
             document.getElementById('LovelaceSoluzione').value = '';
             document.getElementById('LovelaceSoluzione').placeholder = 'Riprova';
         }
@@ -233,15 +232,15 @@ async function controllaLibri() {
     } else {
         countLibri++;
         if (countLibri == 2) {
-            await aggiornaPunteggioGlobale(-3);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('LovelaceSoluzione').value = '';
             document.getElementById('LovelaceSoluzione').placeholder ='Indizio: ricetta';
         } else if (countLibri >= 3) {
-            await aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-7);
             document.getElementById('LovelaceSoluzione').value = '';
             document.getElementById('LovelaceSoluzione').placeholder ='Indizio: lo è quello di Fibonacci';
         } else {
-            await aggiornaPunteggioGlobale(-7);
+            await aggiornaPunteggioGlobale(-3);
             document.getElementById('LovelaceSoluzione').value = '';
             document.getElementById('LovelaceSoluzione').placeholder = 'Riprova';
         }

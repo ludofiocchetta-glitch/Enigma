@@ -270,6 +270,28 @@ async function eseguiLogout() {
         window.location.href = '/';
     }
 }
+//highest-score prima pagina
+document.addEventListener('DOMContentLoaded', async function () {
+    const highestScoreText = document.getElementById('highest-score-text');
+    
+    if (highestScoreText) {
+        try {
+            const response = await fetch('/api/highest-score');
+            if (response.ok) {
+                const data = await response.json();
+                
+                if (data.user === 'Nessuno') {
+                highestScoreText.innerText = "Nessun utente registrato. Sii il primo a stabilire un record!";
+                } else {
+                highestScoreText.innerText = `Record assoluto: ${data.score} pts - Agente ${data.user}`;
+                }
+            }
+        } catch (err) {
+            highestScoreText.innerText = "Highest score: impossibile caricare il punteggio";
+            console.error("Impossibile caricare l'highest score: ", err);
+        }
+    }
+});
 // classifica
 async function mostraClassifica() {
     document.getElementById('introV').classList.add('d-none');
@@ -350,9 +372,8 @@ async function controllaEnigma() {
                 }, 2500);
             }
             else {
-                const errorData = await response.json(); // o response.text() se non è JSON
-                console.error("IL SERVER HA RIFIUTATO I DATI:", response.status, errorData);
-                alert("Errore dal server: controlla la console!");
+                const errorData = await response.json(); 
+                console.error("dati rifiutati da server:", response.status, errorData);
             }
         } catch (err) {
             console.error("Errore nel salvataggio progressi: ", err);
@@ -560,17 +581,17 @@ async function controllaCodiceFinale() {
     } else {
         countMuro2++;
         if (countMuro2 == 2) {
-            await aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-7);
             document.getElementById('FinalSoluzione').value = '';
             document.getElementById('FinalSoluzione').placeholder ='Leggili attentamente';
             document.getElementById('btnConfermaF').disabled = false;
         } else if (countMuro2 >= 3) {
-            await aggiornaPunteggioGlobale(-7);
+            await aggiornaPunteggioGlobale(-9);
             document.getElementById('FinalSoluzione').value = '';
             document.getElementById('FinalSoluzione').placeholder ="Attenzione all'ordine";
             document.getElementById('btnConfermaF').disabled = false;
         } else {
-            await aggiornaPunteggioGlobale(-9);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('FinalSoluzione').value = '';
             document.getElementById('FinalSoluzione').placeholder = 'Controlla i tuoi appunti';
             document.getElementById('btnConfermaF').disabled = false;
