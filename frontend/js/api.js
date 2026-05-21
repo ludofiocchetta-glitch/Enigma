@@ -167,7 +167,7 @@ async function eseguiRegistrazione() {
             localStorage.clear();
             localStorage.setItem('avatar', avatar);
             localStorage.setItem('username', username);
-            localStorage.setItem('stanzaSalvata', 2);
+            localStorage.setItem('stanzaSalvata', 0);
             window.location.href = '/index/room/0';
         } else {
             if (data.error && data.error.includes('Username già esistente')) {
@@ -560,12 +560,12 @@ async function controllaCodiceFinale() {
     } else {
         countMuro2++;
         if (countMuro2 == 2) {
-            aggiornaPunteggioGlobale(-5);
+            await aggiornaPunteggioGlobale(-5);
             document.getElementById('FinalSoluzione').value = '';
             document.getElementById('FinalSoluzione').placeholder ='Leggili attentamente';
             document.getElementById('btnConfermaF').disabled = false;
         } else if (countMuro2 >= 3) {
-            aggiornaPunteggioGlobale(-7);
+            await aggiornaPunteggioGlobale(-7);
             document.getElementById('FinalSoluzione').value = '';
             document.getElementById('FinalSoluzione').placeholder ="Attenzione all'ordine";
             document.getElementById('btnConfermaF').disabled = false;
