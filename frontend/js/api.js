@@ -281,9 +281,9 @@ document.addEventListener('DOMContentLoaded', async function () {
                 const data = await response.json();
                 
                 if (data.user === 'Nessuno') {
-                highestScoreText.innerText = "Nessun utente registrato. Sii il primo a stabilire un record!";
+                    highestScoreText.innerText = "Nessun utente registrato. Sii il primo a stabilire un record!";
                 } else {
-                highestScoreText.innerText = `Record assoluto: ${data.score} pts - Agente ${data.user}`;
+                    highestScoreText.innerText = `Record assoluto: ${data.score} pts - Agente ${data.user}`;
                 }
             }
         } catch (err) {

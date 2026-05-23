@@ -153,9 +153,7 @@ app.post('/api/login', async (req, res) => {
       score: game.score || 0,
     };
 
-    return res
-      .status(200)
-      .json({
+    return res.status(200).json({
         message: 'Login effettuato',
         room: req.session.user.room,
         score: game.score || 0,
@@ -270,9 +268,7 @@ app.put('/api/room-completed', async (req, res) => {
       req.session.user.inventory = notebook;
     }
     req.session.user.room = newRoom + 1;
-    res
-      .status(200)
-      .json({ message: 'Progresso salvato', newRoom: newRoom + 1 });
+    res.status(200).json({ message: 'Progresso salvato', newRoom: newRoom + 1 });
   } catch (err) {
     console.error("Errore nell'aggiornamento:", err);
     return res.status(500).json({ error: 'Errore interno del server' });
@@ -391,6 +387,7 @@ const wrongRoom = (req, res, next) => {
   next();
 };
 
+// indirizzamento al login
 app.get('/login', (req, res) => {
   res.sendFile(path.join(root, 'pages', 'login.html'));
 });

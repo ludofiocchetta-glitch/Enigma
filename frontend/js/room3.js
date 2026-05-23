@@ -185,20 +185,6 @@ async function controllaMobile() {
         avatar.classList.remove('taccuino-aggiornato');
         }, 1200);
     }
-    //  INIZIO TRUCCO "SKIP" (DA CANCELLARE PRIMA DELLA CONSEGNA) 👇
-    else if (risposta === 'skip') {
-        const taccuinoDaSalvare = JSON.parse(localStorage.getItem('taccuinoAgente')) || [];
-        await fetch('/api/room-completed', {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                newRoom: 3, 
-                notebook: taccuinoDaSalvare 
-            })
-        });
-        window.location.href = '/index/room/4'; 
-    }
-    // FINE TRUCCO "SKIP" 👆
     else {
         countMobile++;
         if (countMobile == 2) {
